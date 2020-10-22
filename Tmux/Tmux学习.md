@@ -16,6 +16,12 @@ bind-key h select-pane -L
 bind-key l select-pane -R
 ```
 
+配置完以后，重启tmux起效，或者先按C+b，然后输入`：`，进入命令行模式， 在命令行模式下输入：
+
+```
+source-file ~/.tmux.conf
+```
+
 参考网址：http://mingxinglai.com/cn/2012/09/tmux/
 
 # tmux概念
