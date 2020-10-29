@@ -41,7 +41,9 @@ settings.json
     "python.defaultInterpreterPath": "/home/zwl/miniconda3/envs/python38_env/bin/python",
     "workbench.colorTheme": "Monokai",
     "terminal.integrated.inheritEnv": false,
-    "editor.parameterHints": false
+    "editor.parameterHints": false,
+    "typescript.tsdk": "",
+    "editor.quickSuggestions":false,
 }
 ```
 
