@@ -31,19 +31,44 @@ command + shift + p
 settings.json
 ```
 
-在文件中输入下面代码，重启vscode即可
+在文件中输入下面代码，注意是把下面代码添加进去
 
 ```
-{
-    "python.dataScience.sendSelectionToInteractiveWindow": false,
-    "code-runner.saveAllFilesBeforeRun": true,
-    "code-runner.saveFileBeforeRun": true,
-    "python.defaultInterpreterPath": "/home/zwl/miniconda3/envs/python38_env/bin/python",
-    "workbench.colorTheme": "Monokai",
-    "terminal.integrated.inheritEnv": false,
-    "editor.parameterHints": false,
-    "typescript.tsdk": "",
-    "editor.quickSuggestions":false,
+{   
+    // Controls if quick suggestions should show up while typing
+    "editor.quickSuggestions": {
+        "other": true,
+        "comments": false,
+        "strings": false
+    },
+
+        // Controls whether suggestions should be accepted on commit characters. For example, in JavaScript, the semi-colon (`;`) can be a commit character that accepts a suggestion and types that character.
+    "editor.acceptSuggestionOnCommitCharacter": true,
+
+    "editor.tabCompletion": true,
+
+    // Controls if suggestions should be accepted on 'Enter' - in addition to 'Tab'. Helps to avoid ambiguity between inserting new lines or accepting suggestions. The value 'smart' means only accept a suggestion with Enter when it makes a textual change
+    "editor.acceptSuggestionOnEnter": "on",
+    // Controls the delay in ms after which quick suggestions will show up.
+    "editor.quickSuggestionsDelay": 10,
+
+    // Controls if suggestions should automatically show up when typing trigger characters
+    "editor.suggestOnTriggerCharacters": true,
+
+    // Controls if pressing tab inserts the best suggestion and if tab cycles through other suggestions
+    "editor.tabCompletion": "on",
+
+    // Controls whether sorting favours words that appear close to the cursor
+    "editor.suggest.localityBonus": true,
+
+    // Controls how suggestions are pre-selected when showing the suggest list
+    "editor.suggestSelection": "recentlyUsed",
+
+    // Enable word based suggestions
+    "editor.wordBasedSuggestions": true,
+
+    // Enable parameter hints
+    "editor.parameterHints.enabled": true,
 }
 ```
 

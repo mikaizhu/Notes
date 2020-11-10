@@ -127,6 +127,12 @@ minute hour day month week command
 whereis python3
 ```
 
+如果没有显示miniconda的环境，要先在外部激活conda环境，再输入whereis
+
+```
+conda activate python38_env
+```
+
 如：
 
 ```
