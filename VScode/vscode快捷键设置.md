@@ -1,6 +1,8 @@
 # 设置快捷键
 
-今天弄了我一个下午的pycharm远程调试，发现vscode比pycharm好用多了，一下就调好了远程ssh，而且vscode是免费的，pycharm真菜。
+今天弄了我一个下午的pycharm远程调试，发现vscode比pycharm好用多了，一下就调好了远程ssh，而且vscode是免费的，pycharm真菜
+
+**注意，要设置什么按键，只要去vscode官方查看下就好了**
 
 ## 取消提示
 
