@@ -145,3 +145,12 @@ conda activate python38_env
 * * * * * cd ~/Desktop && ....python3 test1.py
 ```
 
+**如服务器上要运行python代码：**
+
+```
+50 23 * * * cd /home/zwl/Desktop/wireless/DNN && /home/zwl/miniconda3/bin/python3 dnn1.py 32 60
+50 23 * * * cd /home/zwl/Desktop/wireless/DNN && /home/zwl/miniconda3/bin/python3 dnn2.py 32 60
+50 23 * * * cd /home/zwl/Desktop/wireless/DNN && /home/zwl/miniconda3/bin/python3 dnn3.py 32 60
+59 23 * * * cd /home/zwl/Desktop/wireless/DNN && /home/zwl/miniconda3/bin/python3 dnn4.py 32 60
+```
+
