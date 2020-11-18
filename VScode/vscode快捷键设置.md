@@ -55,7 +55,7 @@ settings.json
     "editor.quickSuggestionsDelay": 10,
 
     // Controls if suggestions should automatically show up when typing trigger characters
-    "editor.suggestOnTriggerCharacters": true,
+    "editor.suggestOnTriggerCharacters": false,
 
     // Controls if pressing tab inserts the best suggestion and if tab cycles through other suggestions
     "editor.tabCompletion": "on",
@@ -67,10 +67,38 @@ settings.json
     "editor.suggestSelection": "recentlyUsed",
 
     // Enable word based suggestions
-    "editor.wordBasedSuggestions": true,
+    "editor.wordBasedSuggestions": false,
 
     // Enable parameter hints
-    "editor.parameterHints.enabled": true,
+    "editor.parameterHints.enabled": false,
+    "code-runner.saveAllFilesBeforeRun": true,
+    "code-runner.saveFileBeforeRun": true,
+    "python.defaultInterpreterPath": "/Users/mikizhu/miniconda3/envs/py38_env/bin/python3.8",
+    "terminal.integrated.inheritEnv": false,
+    "editor.parameterHints": false,
+    "typescript.tsdk": "",
+    "editor.quickSuggestions": false,
+    "workbench.colorTheme": "Monokai",
+    "explorer.confirmDragAndDrop": false,
+    // "emmet.triggerExpansionOnTab": true,
+    "python.jediEnabled": true,
+
+    //debug 配置
+    "launch": {
+    
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "PYTHONPATH": "${cwd}"
+        }
+        
+    },
+    "python.languageServer": "Jedi",
+    "jupyter.sendSelectionToInteractiveWindow": false,
 }
 ```
 
