@@ -38,13 +38,13 @@ logger.critical('this is a critical')
 ```
 import logging
 
-def set_logger():
+def set_logger(file_name):
     logger = logging.getLogger(__name__)
     logger.setLevel(logging.INFO)
     formatter = logging.Formatter('%(name)s %(asctime)s %(message)s', datefmt='%Y/%d/%m %I:%M:%S')
 
     # 设置记录文件名和记录的形式
-    file_handler = logging.FileHandler('main.log')
+    file_handler = logging.FileHandler(file_name)
     file_handler.setFormatter(formatter)
 
     # 设置让控制台也能输出信息
