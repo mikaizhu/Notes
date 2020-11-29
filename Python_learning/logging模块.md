@@ -52,7 +52,7 @@ def set_logger(file_name):
     file_stream.setFormatter(formatter)
 
     # 为记录器添加属性，第一行是让记录器只记录错误级别以上，第二行让记录器日志写入，第三行让控制台也能输出
-    file_handler.setLevel(logging.ERROR)
+    file_handler.setLevel(logging.INFO)
     logger.addHandler(file_handler)
     logger.addHandler(file_stream)
     return logger
