@@ -18,5 +18,15 @@ git checkout hash
 
 然后就会将这个文件恢复到本地
 
+**比如我commit了两个文件file1，file2，然后想恢复一个到本地**
 
+**刚才测试，使用checkout会将两个文件一起恢复，如果我只想恢复一个文件怎么办**
+
+ **使用下面代码**
+
+```
+git checkout hash singal-filename
+```
+
+即可恢复某一单一文件
 
