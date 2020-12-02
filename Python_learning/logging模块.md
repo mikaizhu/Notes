@@ -623,3 +623,29 @@ Eg:
 
 ==注意：如果记录器的等级要高于控制器的等级，那么只会按记录器的等级输出==
 
+### 记录错误
+
+如果直接使用logger.error()记录错误信息，不会记录错误出现在哪一行
+
+**可以使用下面方式：**
+
+```
+try:
+	pass
+except Exception as e:
+	logger.excption(e)
+```
+
+
+
+# 参考教程
+
+1. bilibili
+
+https://www.bilibili.com/video/BV1sK4y1x7e1?from=search&seid=3502857864397522115
+
+2. zhihu
+
+https://zhuanlan.zhihu.com/p/86284675
+
+这里介绍了yml的格式，其实和字典很像，可以参考
