@@ -16,3 +16,12 @@ for i in range(10):
     print(f'time:{i}/10', end='\r')
 ```
 
+# print的占位输出
+
+```
+a = 'abc'
+d = 'ab'
+print(f'{a:4}|{d:4}')
+```
+
+这样每个输出都会占4位，好处是方便对齐
