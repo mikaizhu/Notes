@@ -43,7 +43,7 @@ d = {
 1. **创建一个tools.py文件，在文件里面写入下面代码：**
 
 ```
-def get_logging_config(filename='trian.log'):
+def get_logging_config(file_name='trian.log'):
     d = {
         'version':1,
         'formatters':{
