@@ -86,7 +86,7 @@ import logging
 import logging.config
 
 
-logging.config.dictConfig(get_logging_config(filename='mian.log'))
+logging.config.dictConfig(get_logging_config(file_name='mian.log'))
 
 logger = logging.getLogger('logger')
 ```
