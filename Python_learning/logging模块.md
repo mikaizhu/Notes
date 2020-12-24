@@ -82,7 +82,6 @@ def get_logging_config(file_name='trian.log'):
 
 ```
 from tools import get_logging_config
-import logging
 import logging.config
 
 
