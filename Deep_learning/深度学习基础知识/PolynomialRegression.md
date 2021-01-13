@@ -91,12 +91,12 @@ plt.figure()
 for epoch in range(100):
     preds = model(feature)
     optimizer.zero_grad()
-    loss = loss_func(preds, labels)
+    loss = loss_func(preds, y)
     loss.backward()
     optimizer.step()
     if epoch != 0 and epoch % 5 == 0:
         plt.scatter(x, preds.flatten().detach().numpy())
-        plt.scatter(x, labels)
+        plt.scatter(x, y)
         plt.show()
 ```
 
