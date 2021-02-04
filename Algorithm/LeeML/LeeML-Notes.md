@@ -60,4 +60,29 @@ machine learning 其实就是在寻找一个function
 
 3. 模型优化，如何筛选最优的模型（梯度下降）
 
+# 5. 误差的来源
+
+从之前的实验来看，虽然复杂模型的解，是包含简单模型的解。但并不意味着模型越复杂，错误率就越低。模型越复杂就越容易过拟合。
+
+**模型的误差主要来自 偏差和方差**
+
+[机器学习中的bias(偏差),Error(误差), and Variance(方差)有什么区别和联系, 可以看看这个知乎说明](https://www.zhihu.com/question/27068705)
+
+来看看下面这个图：
+
+<img src="http://ww1.sinaimg.cn/large/005KJzqrgy1gn37disi8aj30wu0sqqm8.jpg" alt="image.png" style="zoom: 33%;" />
+
+可以看到：
+
+- 上面数据分成4个象限，如果数据的方差比较大，那么数据就越分散，偏差表示数据偏离程度
+- 如果数据的偏差比较大，那么即使数据方差再小，也打不中靶心
+- 如果数据偏差很小，而数据方差很大，那么数据点都是围绕靶心的
+
+<img src="http://ww1.sinaimg.cn/large/005KJzqrgy1gn37s08p8kj30ss0jgn53.jpg" alt="image.png" style="zoom:33%;" />
+
+- 从图中可以看出，模型越复杂，bias就越低
+- 同样，模型越复杂，方差就越高。
+- 着就导致模型复杂度刚好，才会达到比较好的效果。
+
+**过拟合对应高的Variance，但模型复杂度如果过低，容易造成欠拟合。**
 
