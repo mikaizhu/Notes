@@ -9,6 +9,10 @@
 **初步代码：**
 
 ```
+from selenium import webdriver
+import time
+import pickle
+
 class Spyder:
     def __init__(self):
         self.driver = webdriver.Chrome()
