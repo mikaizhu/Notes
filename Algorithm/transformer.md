@@ -1,10 +1,14 @@
-## Transformer使用
+[TOC]
+
+# Transformer使用
 
 Transformer中的position encoding：https://wmathor.com/index.php/archives/1453/
 
 Transformer 详解：https://wmathor.com/index.php/archives/1438/
 
 Transformer的pytorch实现：https://wmathor.com/index.php/archives/1455/
+
+代码的GitHub链接：https://github.com/wmathor/nlp-tutorial
 
 **最开始的代码如下**：
 
@@ -168,4 +172,14 @@ optimizer = optim.SGD(model.parameters(), lr=1e-3, momentum=0.99)
 ```
 
 这里的损失函数里面我设置了一个参数 `ignore_index=0`，因为 "pad" 这个单词的索引为 0，这样设置以后，就不会计算 "pad" 的损失（因为本来 "pad" 也没有意义，不需要计算）
+
+## Position encoding
+
+transformer 中有一个位置编码
+
+由于 Transformer 模型**没有**循环神经网络的迭代操作，所以我们必须提供每个字的位置信息给 Transformer，这样它才能识别出语言中的顺序关系
+
+现在定义一个**位置嵌入**的概念，也就是 Positional Encoding，位置嵌入的维度为 `[max_sequence_length, embedding_dimension]`, 位置嵌入的维度与词向量的维度是相同的，都是 `embedding_dimension`。`max_sequence_length` 属于超参数，指的是限定每个句子最长由多少个词构成，长度不够会进行补0。
+
+注意，我们一般以**字**为单位训练 Transformer 模型。首先初始化字编码的大小为 `[vocab_size, embedding_dimension]`，`vocab_size` 为字库中所有字的数量，`embedding_dimension` 为字向量的维度，对应到 PyTorch 中，其实就是 `nn.Embedding(vocab_size, embedding_dimension)`
 
