@@ -48,6 +48,11 @@ IP地址就像是我们的家庭住址一样，如果你要写信给一个人，
 
 **代码使用IP：**
 
+```
+proxies={'https':'101.236.54.97:8866'} #此处也可以通过列表形式，设置多个代理IP，后面通过random.choice()随机选取一个进行使用
+res=requests.get(url,proxies=proxies,timeout=10)
+```
+
 首先在百度中搜索IP，然后界面就会出现本地IP地址
 
 https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&ch=&tn=baidu&bar=&wd=%E6%9C%AC%E5%9C%B0IP&oq=ip&rsv_pq=f38d29a300355731&rsv_t=02f6dI%2FnbgEi0qtzpI7v7OEQMfvejOwgvAaRAH5GxetlWvyVWiwfEHXzjD8&rqlang=cn&rsv_enter=1&rsv_btype=t&rsv_dl=tb&inputT=3580
@@ -67,3 +72,4 @@ https://www.baidu.com/s?wd=%E6%9C%AC%E5%9C%B0IP&oq=ip
 比如我现在要爬取本地IP地址，爬取的网站为：https://apis.baidu.com/store/aladdin/land?cardType=ipSearch
 
 浏览器访问的结果如图：
+

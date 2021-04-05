@@ -27,7 +27,21 @@ JSON 比XML更小，更快，更容易解析
 ```
 json.dump(obj, fp) # 将python类型数据转换并保存到json格式的文件内，读取文件
 json.dumps(obj) # 将python数据类型转换成json格式的字符串
-json.load(fp) # 从json格式的文件中读取数据并转换成python类型
+json.load(fp) # 从json格式的文件中读取数据并转换成python 字典类型
 json.loads(s) # 将json格式的字符串转换成python类型
+```
+
+**将字典字符串转换成字典：**
+
+假设现在有个这样类型得字典字符串
+
+```
+good_comments = '{"productAttr":null,"productCommentSummary":null}'
+```
+
+将这个字符串转换成字典
+
+```
+json.loads(good_comments)
 ```
 

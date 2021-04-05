@@ -2,6 +2,8 @@
 
 # 爬虫设计
 
+## 使用selenium进行爬虫
+
 **目前想法：爬取商品的好评和差评，并且打上标签，然后做情感分析**
 
 目前找到的商品：
@@ -353,6 +355,107 @@ r = driver.find_element_by_xpath('//*[@id="comment"]/div[2]/div[2]/div[1]/ul/li[
 pages = self.browser.find_element_by_link_text(r.text)
 driver.execute_script("arguments[0].click();", pages)
 ```
+
+## 使用requests进行爬虫
+
+**数据爬取部分，代码如下：**
+
+**导入相关模块**：
+
+```
+import os
+import requests
+import pickle
+import numpy as np
+import pandas as pd
+import re
+from tqdm import tqdm
+import time
+```
+
+**爬取好评数据**：
+
+```
+header = {
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36',
+}
+param = {
+    'callback': 'fetchJSON_comment98',
+    'productId': '5561746',
+    'score': '3',
+    'sortType': '5',
+    'pageSize': '10',
+    'isShadowSku': '0',
+    'fold': '1',
+}
+cookie = {
+    'Cookie': 'shshshfpa=cb4386b6-c0f2-68a1-b156-2236f499ee30-1590065631; shshshfpb=dXHF9pqH0l8XV8dgbxTlNEQ%3D%3D; __jdu=15900656294791955369661; user-key=3e85b9e4-c7cf-43fd-9e1a-756e9776cab0; cn=0; __jdc=122270672; areaId=19; ipLoc-djd=19-1607-3155-0; shshshfp=83f76a7577a1d3cdcb7f20cd9a99ba87; __jdv=122270672|github.com|-|referral|-|1617588163257; jwotest_product=99; 3AB9D23F7A4B3C9B=NYA7Y2IYQW7V35YN3PSDHABICJZ5GIKPEEIE6XO7TSEUVYNHVZ7CFQHTY2RYGTGNNEFG2YNVNV5ZYJC36L2IOMHRSM; shshshsID=273af6177249142f26677cc915a91991_1_1617596142151; __jda=122270672.15900656294791955369661.1590065629.1617593724.1617596142.26; __jdb=122270672.1.15900656294791955369661|26.1617596142; JSESSIONID=3B3237BF31381902652457E5A80630B6.s1'
+}
+
+def get_good_comments(header, param, cookie, star=100, end=200):
+    session = requests.Session()
+    session.cookies = requests.utils.cookiejar_from_dict(cookie)
+    fail = 0
+    comments = []
+    for page in tqdm(range(star, end)):
+        good_comments_url = f'https://club.jd.com/comment/productPageComments.action?callback=fetchJSON_comment98&productId=5561746&score=3&sortType=5&page={page}&pageSize=10&isShadowSku=0&fold=1'
+        try:
+            res = session.get(url=good_comments_url, headers=header, data=param)
+            good_comments = re.findall(r'fetchJSON_comment98\((.*)\)', res.text)[0] # 本来获取的是json数据，但是前面加了字符串，所以要删除
+            good_comments = json.loads(good_comments) # 将字符串转换成字典
+            for itm in good_comments['comments']:
+                comments.append(itm['content'])
+            time.sleep(1)
+        except Exception as e:
+            fail += 1
+            continue
+    print(f'\n成功的页数为:{end - star - fail}失败的页数为:{fail}')
+    return comments
+    
+# 调用函数
+good_comments = get_good_comments(header=header, param=param, cookie=cookie)
+```
+
+**爬取差评数据**：
+
+```
+header = {
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36',
+}
+pool_param = {
+    'callback': 'fetchJSON_comment98',
+    'productId': '5561746',
+    'score': '1',
+    'sortType': '5',
+    'page': '',
+    'pageSize': '10',
+    'isShadowSku': '0',
+    'fold': '1',
+}
+cookie = {
+    'Cookie': 'shshshfpa=cb4386b6-c0f2-68a1-b156-2236f499ee30-1590065631; shshshfpb=dXHF9pqH0l8XV8dgbxTlNEQ%3D%3D; __jdu=15900656294791955369661; user-key=3e85b9e4-c7cf-43fd-9e1a-756e9776cab0; cn=0; __jdc=122270672; areaId=19; ipLoc-djd=19-1607-3155-0; shshshfp=83f76a7577a1d3cdcb7f20cd9a99ba87; __jdv=122270672|github.com|-|referral|-|1617588163257; jwotest_product=99; __jda=122270672.15900656294791955369661.1590065629.1617593724.1617596142.26; 3AB9D23F7A4B3C9B=NYA7Y2IYQW7V35YN3PSDHABICJZ5GIKPEEIE6XO7TSEUVYNHVZ7CFQHTY2RYGTGNNEFG2YNVNV5ZYJC36L2IOMHRSM; __jdb=122270672.5.15900656294791955369661|26.1617596142; shshshsID=273af6177249142f26677cc915a91991_5_1617599326434; JSESSIONID=3E10FFFE62C175CE718CCBF7F3621D6C.s1'
+}
+url = f'https://club.jd.com/comment/productPageComments.action?'
+```
+
+**数据保存：**
+
+```
+with open('./data/good_comments.pkl', 'wb') as f:
+    pickle.dump(good_comments, f)
+```
+
+**遇到的问题：**
+
+1. ip被封
+
+爬取的太快导致IP被封，就是请求评论页不会回复，使用sleep函数即可，降低爬取速度。
+
+2. 请求评论cookie发生改变
+
+因为每次请求页面，cookie都会发生改变，所以使用request中的session对cookie进行追踪
+
+
 
 # 数据分析
 

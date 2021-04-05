@@ -89,6 +89,31 @@ res = session.get()
 print(res.status_code)
 ```
 
+自动处理cookie的方式，代码如下：
+
+```
+header = {
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36',
+}
+param = {
+    'callback': 'fetchJSON_comment98',
+    'productId': '5561746',
+    'score': '3',
+    'sortType': '5',
+    'pageSize': '10',
+    'isShadowSku': '0',
+    'fold': '1',
+}
+cookie = {
+    'Cookie': 'shshshfpa=cb4386b6-c0f2-68a1-b156-2236f499ee30-1590065631; shshshfpb=dXHF9pqH0l8XV8dgbxTlNEQ%3D%3D; __jdu=15900656294791955369661; user-key=3e85b9e4-c7cf-43fd-9e1a-756e9776cab0; cn=0; __jdc=122270672; areaId=19; ipLoc-djd=19-1607-3155-0; shshshfp=83f76a7577a1d3cdcb7f20cd9a99ba87; __jdv=122270672|github.com|-|referral|-|1617588163257; jwotest_product=99; __jda=122270672.15900656294791955369661.1590065629.1617593724.1617596142.26; 3AB9D23F7A4B3C9B=NYA7Y2IYQW7V35YN3PSDHABICJZ5GIKPEEIE6XO7TSEUVYNHVZ7CFQHTY2RYGTGNNEFG2YNVNV5ZYJC36L2IOMHRSM; shshshsID=273af6177249142f26677cc915a91991_2_1617597325824; __jdb=122270672.2.15900656294791955369661|26.1617596142; JSESSIONID=DED3BD27A82165E1DED7C5656BFD65D1.s1'
+} # cookie单独设置为dic
+
+session = requests.Session()
+cookie = requests.utils.cookiejar_from_dict(cookie)
+session.cookies = cookie
+res = session.get(url=good_comments_url, headers=header, data=param)
+```
+
 - request和selenium获取cookie的案例
 
 参考：https://blog.csdn.net/weixin_40444270/article/details/80593058
