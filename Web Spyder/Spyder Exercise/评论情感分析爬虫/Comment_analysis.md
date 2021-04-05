@@ -419,6 +419,26 @@ good_comments = get_good_comments(header=header, param=param, cookie=cookie)
 **爬取差评数据**：
 
 ```
+def get_pool_comments(header, param, cookie, star=0, end=100):
+    session = requests.Session()
+    session.cookies = requests.utils.cookiejar_from_dict(cookie)
+    fail = 0
+    comments = []
+    for page in tqdm(range(star, end)):
+        pool_comments_url = f'https://club.jd.com/comment/productPageComments.action?callback=fetchJSON_comment98&productId=5561746&score=1&sortType=5&page={page}&pageSize=10&isShadowSku=0&fold=1'
+        try:
+            res = session.get(url=pool_comments_url, headers=header, data=param)
+            pool_comments = re.findall(r'fetchJSON_comment98\((.*)\)', res.text)[0] # 本来获取的是json数据，但是前面加了字符串，所以要删除
+            pool_comments = json.loads(pool_comments) # 将字符串转换成字典
+            for itm in pool_comments['comments']:
+                comments.append(itm['content'])
+            time.sleep(1)
+        except Exception as e:
+            fail += 1
+            continue
+    print(f'\n成功的页数为:{end - star - fail}  失败的页数为:{fail}')
+    return comments
+
 header = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36',
 }
@@ -432,10 +452,10 @@ pool_param = {
     'isShadowSku': '0',
     'fold': '1',
 }
-cookie = {
-    'Cookie': 'shshshfpa=cb4386b6-c0f2-68a1-b156-2236f499ee30-1590065631; shshshfpb=dXHF9pqH0l8XV8dgbxTlNEQ%3D%3D; __jdu=15900656294791955369661; user-key=3e85b9e4-c7cf-43fd-9e1a-756e9776cab0; cn=0; __jdc=122270672; areaId=19; ipLoc-djd=19-1607-3155-0; shshshfp=83f76a7577a1d3cdcb7f20cd9a99ba87; __jdv=122270672|github.com|-|referral|-|1617588163257; jwotest_product=99; __jda=122270672.15900656294791955369661.1590065629.1617593724.1617596142.26; 3AB9D23F7A4B3C9B=NYA7Y2IYQW7V35YN3PSDHABICJZ5GIKPEEIE6XO7TSEUVYNHVZ7CFQHTY2RYGTGNNEFG2YNVNV5ZYJC36L2IOMHRSM; __jdb=122270672.5.15900656294791955369661|26.1617596142; shshshsID=273af6177249142f26677cc915a91991_5_1617599326434; JSESSIONID=3E10FFFE62C175CE718CCBF7F3621D6C.s1'
+pool_cookie = {
+    'Cookie': 'shshshfpa=cb4386b6-c0f2-68a1-b156-2236f499ee30-1590065631; shshshfpb=dXHF9pqH0l8XV8dgbxTlNEQ%3D%3D; __jdu=15900656294791955369661; user-key=3e85b9e4-c7cf-43fd-9e1a-756e9776cab0; cn=0; __jdc=122270672; areaId=19; ipLoc-djd=19-1607-3155-0; shshshfp=83f76a7577a1d3cdcb7f20cd9a99ba87; __jdv=122270672|github.com|-|referral|-|1617588163257; jwotest_product=99; __jda=122270672.15900656294791955369661.1590065629.1617593724.1617596142.26; 3AB9D23F7A4B3C9B=NYA7Y2IYQW7V35YN3PSDHABICJZ5GIKPEEIE6XO7TSEUVYNHVZ7CFQHTY2RYGTGNNEFG2YNVNV5ZYJC36L2IOMHRSM; JSESSIONID=B6C2581895348EB4830BAC3B7A321B28.s1'
 }
-url = f'https://club.jd.com/comment/productPageComments.action?'
+pool_comments = get_pool_comments(header=header, param=pool_param, cookie=pool_cookie)
 ```
 
 **数据保存：**
@@ -443,34 +463,89 @@ url = f'https://club.jd.com/comment/productPageComments.action?'
 ```
 with open('./data/good_comments.pkl', 'wb') as f:
     pickle.dump(good_comments, f)
+with open('./data/pool_comments.pkl', 'wb') as f:
+    pickle.dump(pool_comments, f)
 ```
 
 **遇到的问题：**
 
-1. ip被封
+1. **ip被封**
 
-爬取的太快导致IP被封，就是请求评论页不会回复，使用sleep函数即可，降低爬取速度。
+爬取的太快导致IP被封，就是请求评论页不会回复，请求不到数据，使用sleep函数即可，降低爬取速度。当然也可以使用代理IP进行爬取
 
-2. 请求评论cookie发生改变
+2. **请求评论cookie发生改变**
 
 因为每次请求页面，cookie都会发生改变，所以使用request中的session对cookie进行追踪
-
-
 
 # 数据分析
 
 - 先对爬取结果读取，去重，查看爬了多少评论
 
 ```
-res1 = pickle.load(open('/Users/mikizhu/Desktop/Facial_cleanser_comments_feature.pkl', 'rb'))
-len(set(res1)) # 1994
-res2 = pickle.load(open('/Users/mikizhu/Desktop/phone_comments_feature.pkl', 'rb'))
-len(set(res2)) # 77
-res3 = pickle.load(open('/Users/mikizhu/Desktop/shirt_comments_feature.pkl', 'rb'))
-len(set(res3)) # 105
+import os
+import pickle
+import re
+import numpy as np
+import pandas as pd
+
+good_comments = pickle.load(open('./data/good_comments.pkl', 'rb'))
+pool_comments = pickle.load(open('./data/pool_comments.pkl', 'rb'))
+len(set(good_comments)), len(set(pool_comments)) # 怕有些数据重复，所以使用set去重
+# (1000, 994)
 ```
 
+# 情感分析
+
+**情感极性分析**，即情感分类，对带有主观情感色彩的文本进行分析、归纳。情感极性分析主要有两种分类方法：**基于情感知识的方法**和**基于机器学习的方法**。基于情感知识的方法通过一些已有的情感词典计算文本的情感极性（正向或负向），其方法是统计文本中出现的正、负向情感词数目或情感词的情感值来判断文本情感类别；基于机器学习的方法利用机器学习算法训练已标注情感类别的训练数据集训练分类模型，再通过分类模型预测文本所属情感分类。本文采用机器学习方法实现对酒店评论数据的情感分类，利用Python语言实现情感分类模型的构建和预测，不包含理论部分，旨在通过实践一步步了解、实现中文情感极性分析。
+
+**主要流程为：**
+
+- 数据处理
+- 分类模型构建
+- 模型测试
+
+## 数据处理
+
+**数据处理流程：**
+
+- 数据清洗
+- 中文文本分词
+- 去停用词
+- 获取特征词向量
+- 降维
+
+**requirement**：jieba模块
+
+**什么是文本分词**？
+
+参考：https://blog.csdn.net/u013982921/article/details/81085395
+
+中文分词(Chinese Word Segmentation) 指的是将一个汉字序列切分成一个一个单独的词。分词就是将连续的字序列按照一定的规范重新组合成词序列的过程。
+
+**jieba分词支持三种模式**：
+
+- 精确模式：将句子最精确的分开，适合文本分析
+- 全模式：句子中所有可以成词的词语都扫描出来，速度快，不能解决歧义
+- 搜索引擎模式：在精确的基础上，对长词再次切分，提高召回
+
+**句子清洗：**
+
 ```
-# 总共 2176 条评论
+import jieba
+import jieba.posseg
+import re
+from tqdm import tqdm
+
+def clear_sentence(comments):
+    for idx, sentence in enumerate(tqdm(comments)):
+        temp1 = re.sub("[a-zA-Z0-9]", "", sentence) # 清除
+        temp2 = re.sub("[\s+\.\!\/_,$%^*(+\"\'；：“”．]+|[+——！，。？?、~@#￥%……&*（）]+", "", temp1) # 清除标点符号
+        comments[idx] = temp2
+    return comments
+    
+clr_good_comments = clear_sentence(good_comments)
+clr_pool_comments = clear_sentence(pool_comments)
 ```
+
+**删除停用词**
 
