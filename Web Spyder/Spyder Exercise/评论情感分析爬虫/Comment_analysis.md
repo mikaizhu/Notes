@@ -549,3 +549,161 @@ clr_pool_comments = clear_sentence(pool_comments)
 
 **删除停用词**
 
+```
+def seg_comments(comments):
+    for idx, sentence in enumerate(tqdm(comments)):
+        comments[idx] = ' '.join(jieba.cut(sentence, cut_all=False))
+    return comments
+
+def del_stop_words(comments):
+    res = []
+    for sentence in tqdm(comments):
+        temp = []
+        for word in sentence.split(' '):
+            if word not in stop_words:
+                temp.append(word.strip())
+        res.append(temp)
+    return res
+    
+seg_good_comments = seg_comments(clr_good_comments)
+seg_pool_comments = seg_comments(clr_pool_comments)
+pos_comments = del_stop_words(seg_good_comments)
+neg_comments = del_stop_words(seg_pool_comments)
+```
+
+## 获得词向量
+
+- 训练word2vect模型
+
+```
+import gensim
+import numpy as np
+import pandas as pd
+from gensim.models import Word2Vec
+import multiprocessing
+from collections import Counter
+
+comments = pos_comments + neg_comments # 这里使用全部的语句进行
+sub_words = [word for sentence in comments for word in sentence] # 进行拆分,相当于下面代码
+count_words = Counter(sub_words) # 字典结构，键为单词，值为出现的次数
+sort_words = sorted(count_words.items(), key=lambda x:x[1], reverse=True) # 形成字典结构。但是为按词频从大到小排序
+words = [item[0] for item in sort_words] # 获得排序好的单词
+model = Word2Vec(comments, min_count=1, iter=20, size=128, window=5, workers=multiprocessing.cpu_count()) # 注意输入的格式为[['',''], ['', '']]
+model.save('./data/w2vModel')
+```
+
+- 获得look up table
+
+```
+def get_embedding(words, model):
+    '''
+    构建look up table
+    '''
+    vocab = []
+    embedding = []
+    vocab.append('pad')
+    embedding.append(np.zeros((128))) # 如果是pad就填充0向量,因为句子长度不一样。这里每个单词的向量长度为128
+    for word in tqdm(words):
+        try:
+            vocab.append(word)
+            embedding.append(model[word])
+        except:
+            pass # 去除掉一些为空的字符
+    return vocab, embedding
+    
+vocab, embedding = get_embedding(words, model) # 将每个单词和他的向量对应起来
+word_2_index = dict(zip(vocab, list(range(len(vocab)))))
+index_2_word = dict(zip(list(range(len(vocab))), vocab))
+```
+
+- 词长度统计
+
+因为每个句子的长度不一样，所以要对长度进行统计
+
+```
+max_len = 0
+min_len = 0
+all_len = []
+for sentence in comments:
+    max_len = max(max_len, len(sentence))
+    min_len = min(float('inf'), len(sentence))
+    all_len.append(len(sentence))
+    
+max_len, min_len # 评论中最长的和最短的评论长度 (234, 2)
+```
+
+```
+np.asarray(all_len).mean() # 平均长度为20
+```
+
+可视化：
+
+```
+import matplotlib.pyplot as plt
+plt.figure()
+plt.hist(all_len) # 可以发现大部分评论长度都是在25左右，所以这里设置为40为最大长度,覆盖了大部分词
+plt.show()
+```
+
+![](./picture/tj.png)
+
+```
+def comments_process(comments, word_2_index, max_len=40):
+    '''
+    将每个条评论转换成index组成的向量，同时对长度进行补全，因为评论的单词长短不一，所以要设置成一样的。
+    '''
+    comments_idx = np.zeros((len(comments), max_len)) # 初始化矩阵
+    for sentence_idx, sentence in enumerate(tqdm(comments)):
+        temp = np.zeros((max_len))
+        for word_idx in range(max_len):
+            word = sentence[word_idx] if word_idx < len(sentence) else 'pad'
+            temp[word_idx] = word_2_index[word]
+        comments_idx[sentence_idx] = temp
+    return comments_idx
+    
+pos_comments_idx = comments_process(pos_comments, word_2_index)
+neg_comments_idx = comments_process(neg_comments, word_2_index)
+```
+
+- 获得embedding向量
+
+```
+def get_embedding(comments_idx, model, index_2_word, embedding_size=128):
+    batch, max_len = comments_idx.shape
+    embedding_vec = np.zeros((batch, max_len, embedding_size))
+    for batch_idx, sentence in enumerate(tqdm(comments_idx)):
+        for word_idx, word in enumerate(sentence):
+            word = index_2_word[word]
+            embedding_vec[batch_idx, word_idx, :] = model[word] if word != 'pad' else np.zeros((embedding_size))
+    return embedding_vec
+    
+pos_embedding = get_embedding(pos_comments_idx, model, index_2_word)
+neg_embedding = get_embedding(neg_comments_idx, model, index_2_word)
+```
+
+## 数据集构建
+
+```
+from sklearn.model_selection import train_test_split
+
+pos_label = np.asarray([1]*len(pos_embedding))
+neg_label = np.asarray([0]*len(neg_embedding))
+train = np.concatenate([pos_embedding, neg_embedding], axis=0)
+label = np.concatenate([pos_label, neg_label])
+x_train, x_test, y_train, y_test = train_test_split(train, label, test_size=.5, shuffle=True)
+```
+
+## 建模分析
+
+```
+from sklearn import svm
+from sklearn.metrics import accuracy_score
+
+x_train, x_test = x_train.mean(axis=1), x_test.mean(axis=1) # 这里取平均值
+clf = svm.SVC(C=2)
+clf.fit(x_train, y_train)
+preds = clf.predict(x_test)
+print(accuracy_score(y_test, preds))
+# 0.993
+```
+
