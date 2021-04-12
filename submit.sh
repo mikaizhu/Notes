@@ -1,4 +1,5 @@
 #!/bin/bash
 git add .
-git commit -m 'update'
+read -p "input commit reason... " reason
+git commit -m "$reason"
 git push origin master

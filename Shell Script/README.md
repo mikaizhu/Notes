@@ -54,7 +54,11 @@ my_name='zhuweilin'
 declare -r NUM1=5
 ```
 
-代码如下：
+- 访问变量
+
+```
+在变量前加上 $ 即可访问变量里面的内容
+```
 
 - **四则运算**
 
@@ -66,7 +70,7 @@ declare -r NUM1=5
 my_name='zhuweilin'
 declare -r NUM1=5
 num2=10
-num3=$((NUM1+num2))
+num3=$((NUM1+num2)) # 变量先运算再访问
 num4=$((NUM1-num2))
 num5=$((NUM1*num2))
 num6=$((NUM1/num2))
@@ -216,5 +220,161 @@ get_date #调用函数
 
 然后就会输出当前日期
 
+- **获得参数**
+
+```
+#!/bin/bash
+get_sum(){
+    local num3=$1;
+    local num4=$2
+
+    local sum=$((num3+num4))
+    echo $sum # 函数的返回
+}
+num1=2
+num2=4
+num4=$(get_sum num1 num2)
+
+echo "$num4"
+
+# 正确的代码如下，为什么下面代码正确还没弄明白
+#!/bin/bash
+get_sum(){
+    local num3=$1;
+    local num4=$2
+
+    local sum=$((num3+num4))
+    echo $sum
+}
+num1=2
+num2=4
+num4=$(get_sum num1 num2)
+
+echo "the sum is $num4"
+```
+
+> - 函数传入参数是以\$1,\$2 来接收参数的
+> - 使用echo返回函数参数
+
 ## 全局变量和局部变量
+
+```
+#!/bin/bash
+
+# this is comment
+get_date(){
+   name='Bob' 
+   return
+}
+name='Alice'
+get_date
+echo $name
+```
+
+最后输出还是bob
+
+将代码改成：
+
+```
+#!/bin/bash
+
+# this is comment
+get_date(){
+   local name='Bob' 
+   return
+}
+name='Alice'
+get_date
+echo $name
+```
+
+然后输出就是Alice了
+
+## 从外部读取数据，使用read -p命令
+
+```
+#!/bin/bash
+read -p "why commit?  " commit # commit 为变量，将输入赋值为变量
+echo "the commit reason is $commit" 
+```
+
+还可以传入两个参数
+
+```
+read -p "why commit?  " commit1 commit2 # commit 为变量，将输入赋值为变量
+```
+
+
+
+## if 语句
+
+代码如下：
+
+```
+#!/bin/bash
+read -p "how old are you ? " age
+
+if [ $age = 16 ]
+then
+    echo "you can drive"
+elif [ $age = 15 ]
+then
+    echo 'you can drive next year'
+else
+    echo "you can't drive"
+fi
+```
+
+> - If 语句以fi结尾
+> - 条件要放在中括号里面
+
+
+
+## 逻辑运算， 与或非
+
+
+
+## if传入参数
+
+```
+#!/bin/bash
+file1="./test"
+
+if [ -e "$file1" ]; then
+    echo "$file1 exists"
+fi
+
+if [ -f "$file1" ]; then
+    echo "$file1 is a normal file"
+fi
+
+if [ -r "$file1" ]; then
+    echo "$file1 is readable"
+fi
+
+if [ -w "$file1" ]; then
+    echo "$file1 is writable"
+```
+
+> 注意中括号两边一定要留出空格子
+>
+> 其中还有很多参数
+
+
+
+## 正则表达式
+
+格式如下：
+
+```
+#!/bin/bash
+read -p "is sequence? " seq
+pat="^[0-9]{8}$"
+
+if [[ $seq =~ $pat ]]; then
+    echo '$seq is valid'
+else
+    echo "$seq not valid"
+fi
+```
 
