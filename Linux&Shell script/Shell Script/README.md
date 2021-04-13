@@ -250,7 +250,43 @@ get_date #调用函数
 
 然后就会输出当前日期
 
-- **获得参数**
+- 参数返回，可以显示加：return 返回，如果不加，将以最后一条命令运行结果，作为返回值。 return后跟数值n(0-255)
+
+```
+#!/bin/bash
+
+funWithReturn(){
+    echo "这个函数会对输入的两个数字进行相加运算..."
+    echo "输入第一个数字: "
+    read aNum
+    echo "输入第二个数字: "
+    read anotherNum
+    echo "两个数字分别为 $aNum 和 $anotherNum !"
+    return $(($aNum+$anotherNum))
+}
+funWithReturn
+echo "输入的两个数字之和为 $? !"
+```
+
+- 函数返回值在调用该函数后通过 $? 来获得。
+- 注意：所有函数在使用前必须定义。这意味着必须将函数放在脚本开始部分，直至shell解释器首次发现它时，才可以使用。调用函数仅使用其函数名即可。
+
+**获得参数**
+
+在Shell中，调用函数时可以向其传递参数。在函数体内部，通过 $n 的形式来获取参数的值，例如，$1表示第一个参数，$2表示第二个参数...
+
+```
+funWithParam(){
+    echo "第一个参数为 $1 !"
+    echo "第二个参数为 $2 !"
+    echo "第十个参数为 $10 !"
+    echo "第十个参数为 ${10} !"
+    echo "第十一个参数为 ${11} !"
+    echo "参数总数有 $# 个!"
+    echo "作为一个字符串输出所有参数 $* !"
+}
+funWithParam 1 2 3 4 5 6 7 8 9 34 73
+```
 
 ```
 #!/bin/bash
@@ -759,8 +795,6 @@ else
 fi
 ```
 
-
-
 ## if 语句
 
 代码如下：
@@ -1056,6 +1090,48 @@ done
 ```
 
 continue命令与break命令类似，只有一点差别，它不会跳出所有循环，仅仅跳出当前循环。
+
+## shell输入输出重定向
+
+参考：https://www.runoob.com/linux/linux-shell-io-redirections.html
+
+## shell文件包含
+
+参考：https://www.runoob.com/linux/linux-shell-include-file.html
+
+和其他语言一样，Shell 也可以包含外部脚本。这样可以很方便的封装一些公用的代码作为一个独立的文件。
+
+Shell 文件包含的语法格式如下：
+
+```
+. filename   # 注意点号(.)和文件名中间有一空格
+
+或
+
+source filename
+```
+
+**实例：**
+
+创建两个shell文件
+
+Test1.sh 代码如下：
+
+```
+#!/bin/bash
+url="http://www.runoob.com"
+```
+
+Test2.sh代码如下：
+
+```
+#!/bin/bash
+#使用 . 号来引用test1.sh 文件
+. ./test1.sh
+# 或者使用以下包含文件代码
+# source ./test1.sh
+echo "菜鸟教程官网地址：$url"
+```
 
 
 
