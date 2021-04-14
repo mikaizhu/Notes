@@ -1,3 +1,13 @@
+因为重启一次后，然后出错了，所以将教程改成了下面的vnc：
+
+参考教程：https://www.youtube.com/watch?v=QTlU1EZQZg0
+
+参考文档：https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-vnc-on-ubuntu-16-04
+
+然后在Mac系统上安装vnc viewer：https://www.realvnc.com/en/connect/download/viewer/
+
+即可控制，控制密码qweasd，因为密码设置只能6个英文字符
+
 ## mac 连接windows
 
 1. 在windows 上下载tight vnc
