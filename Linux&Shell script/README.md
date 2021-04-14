@@ -1,5 +1,13 @@
 ## 参考教程
 
+要想执行sh文件：
+
+```
+sudo chmod 755 run.sh
+然后使用 ./run.sh
+或者使用bash run.sh执行
+```
+
 Linux shell教程：https://www.runoob.com/linux/linux-shell-include-file.html
 
 Linux 指令教程：https://www.cnblogs.com/peida/tag/%E6%AF%8F%E6%97%A5%E4%B8%80linux%E5%91%BD%E4%BB%A4/default.html?page=3

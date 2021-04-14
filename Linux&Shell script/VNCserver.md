@@ -46,7 +46,6 @@ sudo reboot
 sudo apt-get install x11vnc
 clear
 sudo vim /lib/systemd/system/x11vnc.service
-
 ```
 
 - 进行配置
@@ -75,4 +74,30 @@ IP：port
 ```
 
 > 一定要通过加密后再使用vnc
+
+**关于系统重启后vnc启动失败的解决方案：**
+
+系统重启后，vnc也自动关闭了，输入下面一些指令也重启不了vnc
+
+```
+systemctl daemon-reload
+systemctl enable x11vnc.service # 让密码生效
+systemctl start x11vnc.service
+systemctl status x11vnc.service # 查看是否正在运行
+```
+
+**解决办法：**
+
+1. 切换到管理员权限下
+2. 输入下面命令，重启服务
+
+```
+systemctl restart x11vnc.service
+```
+
+3. 查看是否重启成功
+
+```
+systemctl status x11vnc.service
+```
 
