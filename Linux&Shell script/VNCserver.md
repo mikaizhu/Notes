@@ -8,6 +8,14 @@
 
 即可控制，控制密码qweasd，因为密码设置只能6个英文字符
 
+启动命令：
+
+```
+vncserver
+```
+
+
+
 ## mac 连接windows
 
 1. 在windows 上下载tight vnc

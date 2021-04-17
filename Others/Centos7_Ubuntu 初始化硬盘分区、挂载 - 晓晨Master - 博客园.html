@@ -1,0 +1,1646 @@
+<!DOCTYPE html>
+<!-- saved from url=(0045)https://www.cnblogs.com/stulzq/p/7610100.html -->
+<html lang="zh-cn"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin-when-crossorigin">
+    <meta name="description" content="刚刚在腾讯云买了一台服务器，刚买的服务器的数据盘都是需要自己来分区的，下面就记录一下操作。 1. 通过命令 查看硬盘信息 可以看到有两块硬盘 和`/dev/vdb`，启动vda是系统盘vdb是我们新增">
+    <meta property="og:description" content="刚刚在腾讯云买了一台服务器，刚买的服务器的数据盘都是需要自己来分区的，下面就记录一下操作。 1. 通过命令 查看硬盘信息 可以看到有两块硬盘 和`/dev/vdb`，启动vda是系统盘vdb是我们新增">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Centos7/Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="https://common.cnblogs.com/favicon.svg" type="image/svg+xml">
+    
+    <link rel="stylesheet" href="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/blog-common.min.css">
+    <link id="MainCss" rel="stylesheet" href="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/bundle-simplememory.min.css">
+    <link type="text/css" rel="stylesheet" href="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/custom.css">
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/bundle-SimpleMemory-mobile.min.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/stulzq/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/stulzq/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/stulzq/wlwmanifest.xml">
+    <script src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/osd.js"></script><script async="" src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/analytics.js"></script><script>
+        var currentBlogId = 196619;
+        var currentBlogApp = 'stulzq';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'SimpleMemory';
+        var visitorUserId = '';
+    </script>
+        <script>
+            var currentPostDateAdded = '2017-09-29 11:07';
+        </script>
+    <script src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/jquery-2.2.0.min.js"></script>
+    <script src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/blog-common.min.js"></script><style type="text/css">.medium-zoom-overlay{position:fixed;top:0;right:0;bottom:0;left:0;opacity:0;transition:opacity .3s;will-change:opacity}.medium-zoom--opened .medium-zoom-overlay{cursor:pointer;cursor:zoom-out;opacity:1}.medium-zoom-image{cursor:pointer;cursor:zoom-in;transition:transform .3s cubic-bezier(.2,0,.2,1)!important}.medium-zoom-image--hidden{visibility:hidden}.medium-zoom-image--opened{position:relative;cursor:pointer;cursor:zoom-out;will-change:transform}</style>
+    
+    
+    
+<meta http-equiv="origin-trial" content="A+b/H0b8RPXNaJgaNFpO0YOFuGK6myDQXlwnJB3SwzvNMfcndat4DZYMrP4ClJIzYWo3/yP2S+8FTZ/lpqbPAAEAAABueyJvcmlnaW4iOiJodHRwczovL2ltYXNkay5nb29nbGVhcGlzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MjYyMjA3OTksImlzVGhpcmRQYXJ0eSI6dHJ1ZX0="><meta http-equiv="origin-trial" content="A9ZgbRtm4pU3oZiuNzOsKcC8ppFSZdcjP2qYcdQrFKVzkmiWH1kdYY1Mi9x7G8+PS8HV9Ha9Cz0gaMdKsiVZIgMAAAB7eyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MjYyMjA3OTksImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="AxL6oBxcpn5rQDPKSAs+d0oxNyJYq2/4esBUh3Yx5z8QfcLu+AU8iFCXYRcr/CEEfDnkxxLTsvXPJFQBxHfvkgMAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MjYyMjA3OTksImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A9KPtG5kl3oLTk21xqynDPGQ5t18bSOpwt0w6kGa6dEWbuwjpffmdUpR3W+faZDubGT+KIk2do0BX2ca16x8qAcAAACBeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiVHJ1c3RUb2tlbnMiLCJleHBpcnkiOjE2MjYyMjA3OTksImlzU3ViZG9tYWluIjp0cnVlLCJpc1RoaXJkUGFydHkiOnRydWV9"><meta http-equiv="origin-trial" content="A3HucHUo1oW9s+9kIKz8mLkbcmdaj5lxt3eiIMp1Nh49dkkBlg1Fhg4Fd/r0vL69mRRA36YutI9P/lJUfL8csQoAAACFeyJvcmlnaW4iOiJodHRwczovL2RvdWJsZWNsaWNrLm5ldDo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjI2MjIwNzk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A0OysezhLoCRYomumeYlubLurZTCmsjTb087OvtCy95jNM65cfEsbajrJnhaGwiTxhz38ZZbm+UhUwQuXfVPTg0AAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXN5bmRpY2F0aW9uLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjI2MjIwNzk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="AxoOxdZQmIoA1WeAPDixRAeWDdgs7ZtVFfH2y19ziTgD1iaHE5ZGz2UdSjubkWvob9C5PrjUfkWi4ZSLgWk3Xg8AAACLeyJvcmlnaW4iOiJodHRwczovL2dvb2dsZXRhZ3NlcnZpY2VzLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjI2MjIwNzk5LCJpc1N1YmRvbWFpbiI6dHJ1ZSwiaXNUaGlyZFBhcnR5Ijp0cnVlfQ=="><meta http-equiv="origin-trial" content="A7+rMYR5onPnACrz+niKSeFdH3xw1IyHo2AZSHmxrofRk9w4HcQPMYcpBUKu6OQ6zsdxf4m/vqa6tG6Na4OLpAQAAAB4eyJvcmlnaW4iOiJodHRwczovL2ltYXNkay5nb29nbGVhcGlzLmNvbTo0NDMiLCJmZWF0dXJlIjoiQ29udmVyc2lvbk1lYXN1cmVtZW50IiwiZXhwaXJ5IjoxNjI2MjIwNzk5LCJpc1RoaXJkUGFydHkiOnRydWV9"><script src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/pubads_impl_2021041301.js" async=""></script><link rel="preload" href="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/f.txt" as="script"><script type="text/javascript" src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/f.txt"></script><link rel="prefetch" href="https://a6b860f41ff5ea412830f949d3ccd358.safeframe.googlesyndication.com/safeframe/1-0-38/html/container.html"><link rel="prefetch" href="https://tpc.googlesyndication.com/safeframe/1-0-38/html/container.html"></head>
+<body class="no-navbar">
+    <a name="top"></a>
+    <div id="top_nav" class="navbar forpc navbar-custom">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding"><a href="https://www.cnblogs.com/" title="开发者的网上家园"><img src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/logo.svg" alt="博客园Logo"></a></li>
+                <li><a href="https://www.cnblogs.com/" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;skin-navbar-sitehome&#39;)">首页</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;skin-navbar-news&#39;)">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;skin-navbar-q&#39;)">博问</a></li>
+                <li><a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;skin-navbar-brands&#39;)">专区</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;skin-navbar-ing&#39;)">闪存</a></li>
+                <li><a href="https://edu.cnblogs.com/" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;skin-navbar-edu&#39;)">班级</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="text" tabindex="3">
+                        <button type="submit" id="zzk_search_button">
+                            <img src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/search.svg" alt="搜索">
+                        </button>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a class="navbar-user-info navbar-blog" href="https://i.cnblogs.com/EditPosts.aspx?opt=1" alt="写随笔" title="写随笔" style="display: none;">
+                        <img id="new_post_icon" class="navbar-icon" src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/newpost.svg" alt="写随笔">
+                    </a>
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客" style="display: none;">
+                        <img id="myblog_icon" class="navbar-icon" src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/myblog.svg" alt="我的博客">
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息" style="display: none;">
+                        <img id="msg_icon" class="navbar-icon" src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/message.svg" alt="短消息">
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown" style="display: none;">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/avatar-default.svg" alt="用户头像">
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" id="navbar_lite_mode_toggle" title="简洁模式会使用简洁款皮肤显示所有博客">
+    简洁模式 <img id="navbar_lite_mode_on" src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/lite-mode-check.svg" class="hide"><span id="navbar_lite_mode_spinner" class="hide">...</span>
+</a>
+                            <a href="javascript:void(0)" onclick="account.logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup/" style="display: inline;">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="account.login()" style="display: inline;">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div id="page_begin_html"><script type="text/javascript">window['__document_write_ajax_callbacks__']['2']();</script><script type="text/javascript">window['__document_write_ajax_callbacks__']['1']();</script></div>
+    <!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/stulzq/"><img id="blogLogo" src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/logo.gif" alt="返回主页"></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/stulzq/">晓晨Master</a>
+</h1>
+<h2>自律给我自由</h2>
+
+
+
+
+		
+	<a href="https://github.com/stulzq" class="git-link"><img src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/o_forkme_right_red_aa0000.png"></a></div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/stulzq/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+</li>
+<li>
+
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			<span id="stats_post_count">随笔 - 228&nbsp; </span>
+<span id="stats_article_count">文章 - 0&nbsp; </span>
+<span id="stats-comment_count">评论 - 2253&nbsp; </span>
+<span id="stats-total-view-count">阅读 - 
+<span title="总阅读数: 2484391">
+248万</span></span>
+
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class="postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/stulzq/p/7610100.html">
+    <span>Centos7/Ubuntu 初始化硬盘分区、挂载</span>
+    
+
+
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                <div id="cnblogs_post_body" class="blogpost-body cnblogs-markdown">
+<blockquote>
+<p>刚刚在腾讯云买了一台服务器，刚买的服务器的数据盘都是需要自己来分区的，下面就记录一下操作。</p>
+</blockquote>
+<ol>
+<li>通过命令<code>fdisk-l</code>查看硬盘信息</li>
+</ol>
+<p><img src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/668104-20170929102711028-385572452.png" alt="" loading="lazy"></p>
+<p>可以看到有两块硬盘<code>/dev/vda</code>和<code>/dev/vdb</code>，启动vda是系统盘vdb是我们新增的数据盘。</p>
+<p>2.执行以下命令，进入fdisk模式，开始对新增数据盘执行分区操作。</p>
+<p><code>fdisk 新增数据盘</code></p>
+<p>以新挂载的数据盘“/dev/xvdb”为例：</p>
+<p><code>fdisk /dev/xvdb</code></p>
+<p>回显类似如下信息：</p>
+<p><img src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/668104-20170929102953887-1636043932.png" alt="" loading="lazy" class="medium-zoom-image"></p>
+<p>3.输入“n”，按“Enter”，开始新建分区。<br>
+回显类似如下信息：</p>
+<p><img src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/668104-20170929103051544-14524413.png" alt="" loading="lazy"></p>
+<p>表示磁盘有两种分区类型：</p>
+<ul>
+<li>"p”表示主要分区。</li>
+<li>"e”表示延伸分区。</li>
+</ul>
+<p>4.以创建一个主要分区为例，输入“p”，按“Enter”，开始创建一个主分区。<br>
+回显类似如下信息：</p>
+<p><img src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/668104-20170929103331669-1173464218.png" alt="" loading="lazy"></p>
+<p>“Partition number”表示主分区编号，可以选择1-4。</p>
+<p>5.以分区编号选择“1”为例，输入主分区编号“1”，按“Enter”。<br>
+回显类似如下信息</p>
+<p><img src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/668104-20170929103459153-2069031754.png" alt="" loading="lazy"></p>
+<p>“First sector”表示初始磁柱区域，可以选择2048-20971519，默认为2048。</p>
+<p>6.以选择默认初始磁柱编号2048为例，按“Enter”。<br>
+回显类似如下信息：</p>
+<p><img src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/668104-20170929103550731-552790695.png" alt="" loading="lazy"></p>
+<p>“Last sector”表示截止磁柱区域，可以选择2048-104857599，默认为104857599。</p>
+<p>7.以选择默认截止磁柱编号2104857599为例，按“Enter”。<br>
+回显类似如下信息：</p>
+<p><img src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/668104-20170929103824606-1888804327.png" alt="" loading="lazy" class="medium-zoom-image"></p>
+<p>表示分区完成，即为50GB的数据盘新建了1个分区。</p>
+<p>8.输入“p”，按“Enter”，查看新建分区的详细信息。<br>
+回显类似如下信息：</p>
+<p><img src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/668104-20170929103918794-1649046236.png" alt="" loading="lazy"></p>
+<p>表示新建分区“/dev/vdb1”的详细信息。</p>
+<p>9.输入“w”，按“Enter”，将分区结果写入分区表中。<br>
+回显类似如下信息：</p>
+<p><img src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/668104-20170929104023825-306496929.png" alt="" loading="lazy"></p>
+<p>表示分区创建完成。</p>
+<p>10.执行以下命令，将新的分区表变更同步至操作系统。</p>
+<p><code>partprobe</code></p>
+<p>11.执行以下命令，将新建分区文件系统设为系统所需格式。<br>
+mkfs -t 文件系统格式 /dev/vdb1</p>
+<p>以设置文件系统为“ext4”为例：</p>
+<p>mkfs -t ext4 /dev/vdb1</p>
+<p>回显类似如下信息：</p>
+<p><img src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/668104-20170929104341669-1448310112.png" alt="" loading="lazy" class="medium-zoom-image"></p>
+<p>格式化需要等待一段时间，请观察系统运行状态，不要退出。</p>
+<p>12.执行以下命令，新建挂载点。</p>
+<p><code>mkdir 挂载点</code></p>
+<p>以新建挂载点“/XC”为例：</p>
+<p><code>mkdir /XC</code></p>
+<p>13.执行以下命令，将新建分区挂载到12中新建的挂载点下。</p>
+<p><code>mount /dev/vdb1 挂载点</code></p>
+<p>以挂载新建分区至“/XC”为例：</p>
+<p><code>mount /dev/vdb1 /XC</code></p>
+<p>14.执行以下命令，查看挂载结果。</p>
+<p><code>df -TH</code></p>
+<p>回显类似如下信息：</p>
+<p><img src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/668104-20170929104916653-106389991.png" alt="" loading="lazy"></p>
+<p>表示新建分区“/dev/vdb1”已挂载至“/XC”。</p>
+<h1 id="设置开机自动挂载磁盘">设置开机自动挂载磁盘</h1>
+<p>如果您需要在云服务器系统启动时自动挂载磁盘，不能采用在 /etc/fstab直接指定 /dev/xvdb1的方法，因为云中设备的顺序编码在关闭或者开启云服务器过程中可能发生改变，例如/dev/xvdb1可能会变成/dev/xvdb2。推荐使用UUID来配置自动挂载数据盘。</p>
+<blockquote>
+<p>说明：磁盘的UUID（universally unique identifier）是Linux系统为存储设备提供的唯一的标识字符串。</p>
+</blockquote>
+<p>1.执行如下命令，查询磁盘分区的UUID。<br>
+blkid 磁盘分区</p>
+<p>以查询磁盘分区“/dev/vdb1”的UUID为例：</p>
+<p>blkid /dev/vdb1</p>
+<p>回显类似如下信息：</p>
+<p><img src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/668104-20170929105845497-818917878.png" alt="" loading="lazy"></p>
+<p>表示“/dev/vdb1”的UUID。</p>
+<p>2.通过vim编辑<code>/etc/fstab</code></p>
+<p>在末尾增加一行</p>
+<p><code>UUID=f5c5c392-4704-4475-9abc-f6a2e049f2ea /XC ext4 defaults 0 2</code></p>
+<blockquote>
+<p>uuid和目录替换为你自己的信息</p>
+</blockquote>
+<p>保存</p>
+<p>3.重启服务器</p>
+<p>通过命令<code>df -TH</code>查看磁盘信息</p>
+<p><img src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/668104-20170929110522715-2138313852.png" alt="" loading="lazy"></p>
+<p>可以看出已经自动挂载了。</p>
+<p>开机自动挂载磁盘错误，将会造成无法开机，解决方法，通过单用户模式进入系统，修改挂载配置</p>
+<p>vnc单用户模式进入 <a href="https://www.west.cn/faq/list.asp?unid=756" target="_blank">https://www.west.cn/faq/list.asp?unid=756</a><br>
+更改开机自动挂载磁盘配置 <a href="https://wenku.baidu.com/view/58c7e1f0f61fb7360b4c6503.html" target="_blank">https://wenku.baidu.com/view/58c7e1f0f61fb7360b4c6503.html</a></p>
+
+</div>
+<div id="MySignature" style="display: block;"><blockquote>
+<strong>目前学习.NET Core 最好的教程 <a href="https://docs.microsoft.com/zh-cn/dotnet/core/get-started/?WT.mc_id=DT-MVP-5003133">.NET Core 官方教程</a> <a href="https://docs.microsoft.com/zh-cn/aspnet/core/getting-started/?WT.mc_id=DT-MVP-5003133">ASP.NET Core 官方教程</a></strong>
+<br>
+<strong>.NET Core 交流群：923036995&nbsp;&nbsp;欢迎加群交流</strong><br>
+<strong>如果您认为这篇文章还不错或者有所收获，您可以点击右下角的【<span style="font-size: 15pt; color: #ff0000">推荐</span>】支持，或请我喝杯咖啡【<a href="https://www.cnblogs.com/stulzq/gallery/image/244634.html" style="font-size: 15pt; color: #ff0000" target="_blank">赞赏</a>】，这将是我继续写作，分享的最大动力！
+</strong>
+</blockquote>
+
+<strong>
+<div style="display: block; border: 2px solid #6ecaa8; padding: 10px; background: aliceblue">
+    <div>作者：<a style="color: red; font-family: 微软雅黑; text-decoration: none" href="http://www.cnblogs.com/stulzq" target="_blank">晓晨Master（李志强）</a></div>
+    <div>声明：原创博客请在转载时保留原文链接或者在文章开头加上本人博客地址，如发现错误，欢迎批评指正。凡是转载于本人的文章，不能设置打赏功能，如有特殊需求请与本人联系！</div>
+</div>
+</strong></div>
+<div class="clear"></div>
+<div id="blog_post_info_block"><div id="BlogPostCategory">
+    分类: 
+            <a href="https://www.cnblogs.com/stulzq/category/1089100.html" target="_blank">CentOS</a></div>
+<div id="EntryTag">
+    标签: 
+            <a href="https://www.cnblogs.com/stulzq/tag/Centos7%E7%A1%AC%E7%9B%98%E5%88%86%E5%8C%BA/">Centos7硬盘分区</a>,             <a href="https://www.cnblogs.com/stulzq/tag/Centos7%E6%8C%82%E8%BD%BD%E7%A1%AC%E7%9B%98/">Centos7挂载硬盘</a></div>
+
+    <div id="blog_post_info">
+<div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(7610100,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+        <a id="green_channel_follow" onclick="follow(&#39;4855a7e6-412f-e411-b908-9dcfd8948a71&#39;);" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/stulzq/" target="_blank"><img src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/20200927202019.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/stulzq/">晓晨Master</a><br>
+            <a href="https://home.cnblogs.com/u/stulzq/followees/">关注 - 40</a><br>
+            <a href="https://home.cnblogs.com/u/stulzq/followers/">粉丝 - 2630</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow(&#39;4855a7e6-412f-e411-b908-9dcfd8948a71&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(7610100,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">4</span>
+    </div>
+    <div class="buryit" onclick="votePost(7610100,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+<a href="https://www.cnblogs.com/stulzq/p/7610100.html#tbCommentBody" id="quickReply">快速评论</a></div>
+
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+    <div class="clear"></div>
+    <div id="post_next_prev">
+
+    <a href="https://www.cnblogs.com/stulzq/p/7606164.html" class="p_n_p_prefix">« </a> 上一篇：    <a href="https://www.cnblogs.com/stulzq/p/7606164.html" title="发布于 2017-09-28 12:28">ASP.NET Core 2.0 使用支付宝PC网站支付</a>
+    <br>
+    <a href="https://www.cnblogs.com/stulzq/p/7647948.html" class="p_n_p_prefix">» </a> 下一篇：    <a href="https://www.cnblogs.com/stulzq/p/7647948.html" title="发布于 2017-10-11 10:01">ASP.NET Core 2.0 支付宝当面付之扫码支付</a>
+
+</div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date">2017-09-29 11:07</span>&nbsp;
+<a href="https://www.cnblogs.com/stulzq/">晓晨Master</a>&nbsp;
+阅读(<span id="post_view_count">56123</span>)&nbsp;
+评论(<span id="post_comment_count">4</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=7610100" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(7610100);return false;">收藏</a></div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+<script src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/highlight.min.js"></script>
+<script>markdown_highlight();</script>
+<script>
+    var allowComments = true, cb_blogId = 196619, cb_blogApp = 'stulzq', cb_blogUserGuid = '4855a7e6-412f-e411-b908-9dcfd8948a71';
+    var cb_entryId = 7610100, cb_entryCreatedDate = '2017-09-29 11:07', cb_postType = 1;
+    updatePostStats(
+        [cb_entryId],
+        function(id, count) { $("#post_view_count").text(count) },
+        function(id, count) { $("#post_comment_count").text(count) })
+    zoomManager.apply("#cnblogs_post_body img:not(.code_img_closed):not(.code_img_opened)");
+</script>
+<a name="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="https://www.cnblogs.com/stulzq/p/7610100.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/stulzq/p/7610100.html#top">返回顶部</a></div>
+    <div id="comment_form_container" style="visibility: visible;"><div class="login_tips">
+    登录后才能查看或发表评论，立即 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return account.login(&#39;!comments&#39;);">登录</a> 或者
+    <a href="https://www.cnblogs.com/">逛逛</a> 博客园首页
+</div>
+</div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="ad_t2"><a href="http://www.uccpsoft.com/index.htm" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-ucancode&#39;)">【推荐】大型组态、工控、仿真、CAD\GIS 50万行VC++源码免费下载!</a><br><a href="https://brands.cnblogs.com/huawei" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-华为专区&#39;)">【推荐】HarmonyOS 开发者日， 4.17上海站约起， 报名赢定制礼！</a><br><a href="http://www.moojnn.com/?source=bokeyuan" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-魔镜&#39;)">【推荐】限时秒杀！国云大数据魔镜，企业级云分析平台</a><br></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="under-post-card">
+        <div id="div-gpt-ad-1592365906576-0" style="width: 300px; height: 250px;" data-google-query-id="CJeY0NONhPACFcuDlgodjngO2Q"><div id="google_ads_iframe_/1090369/C1_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1090369/C1_0" title="3rd party ad content" name="google_ads_iframe_/1090369/C1_0" width="300" height="250" scrolling="no" marginwidth="0" marginheight="0" frameborder="0" allow="conversion-measurement &#39;src&#39;" data-google-container-id="1" style="border: 0px; vertical-align: bottom;" data-load-complete="true" src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/saved_resource.html"></iframe></div></div>
+    </div>
+    <div id="under_post_card1"><div class="under-post-card"><b>园子动态</b>：<br>· <a href="https://www.cnblogs.com/cmt/p/14585828.html" target="_blank">致园友们的一封检讨书：都是我们的错</a><br>· <a href="https://www.cnblogs.com/cmt/p/14595262.html" target="_blank">数据库实例 CPU 100% 引发全站故障</a><br>· <a href="https://www.cnblogs.com/cmt/p/14217355.html" target="_blank">发起一个开源项目：博客引擎 fluss</a><br></div></div>
+    <div id="cnblogs_c2" class="under-post-card">
+        <div id="div-gpt-ad-1592366332455-0" style="width: 468px; height: 60px;" data-google-query-id="CJiY0NONhPACFcuDlgodjngO2Q"><div id="google_ads_iframe_/1090369/C2_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1090369/C2_0" title="3rd party ad content" name="google_ads_iframe_/1090369/C2_0" width="468" height="60" scrolling="no" marginwidth="0" marginheight="0" frameborder="0" allow="conversion-measurement &#39;src&#39;" data-google-container-id="2" style="border: 0px; vertical-align: bottom;" data-load-complete="true" src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/saved_resource(1).html"></iframe></div></div>
+    </div>
+    <div id="under_post_card2"><div class="itnews under-post-card">
+    <b>最新新闻</b>：
+    <br>
+ ·          <a href="https://news.cnblogs.com/n/691161/" target="_blank">不用高温也能搓出一颗玻璃球？最新研究成为可能</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/691172/" target="_blank">Clubhouse 遭遇巨头反击战</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/691171/" target="_blank">加密货币市场的炒作狂欢：狗币价值突破20美分</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/691170/" target="_blank">消息称京东物流计划4月底上市聆讯</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/691169/" target="_blank">华为推出Ads marketplace 扩大在欧洲市场的广告合作伙伴</a>
+        <br>
+    » <a href="https://news.cnblogs.com/" title="IT 新闻" target="_blank">更多新闻...</a>
+</div></div>
+    <div id="HistoryToday" class="under-post-card"></div>
+    <script type="text/javascript">
+       var commentManager = new blogCommentManager();
+       commentManager.renderComments(0);
+       fixPostBody();
+       deliverBigBanner();
+setTimeout(function() { incrementViewCount(cb_entryId); }, 50);       deliverT2();
+       deliverC1C2();
+       loadNewsAndKb();
+       loadBlogSignature();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);       LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+       GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+       loadOptUnderPost();
+       GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    </script>
+</div>
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+	<div id="sideBar">
+		<div id="sideBarMain">
+			<div id="sidebar_news" class="newsItem"><!--done-->
+<h3 class="catListTitle">公告</h3>
+
+<div id="blog-news">
+    <div>
+<a target="_blank" href="https://mvp.microsoft.com/zh-cn/PublicProfile/5003133"><img src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/t_mvp_light.png" width="240px" alt="Microsoft MVP"></a>
+</div>
+<div class="cusgonggao">
+姓名：李志强 
+</div>
+<div class="cusgonggao">
+现居：重庆人，目前在成都工作
+</div>
+<div class="cusgonggao">
+简介：喜欢折腾，爱写代码，并将它作为一种生活乐趣，标准技术宅一个。也喜欢看热血类型的动漫，高达、火影等。
+</div>
+<div class="cusgonggao">
+邮箱：保密
+</div>
+<div class="cusgonggao">
+Github：<a target="_blank" href="https://github.com/stulzq">Fork Me</a>
+</div>
+<div class="cusgonggao">
+<label>.NET Core 交流群：923036995</label>
+</div>
+    <div id="profile_block">
+        昵称：
+        <a href="https://home.cnblogs.com/u/stulzq/">
+            晓晨Master
+        </a>
+        <br>
+        园龄：
+        <a href="https://home.cnblogs.com/u/stulzq/" title="入园时间：2014-08-29">
+            6年7个月
+        </a>
+        <br>
+        粉丝：
+        <a href="https://home.cnblogs.com/u/stulzq/followers/">
+            2630
+        </a>
+        <br>
+        关注：
+        <a href="https://home.cnblogs.com/u/stulzq/followees/">
+            40
+        </a>
+        <div id="p_b_follow">
+<a href="javascript:void(0)" onclick="follow(&#39;4855a7e6-412f-e411-b908-9dcfd8948a71&#39;)">+加关注</a></div>
+        <script>getFollowStatus('4855a7e6-412f-e411-b908-9dcfd8948a71');</script>
+    </div>
+</div>
+
+</div>
+<div id="sidebar_c3"></div>
+			<div id="blog-calendar" style="">
+
+<table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="Calendar" border="0">
+    <tbody>
+        <tr>
+            <td colspan="7">
+                <table class="CalTitle" cellspacing="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2021/03/17&#39;); return false;">&lt;</a>
+                            </td>
+                            <td align="center">2021年4月</td>
+                            <td align="right" class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2021/05/17&#39;); return false;">&gt;</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    <tr>
+        <th class="CalDayHeader" align="center" abbr="日" scope="col">日</th>
+        <th class="CalDayHeader" align="center" abbr="一" scope="col">一</th>
+        <th class="CalDayHeader" align="center" abbr="二" scope="col">二</th>
+        <th class="CalDayHeader" align="center" abbr="三" scope="col">三</th>
+        <th class="CalDayHeader" align="center" abbr="四" scope="col">四</th>
+        <th class="CalDayHeader" align="center" abbr="五" scope="col">五</th>
+        <th class="CalDayHeader" align="center" abbr="六" scope="col">六</th>
+    </tr>
+            <tr>
+                            <td class="CalOtherMonthDay" align="center">28</td>
+                            <td class="CalOtherMonthDay" align="center">29</td>
+                            <td class="CalOtherMonthDay" align="center">30</td>
+                            <td class="CalOtherMonthDay" align="center">31</td>
+                        <td class="" align="center">
+                            1
+                        </td>
+                        <td class="" align="center">
+                            2
+                        </td>
+                    <td class="CalWeekendDay" align="center">
+                        3
+                    </td>
+            </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            4
+                        </td>
+                            <td class="" align="center">
+                                5
+                            </td>
+                            <td class="" align="center">
+                                6
+                            </td>
+                            <td class="" align="center">
+                                7
+                            </td>
+                            <td class="" align="center">
+                                8
+                            </td>
+                            <td class="" align="center">
+                                9
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            10
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            11
+                        </td>
+                            <td class="" align="center">
+                                12
+                            </td>
+                            <td class="" align="center">
+                                13
+                            </td>
+                            <td class="" align="center">
+                                14
+                            </td>
+                            <td class="" align="center">
+                                15
+                            </td>
+                            <td class="" align="center">
+                                16
+                            </td>
+                        <td class="CalTodayDay" align="center">
+                            17
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            18
+                        </td>
+                            <td class="" align="center">
+                                19
+                            </td>
+                            <td class="" align="center">
+                                20
+                            </td>
+                            <td class="" align="center">
+                                21
+                            </td>
+                            <td class="" align="center">
+                                22
+                            </td>
+                            <td class="" align="center">
+                                23
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            24
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            25
+                        </td>
+                            <td class="" align="center">
+                                26
+                            </td>
+                            <td class="" align="center">
+                                27
+                            </td>
+                            <td class="" align="center">
+                                28
+                            </td>
+                            <td class="" align="center">
+                                29
+                            </td>
+                            <td class="" align="center">
+                                30
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            1
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalOtherMonthDay" align="center">
+                            2
+                        </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                3
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                4
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                5
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                6
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                7
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            8
+                        </td>
+                </tr>
+    </tbody>
+</table></div><script>loadBlogDefaultCalendar();</script>			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"><!-- 搜索 -->
+<div id="sidebar_search" class="sidebar-block">
+    <div id="sidebar_search" class="mySearch">
+        <h3 class="catListTitle">搜索</h3>
+        <div id="sidebar_search_box">
+            <div id="widget_my_zzk" class="div_my_zzk">
+                <input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="zzk_go()" type="button" value="找找看" id="btnZzk" class="btn_my_zzk">
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<!-- 常用链接 -->
+
+
+<!-- 最新随笔 -->
+<div id="sidebar_recentposts" class="sidebar-block"><div class="catListEssay">
+<h3 class="catListTitle">最新随笔</h3>
+    <ul>
+                <li>
+                    
+<a href="https://www.cnblogs.com/stulzq/p/14300643.html">1.ASP.NET Core 控制台日志（Console）打印时间</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/stulzq/p/14299273.html">2.ASP.NET Core 各版本特性简单整理</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/stulzq/p/14283068.html">3..NET 调整图片尺寸(Resize)各种方法</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/stulzq/p/14282461.html">4..NET 实现在控制台(Console)输出二维码</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/stulzq/p/14232802.html">5.Azure 使用 Web App 服务运行 Docker 镜像</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/stulzq/p/14170726.html">6.Go 实现的文件行数统计工具</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/stulzq/p/14166580.html">7..NET Core 获取域名 DNS 解析记录</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/stulzq/p/14153934.html">8..NET Core 操作 Windows 注册表</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/stulzq/p/14153687.html">9..NET MongoDb BsonDocument 序列化</a>
+
+                </li>
+                <li>
+                    
+<a href="https://www.cnblogs.com/stulzq/p/14147888.html">10..NET Core 编写的 Windows 远程桌面记录清理工具</a>
+
+                </li>
+    </ul>
+</div>
+
+</div>
+
+<!-- 我的标签 -->
+
+
+<!-- 积分与排名 -->
+
+
+<!-- 随笔分类、随笔档案、文章分类、新闻分类、相册、链接 -->
+<div id="sidebar_categories">
+
+    <div id="sidebar_postcategory" class="catListPostCategory sidebar-block">
+        <h3 class="catListTitle">
+            
+随笔分类
+
+
+
+        </h3>
+
+        <ul>
+
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/875379.html" rel="" target="">
+    .NET(55)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1042301.html" rel="" target="">
+    ABP(7)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/875380.html" rel="" target="">
+    ASP.NET Core(53)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/916536.html" rel="" target="">
+    ASP.NET MVC(2)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/931214.html" rel="" target="">
+    AutoFac(4)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1911246.html" rel="" target="">
+    Azure(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1775987.html" rel="" target="">
+    Blazor(4)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/919616.html" rel="" target="">
+    C#(5)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1089100.html" rel="" target="">
+    CentOS(15)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1072668.html" rel="" target="">
+    Crawler(2)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1104318.html" rel="" target="">
+    Docker(11)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1058975.html" rel="" target="">
+    Entity Framework Core(3)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1883754.html" rel="" target="">
+    ESP8266(2)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1775459.html" rel="" target="">
+    Git(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1536047.html" rel="" target="">
+    Go(4)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1555261.html" rel="" target="">
+    gRPC(9)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1096255.html" rel="" target="">
+    HTML(2)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1072669.html" rel="" target="">
+    HttpCode.Core(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1184138.html" rel="" target="">
+    Https(2)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1060023.html" rel="" target="">
+    IdentityServer4(35)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1184053.html" rel="" target="">
+    Jenkins(12)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1053452.html" rel="" target="">
+    Jexus(2)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1211100.html" rel="" target="">
+    JMeter(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1029027.html" rel="" target="">
+    live555(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1131530.html" rel="" target="">
+    MessagePack(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1171134.html" rel="" target="">
+    Mysql(2)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1251515.html" rel="" target="">
+    Nginx(2)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1029074.html" rel="" target="">
+    NodeJS(5)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1201240.html" rel="" target="">
+    Nuget(3)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1107087.html" rel="" target="">
+    PostgreSQL(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1082519.html" rel="" target="">
+    RabbitMQ(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1856304.html" rel="" target="">
+    Redash(3)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1081600.html" rel="" target="">
+    Redis(2)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1027392.html" rel="" target="">
+    Windows(3)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1611925.html" rel="" target="">
+    Xamarin(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1056088.html" rel="" target="">
+    xshell(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1236372.html" rel="" target="">
+    个人感想(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1266268.html" rel="" target="">
+    工具教程(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1611398.html" rel="" target="">
+    密码学(4)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1876114.html" rel="" target="">
+    树莓派(3)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1178969.html" rel="" target="">
+    微服务(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1088543.html" rel="" target="">
+    支付宝(3)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/category/1866518.html" rel="" target="">
+    智能家居(1)
+</a>
+ 
+
+                </li>                
+            <li>
+                <a href="javascript:void(0)" onclick="sideColumnManager.loadMore(this)">更多</a>
+            </li>
+        </ul>
+
+
+    </div>    
+    <div id="sidebar_postarchive" class="catListPostArchive sidebar-block">
+        <h3 class="catListTitle">
+            
+随笔档案
+
+
+
+        </h3>
+
+        <ul>
+
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2021/01.html" rel="" target="">
+    2021年1月(5)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2020/12.html" rel="" target="">
+    2020年12月(7)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2020/11.html" rel="" target="">
+    2020年11月(11)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2020/10.html" rel="" target="">
+    2020年10月(5)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2020/09.html" rel="" target="">
+    2020年9月(3)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2020/08.html" rel="" target="">
+    2020年8月(3)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2020/06.html" rel="" target="">
+    2020年6月(4)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2020/05.html" rel="" target="">
+    2020年5月(4)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2020/04.html" rel="" target="">
+    2020年4月(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2020/03.html" rel="" target="">
+    2020年3月(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2019/12.html" rel="" target="">
+    2019年12月(5)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2019/11.html" rel="" target="">
+    2019年11月(6)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2019/10.html" rel="" target="">
+    2019年10月(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2019/09.html" rel="" target="">
+    2019年9月(5)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2019/08.html" rel="" target="">
+    2019年8月(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2019/06.html" rel="" target="">
+    2019年6月(3)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2019/04.html" rel="" target="">
+    2019年4月(2)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2019/03.html" rel="" target="">
+    2019年3月(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2019/02.html" rel="" target="">
+    2019年2月(2)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2019/01.html" rel="" target="">
+    2019年1月(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2018/12.html" rel="" target="">
+    2018年12月(4)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2018/11.html" rel="" target="">
+    2018年11月(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2018/10.html" rel="" target="">
+    2018年10月(2)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2018/09.html" rel="" target="">
+    2018年9月(3)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2018/08.html" rel="" target="">
+    2018年8月(3)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2018/07.html" rel="" target="">
+    2018年7月(11)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2018/06.html" rel="" target="">
+    2018年6月(8)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2018/05.html" rel="" target="">
+    2018年5月(10)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2018/04.html" rel="" target="">
+    2018年4月(11)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2018/03.html" rel="" target="">
+    2018年3月(18)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2018/02.html" rel="" target="">
+    2018年2月(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2018/01.html" rel="" target="">
+    2018年1月(2)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2017/12.html" rel="" target="">
+    2017年12月(13)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2017/11.html" rel="" target="">
+    2017年11月(5)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2017/10.html" rel="" target="">
+    2017年10月(12)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2017/09.html" rel="" target="">
+    2017年9月(12)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2017/08.html" rel="" target="">
+    2017年8月(10)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2017/07.html" rel="" target="">
+    2017年7月(6)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2017/05.html" rel="" target="">
+    2017年5月(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2017/04.html" rel="" target="">
+    2017年4月(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2017/03.html" rel="" target="">
+    2017年3月(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2016/12.html" rel="" target="">
+    2016年12月(5)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2016/11.html" rel="" target="">
+    2016年11月(6)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2016/08.html" rel="" target="">
+    2016年8月(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2016/05.html" rel="" target="">
+    2016年5月(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2016/03.html" rel="" target="">
+    2016年3月(1)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2016/01.html" rel="" target="">
+    2016年1月(3)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2015/12.html" rel="" target="">
+    2015年12月(2)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2015/10.html" rel="" target="">
+    2015年10月(2)
+</a>
+ 
+
+                </li>                
+                <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/stulzq/archive/2015/05.html" rel="" target="">
+    2015年5月(1)
+</a>
+ 
+
+                </li>                
+            <li>
+                <a href="javascript:void(0)" onclick="sideColumnManager.loadMore(this)">更多</a>
+            </li>
+        </ul>
+
+
+    </div>    
+</div>
+
+<!-- 最新评论 -->
+
+
+
+<!-- 阅读排行榜 -->
+<div id="sidebar_topviewedposts" class="sidebar-block"><div class="catListView">
+<h3 class="catListTitle">阅读排行榜</h3>
+	<div id="TopViewPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/stulzq/p/8971531.html">
+                            1. 使用 JMeter 进行压力测试(208349)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/stulzq/p/9286878.html">
+                            2. CentOS 7 安装 JAVA环境（JDK 1.8）(119318)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/stulzq/p/8119928.html">
+                            3. IdentityServer4 中文文档与实战（添加了PPT资料）(81203)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/stulzq/p/8726002.html">
+                            4. IdentityServer4实战 - 基于角色的权限控制及Claim详解(69366)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/stulzq/p/7743667.html">
+                            5. Windows 10 安装 Docker for Windows(65468)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+<!-- 评论排行榜 -->
+
+
+<!-- 推荐排行榜 -->
+<div id="sidebar_topdiggedposts" class="sidebar-block">
+<div id="topdigg_posts_wrap">
+    <div class="catListView">
+        <h3 class="catListTitle">推荐排行榜</h3>
+        <div id="TopDiggPostsBlock">
+            <ul style="word-break: break-all">
+                        <li>
+                            <a href="https://www.cnblogs.com/stulzq/p/9185658.html">
+                                1. 我的微软最有价值专家(Microsoft MVP)之路(98)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/stulzq/p/8119928.html">
+                                2. IdentityServer4 中文文档与实战（添加了PPT资料）(90)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/stulzq/p/11581967.html">
+                                3. ASP.NET Core 3.0 使用gRPC(88)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/stulzq/p/7606164.html">
+                                4. ASP.NET Core 2.0 使用支付宝PC网站支付(79)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/stulzq/p/11007770.html">
+                                5. ASP.NET Core 奇淫技巧之动态WebApi(77)
+                            </a>
+                        </li>
+            </ul>
+        </div>
+    </div>
+</div></div></div>
+                    <script>loadBlogSideColumn();</script>
+			</div>			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright © 2021 晓晨Master
+<br><span id="poweredby">Powered by .NET 5.0 on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+    <div id="page_end_html">
+        <p id="back-top" style="display: none;"><a href="https://www.cnblogs.com/stulzq/p/7610100.html#top"><span></span></a></p>
+<script defer="" type="text/javascript">
+
+$(function() {
+    // hide #back-top first
+    $("#back-top").hide();
+    // fade in #back-top
+    $(window).scroll(function() {
+        if ($(this).scrollTop() > 500) {
+            $('#back-top').fadeIn();
+        } else {
+            $('#back-top').fadeOut();
+        }
+    });
+    // scroll body to 0px on click
+    $('#back-top a').click(function() {
+        $('body,html').animate({
+            scrollTop: 0
+        }, 800);
+        return false;
+    });
+
+$("#blogTitle").append("<a href=\"https://github.com/stulzq\" class=\"git-link\"><img src=\"http://images.cnblogs.com/cnblogs_com/stulzq/1239211/o_forkme_right_red_aa0000.png\"></a>")
+});
+
+</script>
+
+<script defer="" type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1272990511'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s22.cnzz.com/z_stat.php%3Fid%3D1272990511%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));
+</script><span id="cnzz_stat_icon_1272990511"><a href="https://www.cnzz.com/stat/website.php?web_id=1272990511" target="_blank" title="站长统计"><img border="0" hspace="0" vspace="0" src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/pic.gif"></a></span><script src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/z_stat.php" type="text/javascript"></script><script src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/core.php" charset="utf-8" type="text/javascript"></script>
+    </div>
+
+    <input type="hidden" id="antiforgery_token" value="CfDJ8L-rpLgFVEJMgssCVvNUAjuY6juwfDeW4KzTBIsLocN41VhG0RZwdp47b9KWrAJtRwGrt1ymR4puI3UGM2eD_tasAmn38gbqgh4xVm1M7BQ-WpL8O7R1oX8AxCJYAt-V-B6hzV2x2Wdg5OFZDCS-iG8">
+
+
+<span id="pinbox-extension-installed"></span><script type="text/javascript">
+window.onload = function () {
+        if ($("#div_digg") != null) {
+            //添加快速评论按钮
+            $("#div_digg").append("<a href='#tbCommentBody' id='quickReply'>快速评论</a>");
+            //快速评论动画
+            $('#quickReply').click(function () {
+                $('html, body').animate({
+                    scrollTop: $($.attr(this, 'href')).offset().top
+                }, 500);
+                return false;
+            });
+        }
+    }
+</script><iframe id="google_osd_static_frame_5291482820841" name="google_osd_static_frame" style="display: none; width: 0px; height: 0px;" src="./Centos7_Ubuntu 初始化硬盘分区、挂载 - 晓晨Master - 博客园_files/saved_resource(2).html"></iframe></body></html>
