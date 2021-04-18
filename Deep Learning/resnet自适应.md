@@ -12,5 +12,21 @@
 
 在实际应用中，我们往往只知道输入数据和输出数据的大小，而不知道卷积核大小以及卷积步长大小，自适应就是自己会学习。
 
+**如何自适应？**
 
+将中间的maxpooling改成adaptivemaxpooling就好了：
+
+```
+for name, layer in model.named_modules():
+    if isinstance(layer, nn.MaxPool2d):
+        model.maxpool = nn.AdaptiveAvgPool2d((7, 7))
+```
+
+修改最后一层的分类：
+
+```
+n_class = 10
+numFit = model.fc.in_features
+model.fc = nn.Linear(numFit, n_class) # 直接修改最后一层
+```
 
