@@ -6,7 +6,7 @@
 
 然后在Mac系统上安装vnc viewer：https://www.realvnc.com/en/connect/download/viewer/
 
-即可控制，控制密码qweasd，因为密码设置只能6个英文字符
+即可控制，密码`qweasd`，因为密码设置只能6个英文字符
 
 启动命令：
 
@@ -14,7 +14,11 @@
 vncserver
 ```
 
+**注意，有些时候使用vnc连接会出现权限问题，那是因为开启的问题。**
 
+如果使用vnc viewer连接，注意哪个用户开启的，就要用哪个用户连接vnc
+
+比如我用eesissi开启的，那就要用vnc登陆eesissi这个用户
 
 ## mac 连接windows
 
