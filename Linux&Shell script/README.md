@@ -1,3 +1,9 @@
+Grep 命令的使用：
+
+```
+grep -n expresion file
+```
+
 ## 参考教程
 
 在使用某个命令前，如果忘记了这个命令的使用方法，可以使用help来查看一些说明
@@ -27,5 +33,6 @@ Linux 指令教程：https://www.cnblogs.com/peida/tag/%E6%AF%8F%E6%97%A5%E4%B8%
 
 **TODO**：
 
-- [ ] Grep 命令 https://www.cnblogs.com/peida/archive/2012/12/17/2821195.html
-- [ ] Linux管道命令 http://c.biancheng.net/view/3131.html https://www.jianshu.com/p/9c0c2b57cb73
+- [x] Grep 命令 https://www.cnblogs.com/peida/archive/2012/12/17/2821195.html
+- [x] Linux管道命令 http://c.biancheng.net/view/3131.html https://www.jianshu.com/p/9c0c2b57cb73
+

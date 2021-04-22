@@ -76,6 +76,10 @@ for name, layer in model.named_modules():
     if isinstance(layer, nn.MaxPool2d):
         print(layer) 
 
+n_class = 10
+numFit = model.fc.in_features
+model.fc = nn.Linear(numFit, n_class) # 直接修改最后一层
+
 root = 'original_data/'
 
 data, labels = read_data(root)
