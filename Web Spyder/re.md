@@ -14,10 +14,11 @@ re.escape('www.python.org')
 
 参考：https://www.kingname.info/2019/12/02/escape-in-python/
 
-
-
 **相关教程**：
 
 参考笔记：http://note.youdao.com/s/Ge0fneK0
 
-参考官方教程：https://docs.python.org/zh-cn/3/library/re.html
+参考官方教程：
+
+- https://docs.python.org/zh-cn/3/library/re.html
+- https://docs.python.org/zh-cn/3/howto/regex.html#regex-howto
