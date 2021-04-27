@@ -172,7 +172,7 @@ for epoch in range(epochs):
             epoch_test_loss += test_loss / len(test_loader)
             data.cpu()
             label.cpu()
-            
+    scheduler.step()        
     print(f'EPOCH:{epoch:2}, train loss:{epoch_loss:.4f}, train acc:{epoch_accuracy:.4f}')
     print(f'test loss:{epoch_test_loss:.4f}, test acc:{epoch_test_accuracy:.4f}')
 
