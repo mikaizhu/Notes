@@ -22,7 +22,10 @@ bind-key l select-pane -R
 source-file ~/.tmux.conf
 ```
 
-参考网址：http://mingxinglai.com/cn/2012/09/tmux/
+参考网址：
+
+- http://mingxinglai.com/cn/2012/09/tmux/
+- https://linuxtoy.org/archives/scripting-tmux.html
 
 # tmux概念
 

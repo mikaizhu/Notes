@@ -1,8 +1,6 @@
-Grep 命令的使用：
+## 定制shell
 
-```
-grep -n expresion file
-```
+- https://github.com/xuxiaodong/awesome-shell/blob/master/README_ZH-CN.md
 
 ## 参考教程
 
