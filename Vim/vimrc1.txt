@@ -1,0 +1,60 @@
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+ set rtp+=~/.vim/bundle/Vundle.vim
+ call vundle#begin()
+ Plugin 'VundleVim/Vundle.vim'
+ Plugin 'tpope/vim-fugitive'
+ Plugin 'git://git.wincent.com/command-t.git'
+ Plugin 'file:///home/gmarik/path/to/plugin'
+ Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+
+ Plugin 'Valloric/YouCompleteMe'
+
+ " All of your Plugins must be added before the following line
+ call vundle#end()            " required
+ filetype plugin indent on    " required
+
+ set runtimepath+=~/.vim_runtime
+
+ source ~/.vim_runtime/vimrcs/basic.vim
+ source ~/.vim_runtime/vimrcs/filetypes.vim
+ source ~/.vim_runtime/vimrcs/plugins_config.vim
+ source ~/.vim_runtime/vimrcs/extended.vim
+
+ try
+ source ~/.vim_runtime/my_configs.vim
+ catch
+ endtry
+ let g:snipMate = { 'snippet_version' : 1  }
+ set shell=/bin/bash
+ call vundle#begin()
+   Plugin 'preservim/nerdtree'
+ call vundle#end()
+
+" 按F2 打开目录
+map <F2> :NERDTreeToggle<CR>
+"python代码缩进PEP8风格
+au BufNewFile,BufRead *.py,*.pyw set tabstop=4
+au BufNewFile,BufRead *.py,*.pyw set softtabstop=4
+au BufNewFile,BufRead *.py,*.pyw set shiftwidth=4
+au BufNewFile,BufRead *.py,*.pyw set expandtab
+au BufNewFile,BufRead *.py,*.pyw set textwidth=79
+au BufNewFile,BufRead *.py,*.pyw set autoindent
+au BufNewFile,BufRead *.py,*.pyw set fileformat=unix
+
+"对其他文件类型设置au命令
+au BufNewFile,BufRead *.js, *.html, *.css set tabstop=2
+au BufNewFile,BufRead *.js, *.html, *.css set softtabstop=2
+au BufNewFile,BufRead *.js, *.html, *.css set shiftwidth=2
+"高亮显示行伟不必要的空白字符
+highlight Whitespace ctermbg=red guibg=red
+au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match Whitespace /\s\+$\ \+/
+
+set nu
+" 设置代码折叠
+set foldmethod=indent
+set foldlevel=99
+set encoding=utf-8
+

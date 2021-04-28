@@ -1,6 +1,9 @@
 ## 大量工具
 
-参考：https://github.com/xuxiaodong/awesome-shell/blob/master/README_ZH-CN.md
+参考：
+
+- https://github.com/xuxiaodong/awesome-shell/blob/master/README_ZH-CN.md
+- https://github.com/bayandin/awesome-awesomeness
 
 ## bashmarks
 

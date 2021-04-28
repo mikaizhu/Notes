@@ -15,7 +15,7 @@ vi ~/.ssh/config
 在里面写入：
 
 ```
-Host 777
+Host zwl
 	HostName 192.169.0.200
 	User zwl
 	Port 22
@@ -24,7 +24,7 @@ Host 777
 然后我们就可以像下面一样登陆服务器了,输入密码即可
 
 ```
-ssh 777
+ssh zwl
 ```
 
 如果要传输文件：
