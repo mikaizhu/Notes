@@ -3,6 +3,10 @@
 为了和vim相对应，所以将按键映射成vim的形式
 
 ```
+vim ~/.tmux.conf
+
+# 然后在下面添加想要的功能，自行选择
+
 # 将前缀按键设置成control + x
 set -g prefix C-x
 
