@@ -24,6 +24,8 @@ source-file ~/.tmux.conf
 
 参考网址：
 
+- http://www.ruanyifeng.com/blog/2019/10/tmux.html
+
 - http://mingxinglai.com/cn/2012/09/tmux/
 - https://linuxtoy.org/archives/scripting-tmux.html
 

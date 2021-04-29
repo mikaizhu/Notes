@@ -25,6 +25,7 @@ l                 - Lists all available bookmarks
 
 make install
 
+# 启动
 source ~/.local/bin/bashmarks.sh
 ```
 
