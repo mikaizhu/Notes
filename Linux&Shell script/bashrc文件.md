@@ -1,2 +1,22 @@
 linux 下 .bashrc文件的作用
 
+- todo
+
+要让.bashrc每次都自动运行，要修改
+
+```/
+vi ~/.bash_profile
+
+# 添加下面代码
+if test -f .bashrc ; then
+source .bashrc
+fi
+```
+
+然后
+
+```
+source ~/.bash_profile
+```
+
+接下来打开窗口还是tmux新窗口，都会执行bashrc文件
