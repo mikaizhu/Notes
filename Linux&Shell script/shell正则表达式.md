@@ -33,3 +33,4 @@ echo "AA" | grep -E 'AA|BB'
 ....
 ```
 
+参考：https://man.linuxde.net/docs/shell_regex.html

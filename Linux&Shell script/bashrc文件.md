@@ -20,3 +20,14 @@ source ~/.bash_profile
 ```
 
 接下来打开窗口还是tmux新窗口，都会执行bashrc文件
+
+里面配置如下：
+
+```
+if test -f ~/.local/bin/bashmarks.sh; then
+    source ~/.local/bin/bashmarks.sh
+fi
+
+if test -f .bashrc ; then                                                                                                   source .bashrc                                                                                                     fi
+```
+
