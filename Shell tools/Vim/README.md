@@ -143,22 +143,23 @@ vim --version
 ```
 #!/bin/bash
 
- cd ~/vim
+cd ~/vim
+make clean
+./configure --with-features=huge \
+       --enable-python3interp=dynamic \
+       --with-python3-config-dir=/usr/local/lib/python3.7/config-3.7m-x86_64-linux-gnu \
+       --enable-cscope \
+       --enable-gui=auto \
+       --enable-gtk2-check \
+       --enable-fontset \
+       --enable-largefile \
+       --disable-netbeans \
+       --enable-fail-if-missing \
+       --prefix=/usr/local \
+       --with-x \
 
- ./configure --with-features=huge \
- --enable-python3interp=dynamic \
- --with-python3-config-dir=/usr/local/lib/python3.7/config-3.7m-x86_64-linux-gnu \
- --enable-cscope \
- --enable-gui=auto \
- --enable-gtk2-check \
- --enable-fontset \
- --enable-largefile \
- --disable-netbeans \
- --enable-fail-if-missing \
- --prefix=/usr/local
-
- sudo make
- sudo make install
+sudo make
+sudo make install
 ```
 执行完脚本后，提示下面错误：
 
@@ -192,8 +193,6 @@ YouCompleteMe unavailable: No module named 'ycmd'
 ```
 git submodule update --init --recursive
 ```
-
-
 
 ## python 风格
 
