@@ -313,3 +313,10 @@ lsmod | grep nouveau
 ```
 
 进入英伟达官方，下载驱动：
+
+参考：https://docs.nvidia.com/deeplearning/cudnn/install-guide/index.html
+
+> **注意显卡驱动如果安装失败，开机会出现问题：**https://blog.csdn.net/u013837919/article/details/102563297
+>
+> 开机的时候是block状态，control alt f1 进入文本模式，login输入用户zwl，然后输入密码，将Nvidia删掉就好了
+
