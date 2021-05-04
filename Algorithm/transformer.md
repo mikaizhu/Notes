@@ -10,6 +10,10 @@ Transformer的pytorch实现：https://wmathor.com/index.php/archives/1455/
 
 代码的GitHub链接：https://github.com/wmathor/nlp-tutorial
 
+bert详细解析：https://wmathor.com/index.php/archives/1456/
+
+bert的pytorch实现：https://blog.csdn.net/qq_37236745/article/details/108845470
+
 **最开始的代码如下**：
 
 - 该代码实现的是从德语翻译成英语

@@ -4,7 +4,9 @@
 
 - https://github.com/xuxiaodong/awesome-shell/blob/master/README_ZH-CN.md
 - https://github.com/bayandin/awesome-awesomeness
+## 配置shell
 
+1.首先联网，然后修改apt update的源，
 ## bashmarks
 
 shell的书签，因为总是cd浪费时间，所以添加书签更方便
