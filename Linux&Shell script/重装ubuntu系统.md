@@ -1,7 +1,5 @@
 [TOC]
 
-
-
 # 系统重装
 
 系统出现故障，因此要重装系统
@@ -22,6 +20,46 @@
 - 下载iso文件，搜索ubuntu 20.04lts
 
 插入u盘，然后关机重启按F12，或者F2和delete键
+
+# 上网设置
+
+无图形界面版：
+
+```
+wget https://www1.szu.edu.cn/temp/DrClient(Console).zip
+```
+
+解压后
+
+```
+sudo ./drcomauthsvr
+```
+
+输入账号密码即可上网
+
+```
+control z 将程序进行挂起，否则会一直运行，不能进入命令行
+```
+
+查看进程：
+
+```
+ps -ef | grep drcomauthsvr
+```
+
+杀死进程：
+
+```
+sudo kill -s 9 5668
+```
+
+检查能否上网：
+
+```
+ping www.baidu.com
+```
+
+
 
 # 先开启ssh服务
 
@@ -142,9 +180,11 @@ bind-key l select-pane -R
 sudo apt install git
 ```
 
-4. **Vncserver** 
+# 图形化界面访问
 
-vncserver为可视化界面，输入下面命令进行安装
+## Mac图形访问
+
+**Mac ：**vncserver为可视化界面，输入下面命令进行安装
 
 **说明：**
 
@@ -187,3 +227,89 @@ systemctl start x11vnc.service
 systemctl status x11vnc.service # 查看是否正在运行
 ```
 
+## windows远程桌面访问
+
+1. 在Linux桌面上setting->sharning->screen sharing ,打开ubuntu屏幕共享
+
+2. 安装
+
+```
+sudo apt-get install xrdp
+```
+
+3. 打开windows远程桌面连接
+
+4. 注意刚开始是没有拓展的，感觉桌面什么都没
+
+```
+点击左上角的activity
+搜索extension
+固定dock
+```
+
+## 关闭自动休眠
+
+**如果不设置关闭自动休眠，则会连接不上**
+
+1. setting
+2. power
+3. Blank screen 设置为never，其他的不变
+
+# 安装python环境
+
+**ubuntu 20.04是默认安装了python3的**
+
+```
+which python3
+```
+
+- miniconda安装
+
+```
+wget https://repo.anaconda.com/miniconda/Miniconda3-py39_4.9.2-Linux-x86_64.sh
+sudo chmod +x Miniconda3-py39_4.9.2-Linux-x86_64.sh
+./Miniconda3-py39_4.9.2-Linux-x86_64.sh
+```
+
+**配置miniconda环境变量, 首先要找到miniconda装哪了，然后进入找到bin文件目录**
+
+```
+vi ~/.bashrc
+
+export PATH=/home/zwl/miniconda3/bin:$PATH
+# bashrc是用户登陆就会自动执行里面的命令
+source ~/.bashrc
+```
+
+创建环境，创建了一个名字为espnet的环境：
+
+```
+conda create -n espnet python=3.8
+```
+
+
+
+# 显卡驱动安装
+
+参考：https://blog.csdn.net/qq_30468723/article/details/107531062
+
+步骤：
+
+```
+sudo vi /etc/modprobe.d/blacklist.conf
+
+# 在文件最后部分插入以下两行内容
+blacklist nouveau
+options nouveau modeset=0
+
+# 更新系统
+sudo update-initramfs -u
+
+# 一定要重启
+sudo reboot
+
+# 检验是否禁用
+lsmod | grep nouveau
+```
+
+进入英伟达官方，下载驱动：

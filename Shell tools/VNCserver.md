@@ -1,3 +1,15 @@
+**常用的3个命令：**
+
+- 之前之所以会出错是因为安装显卡的时候，把lightdm关闭了，倒是怎么也start不了
+
+```
+sudo service lightdm start
+systemctl start x11vnc.service
+systemctl status x11vnc.service
+```
+
+
+
 因为重启一次后，然后出错了，所以将教程改成了下面的vnc：
 
 参考教程：https://www.youtube.com/watch?v=QTlU1EZQZg0
