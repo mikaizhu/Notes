@@ -1,4 +1,6 @@
-linux 下 .bashrc文件的作用
+ubuntu 下 .bashrc文件的作用
+
+要想用户每次登陆都会自动执行某些命令，则可以修改`vi ~/.bash_profile`，这个文件只对当前用户有效。
 
 - todo
 

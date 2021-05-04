@@ -26,6 +26,8 @@ vncserver -kill :1
 
 比如我用eesissi开启的，那就要用vnc登陆eesissi这个用户
 
+**下面在ubuntu20.4中没有出现问题**
+
 ## mac 连接windows
 
 1. 在windows 上下载tight vnc
@@ -76,9 +78,24 @@ clear
 sudo vim /lib/systemd/system/x11vnc.service
 ```
 
-- 进行配置
+- 进行配置, 将下面配置复制到文件中，记得修改your password位置为密码
 
-![image.png](http://ww1.sinaimg.cn/large/005KJzqrgy1gpeeh29gy3j30to0b0n51.jpg)
+```
+[Unit]
+Description=x11vnc service
+After=display-manager.service network.target syslog.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/x11vnc -forever -display :0 -auth guess -passwd yourpassword
+ExecStop=/usr/bin/killall x11vnc
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+```
+
+执行下面命令
 
 ```
 systemctl daemon-reload
@@ -87,7 +104,7 @@ systemctl start x11vnc.service
 systemctl status x11vnc.service # 查看是否正在运行
 ```
 
-- 有时候如果频幕锁到了，就不能配置，所以进行如下操作
+- 有时候如果频幕锁到了，就不能配置，所以进行如下操作，在privacy中
 
 <img src="http://ww1.sinaimg.cn/large/005KJzqrgy1gpeejvnmdhj30rg0ccagn.jpg" alt="image.png" style="zoom:50%;" />
 
