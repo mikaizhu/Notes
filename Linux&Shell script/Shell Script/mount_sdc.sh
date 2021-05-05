@@ -3,6 +3,7 @@ date >>mount.log
 df -h | grep /dev/sdc1 >>mount.log
 # 如果检查到挂载了，就不执行
 if test $? -ne 0; then
+  if test ! -f /media/eesissi; then sudo mkdir /media/eesissi; fi
  sudo mount /dev/sdc1 /media/eesissi
 	if [ $? -ne 0  ]; then
     		sudo umount /dev/sdc1 /media/eesissi
