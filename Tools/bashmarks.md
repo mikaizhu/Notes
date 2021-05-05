@@ -4,6 +4,15 @@
 
 作为终端控，经常要使用命令来定位要访问的目录，于是，“cd path”这种命令每天不知到要打多少次。对于一些结构比较深的目录（尤其是要经常访问的），使用cd命令起来真的是噩梦（尽管有tab神器，依旧让我感觉非常不爽）。
 
+下载：
+
+```
+git clone git://github.com/huyng/bashmarks.git
+cd bashmarks
+make install
+source ~/.local/bin/bashmarks.sh from within your ~.bash_profile or ~/.bashrc file
+```
+
 使用：
 
 ```

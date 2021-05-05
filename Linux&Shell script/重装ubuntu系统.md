@@ -19,7 +19,9 @@
 - rufus，Windows下的软件，用来将iso文件拷入u盘中，将u盘变成live usb
 - 下载iso文件，搜索ubuntu 20.04lts
 
-插入u盘，然后关机重启按F12，或者F2和delete键
+插入u盘，然后关机重启按F2，或者F12和delete键
+
+如果系统出故障了，可以按alt + control + F1 进入文本编辑模式
 
 # 上网设置
 
@@ -180,6 +182,29 @@ bind-key l select-pane -R
 sudo apt install git
 ```
 
+4. **bashmarks安装**
+
+安装
+
+```
+git clone git://github.com/huyng/bashmarks.git
+cd bashmarks
+make install
+source ~/.local/bin/bashmarks.sh from within your ~.bash_profile or ~/.bashrc file
+```
+
+使用
+
+```
+s <bookmark_name> - Saves the current directory as "bookmark_name"
+g <bookmark_name> - Goes (cd) to the directory associated with "bookmark_name"
+p <bookmark_name> - Prints the directory associated with "bookmark_name"
+d <bookmark_name> - Deletes the bookmark
+l                 - Lists all available bookmarks
+```
+
+
+
 # 图形化界面访问
 
 ## Mac图形访问
@@ -222,9 +247,13 @@ WantedBy=multi-user.target
 
 ```
 systemctl daemon-reload
-systemctl enable x11vnc.service # 让密码生效
+
+# 让密码生效
+systemctl enable x11vnc.service
 systemctl start x11vnc.service
-systemctl status x11vnc.service # 查看是否正在运行
+
+# 查看是否正在运行,按q退出
+systemctl status x11vnc.service
 ```
 
 ## windows远程桌面访问
@@ -268,6 +297,7 @@ which python3
 ```
 wget https://repo.anaconda.com/miniconda/Miniconda3-py39_4.9.2-Linux-x86_64.sh
 sudo chmod +x Miniconda3-py39_4.9.2-Linux-x86_64.sh
+# 注意期间会跳出more阅读一段东西，按q即可退出
 ./Miniconda3-py39_4.9.2-Linux-x86_64.sh
 ```
 
@@ -276,8 +306,7 @@ sudo chmod +x Miniconda3-py39_4.9.2-Linux-x86_64.sh
 ```
 vi ~/.bashrc
 
-export PATH=/home/zwl/miniconda3/bin:$PATH
-# bashrc是用户登陆就会自动执行里面的命令
+w# bashrc是用户登陆就会自动执行里面的命令
 source ~/.bashrc
 ```
 
@@ -296,25 +325,105 @@ conda create -n espnet python=3.8
 步骤：
 
 ```
-sudo vi /etc/modprobe.d/blacklist.conf
+# 先删除所有Nvidia
+sudo rm /etc/apt/sources.list.d/cuda*
+sudo apt remove --autoremove nvidia-cuda-toolkit
+sudo apt remove --autoremove nvidia-*
 
-# 在文件最后部分插入以下两行内容
-blacklist nouveau
-options nouveau modeset=0
+sudo apt-get purge nvidia*
+sudo apt-get autoremove
+sudo apt-get autoclean
 
-# 更新系统
-sudo update-initramfs -u
-
-# 一定要重启
-sudo reboot
-
-# 检验是否禁用
-lsmod | grep nouveau
+sudo rm -rf /usr/local/cuda*
 ```
 
 进入英伟达官方，下载驱动：
 
-参考：https://docs.nvidia.com/deeplearning/cudnn/install-guide/index.html
+安装流程：
+
+1. 先安装驱动，即drivers，安装好后就能使用Nvidia-smi命令
+2. 然后安装cuda
+3. 安装对应版本的pytorch
+4. 选择性安装cudann，这个可以对训练进行加速
+
+**注意**：步骤2，3，4版本都要与驱动版本相对应！
+
+**详细操作**：
+
+1. **安装驱动**
+
+```
+# 查看系统可以选用的驱动版本
+ubuntu-drivers devices
+
+# 安装对应的驱动, 这里安装好后就可以不用run文件安装驱动了，安装完成就可以使用Nvidia-smi
+sudo apt install nvidia-driver-460
+
+# 驱动安装完记得重启
+sudo reboot
+
+# 使用对应环境进行配置
+conda activate asr
+```
+
+```
+ubuntu-drivers devices显示如下，然后使用apt进行安装
+
+WARNING:root:_pkg_get_support nvidia-driver-390: package has invalid Support Legacyheader, cannot determine support level
+== /sys/devices/pci0000:3a/0000:3a:00.0/0000:3b:00.0 ==
+modalias : pci:v000010DEd00001B38sv000010DEsd000011D9bc03sc02i00
+vendor   : NVIDIA Corporation
+model    : GP102GL [Tesla P40]
+driver   : nvidia-driver-460 - distro non-free recommended
+driver   : nvidia-driver-460-server - distro non-free
+driver   : nvidia-driver-418-server - distro non-free
+driver   : nvidia-driver-465 - third-party non-free
+driver   : nvidia-driver-390 - distro non-free
+driver   : nvidia-driver-450-server - distro non-free
+driver   : nvidia-driver-450 - distro non-free
+driver   : xserver-xorg-video-nouveau - distro free builtin
+```
+
+2. **安装cuda**
+
+这里建议使用conda进行安装，使用清华的镜像网站：https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/linux-64/
+
+这里因为驱动是460，所以选择安装下面的版本，文件格式为.conda, **注意安装的是cudatoolkit, 版本要对应**
+
+```
+wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/linux-64/cudatoolkit-10.1.168-0.conda
+conda install cudatoolkit-10.1.168-0.conda
+```
+
+安装完成
+
+3. **安装pytorch**
+
+注意这里也要安装对应版本的pytorch，使用whl文件进行安装:whl文件的网址：https://download.pytorch.org/whl/torch_stable.html
+
+找到对应版本
+
+```
+wget https://download.pytorch.org/whl/cu101/torch-1.6.0%2Bcu101-cp38-cp38-linux_x86_64.whl
+```
+
+4. **选择安装cudann**
+
+使用conda文件进行安装：https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/win-64/
+
+找到对应的cudann版本
+
+```
+https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/win-64/cudnn-7.6.5-cuda10.0_0.conda
+```
+
+使用conda命令安装
+
+```
+conda install ...
+```
+
+**安装完成**！
 
 > **注意显卡驱动如果安装失败，开机会出现问题：**https://blog.csdn.net/u013837919/article/details/102563297
 >
