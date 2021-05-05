@@ -305,8 +305,9 @@ sudo chmod +x Miniconda3-py39_4.9.2-Linux-x86_64.sh
 
 ```
 vi ~/.bashrc
-
-w# bashrc是用户登陆就会自动执行里面的命令
+# 输入下面命令
+export PATH=<miniconda3/bin>:$PATH
+# bashrc是用户登陆就会自动执行里面的命令
 source ~/.bashrc
 ```
 
