@@ -103,7 +103,7 @@ ps -e | grep ssh
 出现问题，在本地用ssh链接服务器，出现错误：
 
 ```
- WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED! 
+ WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!
 ```
 
 在服务器上使用ip address 查看ip
@@ -183,8 +183,11 @@ vi ~/.bash_profile
 sudo apt install zsh
 chsh -s /bin/zsh
 
+# 这时候输入zsh，就可以进入到zsh shell中了，可能会报错，可以先不用管warning的
+，执行完下面命令即可
+
 # 如果翻墙了可以直接使用这个命令
-wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | sh
+wget https://github.com/robbyrussell/oh-myzsh/raw/master/tools/install.sh -O - | sh
 
 # 否则使用下面命令安装oh my zsh
 wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh
@@ -192,6 +195,22 @@ bash ./install.sh
 ```
 
 安装完oh my zsh后，就可以在 ~/.zshrc可以选择plugin，themes， options
+这个可以详细看看博客。
+
+oh my zsh 中，建议安装的插件有：
+
+- autojump:使用方法就是j 加目录名就好了,他会自动记录最常用的目录名
+
+autojump安装：
+
+```
+sudo apt-get install autojump
+vim ~/.zshrc
+# 原本是有git的，将autojump添加进去就好
+plugins=(git autojump)
+```
+
+- 如果ubuntu安装不了zsh，那么先安装go插件:https://github.com/gsamokovarov/jump
 
 1. **nvim安装**
 
@@ -206,6 +225,14 @@ mkdir ~/.config/nvim/
 # init vim 文件相当于.vimrc文件
 nvim ~/.config/nvim/init.vim
 ```
+
+TODO: 
+
+- [ ] nvim配置
+- [ ] nvim的python环境配置教程
+- [ ] 复制粘贴问题：参考
+  https://github.com/ohmyzsh/ohmyzsh/blob/master/lib/clipboard.zsh，输入:reg捷
+就能看下是不是公用剪贴板了，如果没有+或者*则说明没有公用
 
 2. **Tmux安装**
 
@@ -226,32 +253,61 @@ bind-key l select-pane -R
 
 3. **Git 安装**
 
+注意：要使用git从ssh安装，必须要添加公钥，方法可以百度下。
+
 ```
 sudo apt install git
 ```
 
-4. **bashmarks安装**
+4. ubuntu翻墙教程
 
-安装
+总的来说是使用ssr进行翻墙,注意，终端代理和浏览器代理是不一样的，默认是使用浏览
+器代理而没有使用终端代理，比如我使用浏览器可以访问github，下载很快，但是终端却
+访问很慢。这是因为终端没有使用代理。
+
+终端使用方式：点击clash，点击复制终端代理命令，复制到终端，回车即可。注意每次
+打开新的终端，就要重新复制一次。
+
+1. 安装依赖
+ssr客户端需要python2环境，使用命令安装
 
 ```
-git clone git://github.com/huyng/bashmarks.git
-cd bashmarks
-make install
-source ~/.local/bin/bashmarks.sh from within your ~.bash_profile or ~/.bashrc file
+sudo apt install -y python libcanberra-gtk-module libcanberra-gtk3-module gconf2 gconf-service libappindicator1 libssl-dev libsodium-dev
 ```
 
-使用
+2. 下载客户端
 
 ```
-s <bookmark_name> - Saves the current directory as "bookmark_name"
-g <bookmark_name> - Goes (cd) to the directory associated with "bookmark_name"
-p <bookmark_name> - Prints the directory associated with "bookmark_name"
-d <bookmark_name> - Deletes the bookmark
-l                 - Lists all available bookmarks
+wget http://docq.cn/api/files/88y4y8k/download?access_token=null
 ```
 
+给文件赋予可执行权限， sudo chmod +x electron-ssr-0.2.6.appimage
 
+进入到可视界面，点击ssr，然后会出现安装界面，注意：确保自动下载ssr处于勾选状态
+。
+
+3. 设置订阅地址
+注意看看界面右上角有没有一个纸飞机的图标
+
+复制ssr订阅-点击小飞机图标-服务器-订阅管理-添加-将ssr网址添加进去-点击完成
+
+
+4. 更新订阅并选择节点
+服务器-更新订阅服务器-选择节点
+
+5. 设置系统代理和浏览器代理
+
+浏览器代理：
+- 打开ubuntu系统设置-网络-网络代理改为手动
+
+https和http改成 左边：127.0.0.1 右边：12333，注意要改两个，其他不动
+
+-  打开火狐浏览器-preference系统设置-general首选项-滑动到最下方-网络设置-设置-
+   使用系统代理设置
+
+终端代理：能够ping www.github.com 就说明终端代理成功
+
+在服务器终端使用命令：export http_proxy=http://127.0.0.1:12333 https_proxy=http://127.0.0.1:12333 all_proxy=socks5://127.0.0.1:12333
 
 # 图形化界面访问
 
@@ -477,4 +533,3 @@ conda install ...
 > **注意显卡驱动如果安装失败，开机会出现问题：**https://blog.csdn.net/u013837919/article/details/102563297
 >
 > 开机的时候是block状态，control alt f1 进入文本模式，login输入用户zwl，然后输入密码，将Nvidia删掉就好了
-
