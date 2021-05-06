@@ -182,9 +182,16 @@ vi ~/.bash_profile
 ```
 sudo apt install zsh
 chsh -s /bin/zsh
+
+# 如果翻墙了可以直接使用这个命令
+wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | sh
+
+# 否则使用下面命令安装oh my zsh
 wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh
 bash ./install.sh
 ```
+
+安装完oh my zsh后，就可以在 ~/.zshrc可以选择plugin，themes， options
 
 1. **nvim安装**
 
