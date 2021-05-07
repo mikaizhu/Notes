@@ -5,6 +5,28 @@
 - vim的插件安装建议使用vim plug，不建议使用vundle
 - 代码补全不建议使用ycm，建议用coc
 
+**常用命令记忆**：
+
+gi：从普通模式，进入到最近的插入光标位置
+
+control + ]:从insert 模式退回到普通模式，代替esc
+
+control + w: hjkl 分屏模式下窗口切换
+
+单词跳转命令：
+
+- e：跳转到单词结尾
+- w：跳转到单词开头
+- b:单词往前跳转
+- W，E都是跳转，只不过是以空白为分隔
+
+单词查找命令：
+
+- f + char，比如在这一行使用f g 然后就会跳转到g开头的单词，使用,和；来查找上一
+  个和下一个以g开头的单词
+
+- t + char：跳转到这个字符的前一个字符位置, till 直到的意思
+
 ## 学习文档：
 
 - [coc vim：vim的补全，里面也有很多插件](https://github.com/neoclide/coc.nvim/wiki/Using-coc-extensions)
