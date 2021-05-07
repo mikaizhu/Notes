@@ -230,9 +230,7 @@ TODO:
 
 - [ ] nvim配置
 - [ ] nvim的python环境配置教程
-- [ ] 复制粘贴问题：参考
-  https://github.com/ohmyzsh/ohmyzsh/blob/master/lib/clipboard.zsh，输入:reg捷
-就能看下是不是公用剪贴板了，如果没有+或者*则说明没有公用
+- [ ] vim ssh 复制粘贴板
 
 2. **Tmux安装**
 
@@ -268,14 +266,14 @@ sudo apt install git
 终端使用方式：点击clash，点击复制终端代理命令，复制到终端，回车即可。注意每次
 打开新的终端，就要重新复制一次。
 
-1. 安装依赖
+- 安装依赖
 ssr客户端需要python2环境，使用命令安装
 
 ```
 sudo apt install -y python libcanberra-gtk-module libcanberra-gtk3-module gconf2 gconf-service libappindicator1 libssl-dev libsodium-dev
 ```
 
-2. 下载客户端
+- 下载客户端
 
 ```
 wget http://docq.cn/api/files/88y4y8k/download?access_token=null
@@ -286,16 +284,16 @@ wget http://docq.cn/api/files/88y4y8k/download?access_token=null
 进入到可视界面，点击ssr，然后会出现安装界面，注意：确保自动下载ssr处于勾选状态
 。
 
-3. 设置订阅地址
+- 设置订阅地址
 注意看看界面右上角有没有一个纸飞机的图标
 
 复制ssr订阅-点击小飞机图标-服务器-订阅管理-添加-将ssr网址添加进去-点击完成
 
 
-4. 更新订阅并选择节点
+- 更新订阅并选择节点
 服务器-更新订阅服务器-选择节点
 
-5. 设置系统代理和浏览器代理
+- 设置系统代理和浏览器代理
 
 浏览器代理：
 - 打开ubuntu系统设置-网络-网络代理改为手动
@@ -308,6 +306,12 @@ https和http改成 左边：127.0.0.1 右边：12333，注意要改两个，其�
 终端代理：能够ping www.github.com 就说明终端代理成功
 
 在服务器终端使用命令：export http_proxy=http://127.0.0.1:12333 https_proxy=http://127.0.0.1:12333 all_proxy=socks5://127.0.0.1:12333
+
+6. htop安装
+htop是一款查看Linux运行状态的插件，相当于原始的top命令。
+```
+sudo apt install htop
+```
 
 # 图形化界面访问
 
