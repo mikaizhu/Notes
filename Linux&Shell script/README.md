@@ -212,6 +212,17 @@ plugins=(git autojump)
 
 - 如果ubuntu安装不了zsh，那么先安装go插件:https://github.com/gsamokovarov/jump
 
+**zsh vi 模式**: 
+
+- TODO
+
+配置zshrc文件
+
+
+
+
+
+
 1. **nvim安装**
 
 ```

@@ -27,6 +27,73 @@ control + w: hjkl 分屏模式下窗口切换
 
 - t + char：跳转到这个字符的前一个字符位置, till 直到的意思
 
+查找和删除命令结合：
+
+this is vim:this is a test
+
+假如要删除:前的单词，使用命令df:或者cf:但是注意光标一定要在:前面
+
+
+删除和替换：
+
+- c:change s:substitude r:replace
+
+c命令和删除差不多，删除后进入编辑模式
+
+测试：
+“this is  a test”: cw,修改一个单词，但光标要在单词前面，如果光标在单词中间，则
+用ciw，表示change in words
+
+修改引号里面的单词
+
+<change in words>:ci>,然后就可以修改括号里面的内容，并进入编辑模式
+
+- C, S, R注意和小写的区别。C会删除后面所有字符，并进入到插入模式，S会删除整行
+  ，并进入插入模式。R不会删除，只是会将后面的字符不断进行替换。
+
+- 如果要删除引号里面的字符，或者括号里面的字符，可以尝试`df(`，
+
+配置文件：
+
+- noremap:按键映射，可以重新映射键盘按键
+
+```
+birenao n h "按n键相当于按h"
+```
+
+- map:命令与按键的映射
+```
+map S :w<CR> "将S映射为：w回车，即保存"
+```
+
+- set:表示设置属性，将某个属性开启或者关闭
+
+```
+set number "将行号进行开启"
+```
+
+
+vision 模式的作用：
+
+- 可视行模式
+
+- 可视块模式:control + v 进入可视块模式，假如现在要使用可视块模式在前面添加内
+  容,选中你需要的行，然后I进入输入模式，输入test文字后，被可视化选中的段落前面
+  ，都会添加上字符。
+
+test:this is test:hello
+test:this is test:hello
+test:this is test:hello
+
+- 可视的normal模式:假如我要在下面四行前面都加上某些字符，使用方式为按冒号：+
+  normal即可进入可视的普通模式，然后输入你要的指令，完整指令如下：`:normal
+  Ithis is test:`, I表示在最前面插入，后面为插入的字符
+
+this is test:hello 
+this is test:hello
+this is test:hello
+this is test:hello
+
 ## 学习文档：
 
 - [coc vim：vim的补全，里面也有很多插件](https://github.com/neoclide/coc.nvim/wiki/Using-coc-extensions)
@@ -36,6 +103,10 @@ control + w: hjkl 分屏模式下窗口切换
 
 # 教程
 
+vim && markdown 教程
+
+插件安装：
+- markdown previe
 
 ## vim的插件使用 
 
@@ -57,6 +128,12 @@ nnoremap tt :NERDTree<CR>
 "因为要切换窗口，nerdtree默认使用control w，这里与tmux对应，c b h 左切换
 nnoremap <C-b> <C-w>
 ```
+
+nerdtree 中的文件控制：可以直接在nerdtree中新建文件，在目录中使用ma命令，创建
+文件。参考：https://blog.csdn.net/qq_38883889/article/details/107014964
+
+
+
 在目录窗口，输入问号，可以打开操作说明
 
 如果想要文件模糊搜索，可以尝试下ctrlp插件
