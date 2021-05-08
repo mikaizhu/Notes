@@ -8,11 +8,20 @@
 let g:loaded_netrwPlugin = 1
 set mouse=a
 " HostProg:
-let g:python3_host_prog='/home/zwl/miniconda3/bin/python'
+let g:python3_host_prog='/Users/mikizhu/miniconda3/bin/python3.8'
 
 " Encoding
 set encoding=utf-8 fileencoding=utf-8 fileformats=unix,mac,dos
 set fileencodings=utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
+
+" instant markdown
+let g:instant_markdown_slow = 0
+let g:instant_markdown_autostart = 0
+" let g:instant_markdown_open_to_the_world = 1
+" let g:instant_markdown_allow_unsafe_content = 1
+" let g:instant_markdown_allow_external_content = 0
+" let g:instant_markdown_mathjax = 1
+let g:instant_markdown_autoscroll = 1
 
 " Appearance
 set number norelativenumber background=dark display=lastline,uhex nowrap wrapmargin=0
@@ -95,9 +104,9 @@ endif
 " Plugin: {{{
 call plug#begin('~/.cache/nvim/plugged')
 " Languages
+Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
 Plug 'sakhnik/nvim-gdb', {'do': ':!./install.sh', 'on': 'GdbStart'} " use to debug nvim itself
 Plug 'fatih/vim-go', {'for': 'go'}
-Plug 'iamcco/markdown-preview.nvim', {'for': 'markdown', 'do': 'cd app && npm install'}
 Plug 'lervag/vimtex'
 Plug 'posva/vim-vue', {'for': 'vue'}
 Plug 'jparise/vim-graphql'
@@ -109,8 +118,12 @@ Plug 'preservim/nerdtree'
 " Completion
 if !exists('g:vscode') " TODO: use packer.nvim's `cond`
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-let g:coc_enabled = 0
+let g:coc_enabled = 1
 endif
+
+" markdown
+Plug 'instant-markdown/vim-instant-markdown', {'for': 'markdown'}
+Plug 'iamcco/markdown-preview.nvim', {'for': 'markdown', 'do': 'cd app && npm install'}
 " Style
 "defx 
 if has('nvim')
@@ -1078,6 +1091,24 @@ let g:pymode_lint = 1
 let g:pymode_lint_checkers = ['pyflakes', 'pep8', 'mccabe', 'pylint']
 let g:pymode_options_max_line_length = 120
 " esc config
-inoremap { <C-R>=keymap#i#Esc()<CR>
 inoremap 「 <C-R>=keymap#i#Esc()<CR>
+
+
+"autocmd Filetype markdown map <leader>w yiWi[<esc>Ea](<esc>pa)
+autocmd Filetype markdown inoremap <buffer> ,f <Esc>/<++><CR>:nohlsearch<CR>"_c4l
+autocmd Filetype markdown inoremap <buffer> ,w <Esc>/ <++><CR>:nohlsearch<CR>"_c5l<CR>
+autocmd Filetype markdown inoremap <buffer> ,n ---<Enter><Enter>
+autocmd Filetype markdown inoremap <buffer> ,b **** <++><Esc>F*hi
+autocmd Filetype markdown inoremap <buffer> ,s ~~~~ <++><Esc>F~hi
+autocmd Filetype markdown inoremap <buffer> ,i ** <++><Esc>F*i
+autocmd Filetype markdown inoremap <buffer> ,d `` <++><Esc>F`i
+autocmd Filetype markdown inoremap <buffer> ,c ```<Enter><++><Enter>```<Enter><Enter><++><Esc>4kA
+autocmd Filetype markdown inoremap <buffer> ,m - [ ] 
+autocmd Filetype markdown inoremap <buffer> ,p ![](<++>) <++><Esc>F[a
+autocmd Filetype markdown inoremap <buffer> ,a [](<++>) <++><Esc>F[a
+autocmd Filetype markdown inoremap <buffer> ,1 #<Space><Enter><++><Esc>kA
+autocmd Filetype markdown inoremap <buffer> ,2 ##<Space><Enter><++><Esc>kA
+autocmd Filetype markdown inoremap <buffer> ,3 ###<Space><Enter><++><Esc>kA
+autocmd Filetype markdown inoremap <buffer> ,4 ####<Space><Enter><++><Esc>kA
+autocmd Filetype markdown inoremap <buffer> ,l --------<Enter>
 
