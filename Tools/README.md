@@ -64,3 +64,42 @@ shell 主题颜色
 
 官网：https://github.com/Mayccoll/Gogh
 
+## surfingkeys
+
+使用：浏览器也可以像vim一样不使用鼠标哦～
+
+链接：https://chrome.google.com/webstore/detail/surfingkeys/gfbliohnnapiefjpjlpjnehglfpaknnc?hl=zh-CN
+
+## ohmyzsh
+
+ohmyzsh 中是配合zsh shell的一个框架，能够大幅度提高你的效率，里面有很多插件可
+以是使用。
+
+
+### vim-like
+
+让你的shell可以像用vim一样。
+
+地址：https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/vi-mode
+
+使用方式：
+
+编辑~/.zshrc
+
+```
+"add vi-mode to plugins"
+plugins=(... vi-mode)
+```
+
+打开终端，使用i进入插入模式，使用esc或者control + [进入normal模式，进入normal
+模式后，就和vim一样了。
+
+## mac 好用的软件
+
+magnet：窗口管理，让你可以使用快捷键快速管理程序窗口
+
+注意使用的时候不能全屏放大。可以自己设置快捷键。
+
+如何切换这些管理的窗口呢？
+
+好像只能使用command+tab键进行切换。

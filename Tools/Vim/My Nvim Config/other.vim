@@ -1091,7 +1091,8 @@ let g:pymode_lint = 1
 let g:pymode_lint_checkers = ['pyflakes', 'pep8', 'mccabe', 'pylint']
 let g:pymode_options_max_line_length = 120
 " esc config
-inoremap jj <Esc>:w
+inoremap jj <Esc>:w<CR>
+nnoremap zz :wq<CR>
 
 "autocmd Filetype markdown map <leader>w yiWi[<esc>Ea](<esc>pa)
 autocmd Filetype markdown inoremap <buffer> ,f <Esc>/<++><CR>:nohlsearch<CR>"_c4l
@@ -1110,4 +1111,3 @@ autocmd Filetype markdown inoremap <buffer> ,2 ##<Space><Enter><++><Esc>kA
 autocmd Filetype markdown inoremap <buffer> ,3 ###<Space><Enter><++><Esc>kA
 autocmd Filetype markdown inoremap <buffer> ,4 ####<Space><Enter><++><Esc>kA
 autocmd Filetype markdown inoremap <buffer> ,l --------<Enter>
-
