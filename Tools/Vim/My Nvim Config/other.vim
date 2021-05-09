@@ -14,14 +14,18 @@ let g:python3_host_prog='/Users/mikizhu/miniconda3/bin/python3.8'
 set encoding=utf-8 fileencoding=utf-8 fileformats=unix,mac,dos
 set fileencodings=utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
 
-" instant markdown
-let g:instant_markdown_slow = 0
-let g:instant_markdown_autostart = 0
-" let g:instant_markdown_open_to_the_world = 1
-" let g:instant_markdown_allow_unsafe_content = 1
-" let g:instant_markdown_allow_external_content = 0
-" let g:instant_markdown_mathjax = 1
-let g:instant_markdown_autoscroll = 1
+"" instant markdown
+"let g:instant_markdown_slow = 0
+"let g:instant_markdown_autostart = 0
+"" let g:instant_markdown_open_to_the_world = 1
+"" let g:instant_markdown_allow_unsafe_content = 1
+"" let g:instant_markdown_allow_external_content = 0
+"" let g:instant_markdown_mathjax = 1
+"let g:instant_markdown_autoscroll = 1
+
+" iamcco/markdown-preview.nvim
+let g:mkdp_auto_close = 0
+let g:mkdp_theme = 'light'
 
 " Appearance
 set number norelativenumber background=dark display=lastline,uhex nowrap wrapmargin=0
@@ -122,7 +126,6 @@ let g:coc_enabled = 1
 endif
 
 " markdown
-Plug 'instant-markdown/vim-instant-markdown', {'for': 'markdown'}
 Plug 'iamcco/markdown-preview.nvim', {'for': 'markdown', 'do': 'cd app && npm install'}
 " Style
 "defx 
@@ -643,8 +646,6 @@ let g:vimtex_quickfix_open_on_warning = 0
 let g:vimtex_compiler_method = 'latexmk'
 let g:vimtex_compiler_latexmk_engines = {'_': '-xelatex'}
 let g:vimtex_compiler_latexrun_engines = {'_': 'xelatex'}
-" iamcco/markdown-preview.nvim
-let g:mkdp_auto_close = 0
 " neoclide/coc.nvim
 let g:coc_data_home = '~/.config/coc'
 nnoremap <silent><nowait> <C-b> :call keymap#n#scroll_win(0)<CR>
@@ -1093,6 +1094,8 @@ let g:pymode_options_max_line_length = 120
 " esc config
 inoremap jj <Esc>:w<CR>
 nnoremap zz :wq<CR>
+inoremap zz <Esc>:wq<CR>
+
 
 "autocmd Filetype markdown map <leader>w yiWi[<esc>Ea](<esc>pa)
 autocmd Filetype markdown inoremap <buffer> ,f <Esc>/<++><CR>:nohlsearch<CR>"_c4l

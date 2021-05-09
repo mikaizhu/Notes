@@ -592,7 +592,7 @@ plt.show()
 
 - pytorch 模型代码讲解：https://mp.weixin.qq.com/s/Ge1rZszg4IiLMNo7Y0KDAw
 
-> 读完后就知道代码的输入是什么样子
+> 读完后就知道代码k输入是什么样子
 
 - lstm实现股票预测：https://github.com/TankZhouFirst/Pytorch-LSTM-Stock-Price-Predict
 
@@ -611,4 +611,6 @@ plt.show()
 > 有说靠谱的，也有说不靠谱的，但是不靠谱的多，看你自己怎么想
 
 - kaggle 商品交易量预测：https://www.kaggle.com/zhangyunsheng/xgboost
-
+    
+  - 比赛地址：https://www.kaggle.com/c/competitive-data-science-predict-future-sales/code
+  - 参考项目：https://www.kaggle.com/yasserhessein/predict-future-sales-using-4-algorithms-regression
