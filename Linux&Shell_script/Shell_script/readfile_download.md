@@ -68,7 +68,7 @@ awk 命令是文本处理命令，能够逐行读取文本，并进行处理
 result=$(ls | grep mchar_data_list_0515.csv)
 
 # 下载文件
-awk -F ',' '/http/ {print $NF}' $result | tr -d '\r' | while read -r line; do wget $line ;done
+awk -F ',' '/http/ {print $NF}' $result | tr -d '\r' | while read -r line; do get $line ;done
 
 # 删除zip文件
 ls | grep zip | while read line; do unzip $line ; rm $line ;done
