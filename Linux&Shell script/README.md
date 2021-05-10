@@ -521,11 +521,29 @@ conda install cudatoolkit-10.1.168-0.conda
 
 注意这里也要安装对应版本的pytorch，使用whl文件进行安装:whl文件的网址：https://download.pytorch.org/whl/torch_stable.html
 
-找到对应版本
+找到对应版本,版本对应参考：https://www.cnblogs.com/Wanggcong/p/12625540.html
+
+查看pytorh版本：
+
+```
+import torch
+torch.__version__
+```
+
+check cudatoolkit version:
+
+```
+import torch
+
+torch.version.cuda
+```
 
 ```
 wget https://download.pytorch.org/whl/cu101/torch-1.6.0%2Bcu101-cp38-cp38-linux_x86_64.whl
 ```
+
+这里说明下如何安装对应版本的pytorch，cudatoockit决定你要安装什么版本的pytorch
+。参考：https://pytorch.org/get-started/previous-versions/
 
 4. **选择安装cudann**
 
