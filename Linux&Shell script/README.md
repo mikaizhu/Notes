@@ -538,9 +538,12 @@ import torch
 torch.version.cuda
 ```
 
+这个下载方式已经抛弃：
 ```
 wget https://download.pytorch.org/whl/cu101/torch-1.6.0%2Bcu101-cp38-cp38-linux_x86_64.whl
 ```
+
+建议到这里使用命令直接安装：https://pytorch.org/get-started/previous-versions/
 
 这里说明下如何安装对应版本的pytorch，cudatoockit决定你要安装什么版本的pytorch
 。参考：https://pytorch.org/get-started/previous-versions/
