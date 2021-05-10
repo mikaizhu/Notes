@@ -94,7 +94,20 @@ plugins=(... vi-mode)
 打开终端，使用i进入插入模式，使用esc或者control + [进入normal模式，进入normal
 模式后，就和vim一样了。
 
-- [ ] 好像没有配置好，使用的并不流畅，等下看看如何设置
+- [x] 好像没有配置好，使用的并不流畅，等下看看如何设置
+
+```
+vi ~/.zshrc
+# 输入下面命令即可
+bindkey -v
+```
+
+好像默认使用control + [退回到normal模式下，或者直接按esc，并不能进行按键映射。
+
+在normal模式下，按j k 可以调用之前或者之后的命令
+[所有可以定义的快捷键](http://bolyai.cs.elte.hu/zsh-manual/zsh_14.html) 
+
+
 ## mac 好用的软件
 
 magnet：窗口管理，让你可以使用快捷键快速管理程序窗口
