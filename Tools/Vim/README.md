@@ -15,6 +15,17 @@ control + ]:从insert 模式退回到普通模式，代替esc
 
 control + w: hjkl 分屏模式下窗口切换
 
+vim中有挺多介词，可以先尝试使用下面两个命令：
+
+- ct)
+- yt)
+- ci)
+- yi)
+- di)
+- dt)
+- fi)
+- ft)
+
 单词跳转命令：
 
 - e：跳转到单词结尾

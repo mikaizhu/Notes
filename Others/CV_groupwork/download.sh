@@ -1,6 +1,7 @@
 #!/bin/bash
 # 读取数据下载文件
-if test ! -f 'mchar_data_list_0515.csv';then exit 1; fi
+file=mchar_data_list_0515.csv
+if test ! -f $file;then echo "$file do not exist"; exit 1; fi
 
 result=$(ls | grep mchar_data_list_0515.csv)
 

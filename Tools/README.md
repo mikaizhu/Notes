@@ -23,8 +23,6 @@ source ~/.local/bin/bashmarks.sh
 vi ~/.local/bin/bashmarks.sh
 ```
 
-
-
 ## tmux
 
 终端复用神器
