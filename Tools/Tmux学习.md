@@ -22,6 +22,9 @@ bind-key l select-pane -R
 
 配置完以后，重启tmux起效，或者先按C+b，然后输入`：`，进入命令行模式， 在命令行模式下输入：
 
+如果在bash下或者zsh命令行中输入，会提示bind-key command not found，这是因为使
+用的是bash的命令行。并不是tmux的命令。
+
 ```
 source-file ~/.tmux.conf
 ```
