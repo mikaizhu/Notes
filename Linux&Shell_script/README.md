@@ -103,6 +103,12 @@ ping www.baidu.com
 
 ## ubuntu翻墙教程
 
+推荐翻墙：slower，使用百度搜索即可
+
+网站地址：https://china.zjnyd.top
+
+翻墙教程：https://china.zjnyd.top/user/tutorial?os=Linux&client=SSR
+
 总的来说是使用ssr进行翻墙,注意，终端代理和浏览器代理是不一样的，默认是使用浏览
 器代理而没有使用终端代理，比如我使用浏览器可以访问github，下载很快，但是终端却
 访问很慢。这是因为终端没有使用代理。
@@ -122,6 +128,8 @@ sudo apt install -y python libcanberra-gtk-module libcanberra-gtk3-module gconf2
 ```
 wget http://docq.cn/api/files/88y4y8k/download?access_token=null
 ```
+
+note:这里不推荐使用wget下载，直接用浏览器下载。
 
 给文件赋予可执行权限， sudo chmod +x electron-ssr-0.2.6.appimage
 
@@ -151,11 +159,6 @@ https和http改成 左边：127.0.0.1 右边：12333，注意要改两个，其�
 
 在服务器终端使用命令：export http_proxy=http://127.0.0.1:12333 https_proxy=http://127.0.0.1:12333 all_proxy=socks5://127.0.0.1:12333
 
-6. htop安装
-htop是一款查看Linux运行状态的插件，相当于原始的top命令。
-```
-sudo apt install htop
-```
 
 
 # 开启ssh服务
@@ -387,7 +390,13 @@ systemctl start x11vnc.service
 systemctl status x11vnc.service
 ```
 
-## windows远程桌面访问
+4. htop安装
+htop是一款查看Linux运行状态的插件，相当于原始的top命令。
+```
+sudo apt install htop
+```
+
+# windows远程桌面访问
 
 1. 在Linux桌面上setting->sharning->screen sharing ,打开ubuntu屏幕共享
 
