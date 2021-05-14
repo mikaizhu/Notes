@@ -2,9 +2,21 @@
 
 # 参考教程
 
+Linux教程：
+
+- linux指令介绍 https://github.com/wangdoc/bash-tutorial
+- 指令介绍和一些bash demo https://github.com/jaywcjlove/shell-tutorial
+- Linux 命令行的艺术 https://github.com/jlevy/the-art-of-command-line/blob/master/README-zh.md
+- Linux完整教程 https://github.com/dunwu/linux-tutorial
+- Linux学习路径思维导图 https://newimg.jspang.com/linux-image01.png
+
+其他一些比较好的教程
+
+- 为了编写更好的脚本文件 http://redsymbol.net/articles/unofficial-bash-strict-mode/
+- shell 分析工具 https://github.com/koalaman/shellcheck
+- 用于数据科学的一些命令和工具，摘自同名书籍  Data Science at the Command Line
+
 - 一些好的shell插件 https://github.com/xuxiaodong/awesome-shell/blob/master/README_ZH-CN.md
-- Linux shell教程：https://www.runoob.com/linux/linux-shell-include-file.html
-- Linux 指令教程：https://www.cnblogs.com/peida/tag/%E6%AF%8F%E6%97%A5%E4%B8%80linux%E5%91%BD%E4%BB%A4/default.html?page=3
 - ubuntu系统从0开始配置：https://github.com/Miki123-gif/Notes/blob/master/Linux%26Shell%20script/%E9%87%8D%E8%A3%85ubuntu%E7%B3%BB%E7%BB%9F.md
 
 **在使用某个命令前，如果忘记了这个命令的使用方法，可以使用help来查看一些说明**
