@@ -65,6 +65,13 @@ sudo chmod 755 run.sh
 
 # 上网设置
 
+有图形版：
+
+使用：uname -a 查看系统是x86还是x64
+
+使用：getconf LONG_BIT 查看是32还是64位
+
+
 无图形界面版：
 
 ```
@@ -86,14 +93,16 @@ control z 将程序进行挂起，否则会一直运行，不能进入命令行
 查看进程：
 
 ```
-ps -ef | grep drcomauthsvr
+ps -aux | grep drcomauthsvr
 ```
 
 杀死进程：
 
 ```
-sudo kill -s 9 5668
+sudo kill -9 5668
 ```
+
+如果链接失败了，就重复查看进程，杀死进程，然后再重新链接。
 
 检查能否上网：
 
@@ -435,7 +444,7 @@ which python3
 - miniconda安装
 
 ```
-wget https://repo.anaconda.com/miniconda/Miniconda3-py39_4.9.2-Linux-x86_64.sh
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh 
 sudo chmod +x Miniconda3-py39_4.9.2-Linux-x86_64.sh
 # 注意期间会跳出more阅读一段东西，按q即可退出
 ./Miniconda3-py39_4.9.2-Linux-x86_64.sh
