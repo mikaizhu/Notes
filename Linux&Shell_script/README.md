@@ -309,9 +309,9 @@ nvim ~/.config/nvim/init.vim
 
 TODO: 
 
-- [ ] nvim配置
-- [ ] nvim的python环境配置教程
-- [ ] vim ssh 复制粘贴板
+- [x] nvim配置
+- [x] nvim的python环境配置教程
+- [x] vim ssh 复制粘贴板
 
 2. **Tmux安装**
 
@@ -454,10 +454,22 @@ source ~/.bashrc
 创建环境，创建了一个名字为espnet的环境：
 
 ```
-conda create -n espnet python=3.8
+conda create -n espnet python=3.7.9
 ```
 
+使用sh文件自动安装, 注意本环境只能使用这个python版本，其他会出现权限问题，不知
+道为啥。
 
+```
+#!/bin/bash
+#conda remove -n asr --all
+conda create -n asr python=3.7.9
+require="numpy pandas matplotlib opencv"
+for i in $require
+do
+  conda install -c anaconda $i
+done
+```
 
 # 显卡驱动安装
 
@@ -543,6 +555,10 @@ conda install cudatoolkit-10.1.168-0.conda
 注意这里也要安装对应版本的pytorch，使用whl文件进行安装:whl文件的网址：https://download.pytorch.org/whl/torch_stable.html
 
 找到对应版本,版本对应参考：https://www.cnblogs.com/Wanggcong/p/12625540.html
+
+查看cuda版本：nvcc -V, 本机子安装的是10.1
+
+
 
 查看pytorh版本：
 
