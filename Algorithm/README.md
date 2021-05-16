@@ -25,3 +25,6 @@ https://mp.weixin.qq.com/s/Yy-mAPOdIEj0u65mxCwzaQ
 
 - https://mp.weixin.qq.com/s/XBna4qzrSobjN2B07uS62g
 - https://wmathor.com/index.php/archives/1505/
+
+一些好的天池技术知识分享：
+- https://tianchi.aliyun.com/forum/#type=new&pageNum=1

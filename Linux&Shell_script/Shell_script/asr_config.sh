@@ -31,11 +31,11 @@ sudo apt-get install ffmpeg
 sudo apt-get install flac
 
 cd ~/Desktop
-if test ! -f espnet;then git clone https://github.com/espnet/espnet; fi
+if test ! -d espnet;then git clone https://github.com/espnet/espnet; fi
 cd espnet/tools
 # sudo make
 CONDA_TOOLS_DIR=$(dirname ${CONDA_EXE})/..
 
 ./setup_anaconda.sh ${CONDA_TOOLS_DIR} $env_name 3.8.8
 cd ~/Desktop/espnet/tools
-sudo make TH_VERSION=1.8.0 CUDA_VERSION=10.2
+make TH_VERSION=1.8.0 CUDA_VERSION=10.2

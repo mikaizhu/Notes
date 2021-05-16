@@ -1,5 +1,6 @@
 #!/bin/bash
 # 安装jupyter 拓展插件
+conda install jupyter
 pip install jupyter_nbextensions_configurator
 pip install jupyter_contrib_nbextensions
 jupyter contrib nbextension install --user

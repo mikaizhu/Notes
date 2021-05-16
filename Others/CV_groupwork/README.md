@@ -10,11 +10,13 @@ TODO:
 
 参考阅读：
 
+官方baseline:https://tianchi.aliyun.com/notebook-ai/detail?postId=108342
+
 opencv入门教程:https://tianchi.aliyun.com/forum/postDetail?spm=5176.12586969.1002.24.2ce879detUyz2C&postId=95354
 
-基础版教程：https://tianchi.aliyun.com/forum/postDetail?spm=5176.12586969.1002.30.2ce879detUyz2C&postId=188964
+基础版教程:https://tianchi.aliyun.com/forum/postDetail?spm=5176.12586969.1002.30.2ce879detUyz2C&postId=188964
 
-进阶版教程：https://tianchi.aliyun.com/forum/postDetail?spm=5176.12586969.1002.27.2ce879detUyz2C&postId=207291
+进阶版教程:https://tianchi.aliyun.com/forum/postDetail?spm=5176.12586969.1002.27.2ce879detUyz2C&postId=207291
 
 baseline版，推荐按顺序阅读下面文章：
 
@@ -23,3 +25,7 @@ baseline版，推荐按顺序阅读下面文章：
 3. https://tianchi.aliyun.com/notebook-ai/detail?spm=5176.12586969.1002.9.2ce823e6FF4FLX&postId=108711
 4. https://tianchi.aliyun.com/notebook-ai/detail?spm=5176.12586969.1002.15.2ce823e6FF4FLX&postId=108780
 5. https://tianchi.aliyun.com/notebook-ai/detail?spm=5176.12586969.1002.18.2ce823e6FF4FLX&postId=108656
+
+其他高分文章：
+- https://github.com/MHX1203/DataWhale--
+- 上面github的技术博客:https://flashgene.com/archives/122108.html?spm=5176.21852664.0.0.4e097a98SZxo38
