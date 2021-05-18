@@ -8,6 +8,7 @@ Linux教程：
 - 指令介绍和一些bash demo https://github.com/jaywcjlove/shell-tutorial
 - Linux 命令行的艺术 https://github.com/jlevy/the-art-of-command-line/blob/master/README-zh.md
 - Linux完整教程 https://github.com/dunwu/linux-tutorial
+- shell脚本完整教程:https://github.com/dunwu/linux-tutorial/tree/master/codes/shell
 - Linux学习路径思维导图 https://newimg.jspang.com/linux-image01.png
 
 其他一些比较好的教程
