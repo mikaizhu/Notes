@@ -234,5 +234,3 @@ while True:
             continue
         time.sleep(2)
         alert_pay(statue)
-alert_pay(statue=1)
-
