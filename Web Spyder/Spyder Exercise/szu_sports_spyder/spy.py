@@ -213,7 +213,7 @@ def alert_pay(statue):
 login_url = 'https://authserver.szu.edu.cn/authserver/login?service=http%3a%2f%2fehall.szu.edu.cn%2flogin%3fservice%3dhttp%3a%2f%2fehall.szu.edu.cn%2fnew%2findex.html'
 driver = webdriver.Chrome()
 username = '2070436044' # 设置账号密码
-password = '12180030'
+password = 'xxxxxxxx'
 book_time = '21:00-22:00' # 预约的具体时间，小时
 book_day = '20' # 预约的时间，日
 book_ground = 'D3' # 设置预定的场地，如果没找到，则默认预定出现的第一个
