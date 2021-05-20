@@ -32,8 +32,8 @@ def login(username, password, login_url):
                 break
     except:
         mouse = driver.find_element_by_xpath('/html/body/header/header[1]/div/div/div[4]/div[3]')
-        ActionChains(driver).move_to_element(mouse).perform() 
-    
+        ActionChains(driver).move_to_element(mouse).perform()
+
 def go_book_index():
     # 点击个人包场预约
     time.sleep(3)
@@ -194,7 +194,7 @@ def alert_pay(statue, username, password, login_url):
 login_url = 'https://authserver.szu.edu.cn/authserver/login?service=http%3a%2f%2fehall.szu.edu.cn%2flogin%3fservice%3dhttp%3a%2f%2fehall.szu.edu.cn%2fnew%2findex.html'
 driver = webdriver.Chrome()
 username = '2070436044' # 设置账号密码
-password = '12180030'
+password = 'xxxxxxxxx'
 book_time = '09:00-10:00' # 预约的具体时间，小时
 book_day = '20' # 预约的时间，日
 book_ground = 'D2' # 设置预定的场地，如果没找到，则默认预定出现的第一个
