@@ -1,5 +1,7 @@
 ## selenium操作说明
 
+chrome driver 下载地址:https://chromedriver.chromium.org/downloads 
+
 参考笔记：http://note.youdao.com/s/RVk8ocik
 
 **到时候补充下：**
@@ -20,5 +22,14 @@ excute_script('jsCode')
 ```
 back()
 forward()
+```
+
+- 根据属性名定位元素
+
+```
+# 先根据tag名找到所有元素
+for i in find_elements_by_tag_name():
+  if i.get_attribute('att_name') == '':
+    do....
 ```
 
