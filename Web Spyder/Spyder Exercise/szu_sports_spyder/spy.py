@@ -194,8 +194,13 @@ def alert_pay(statue, username, password, login_url):
 login_url = 'https://authserver.szu.edu.cn/authserver/login?service=http%3a%2f%2fehall.szu.edu.cn%2flogin%3fservice%3dhttp%3a%2f%2fehall.szu.edu.cn%2fnew%2findex.html'
 driver = webdriver.Chrome()
 username = '2070436044' # 设置账号密码
+<<<<<<< HEAD
 password = '12180030'
 book_time = '09:00-10:00' # 预约的具体时间，小时
+=======
+password = 'xxxxxxxx'
+book_time = '21:00-22:00' # 预约的具体时间，小时
+>>>>>>> d01a187bc7a9b095833de03476eab175d678e4b6
 book_day = '20' # 预约的时间，日
 book_ground = 'D2' # 设置预定的场地，如果没找到，则默认预定出现的第一个
 interval = 0.5 # 设置每1分钟刷新一次
@@ -215,5 +220,9 @@ while True:
         if statue != 1:
             continue
         time.sleep(2)
+<<<<<<< HEAD
         alert_pay(statue, username, password, login_url)
         break
+=======
+        alert_pay(statue)
+>>>>>>> d01a187bc7a9b095833de03476eab175d678e4b6
