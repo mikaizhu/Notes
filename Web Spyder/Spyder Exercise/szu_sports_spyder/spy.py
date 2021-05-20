@@ -16,7 +16,7 @@ def login(username, password, login_url):
     driver.implicitly_wait(5)
 
     # 点击进入服务按钮
-    driver.find_element_by_xpath('//*[@id="ampDetailEnter"]').click()
+    driver.find_element_by_xpath('//*[@id="amDetailEnter"]').click()
     driver.implicitly_wait(5)
     # 因为浏览器会打开新标签，跳转到预约标签
     for i in driver.window_handles:
@@ -196,8 +196,6 @@ driver = webdriver.Chrome()
 username = '2070436044' # 设置账号密码
 password = '12180030'
 book_time = '09:00-10:00' # 预约的具体时间，小时
-password = 'xxxxxxxx'
-book_time = '21:00-22:00' # 预约的具体时间，小时
 book_day = '20' # 预约的时间，日
 book_ground = 'D2' # 设置预定的场地，如果没找到，则默认预定出现的第一个
 interval = 0.5 # 设置每1分钟刷新一次
@@ -219,4 +217,3 @@ while True:
         time.sleep(2)
         alert_pay(statue, username, password, login_url)
         break
-        alert_pay(statue)
