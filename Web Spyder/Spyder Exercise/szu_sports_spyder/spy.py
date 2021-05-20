@@ -32,11 +32,14 @@ def login(username, password, login_url):
                 break
     except:
         mouse = driver.find_element_by_xpath('/html/body/header/header[1]/div/div/div[4]/div[3]')
-        ActionChains(driver).move_to_element(mouse).perform()
+        ActionChains(driver).move_to_element(mouse).perform() 
+    
+def go_book_index():
     # 点击个人包场预约
-    driver.implicitly_wait(5)
+    time.sleep(3)
     driver.find_element_by_css_selector('body > div.bh-header-navMoreBox > a:nth-child(1) > div').click()
     print('登陆成功!正在查询场地')
+
 
 def searching_playground(book_day='20'):
     print('Runing Searching Playground Function...')
@@ -142,16 +145,13 @@ def start_booking(statue, book_ground='D3', book_day='20', book_time='09:00-10:0
         for i in driver.find_elements_by_tag_name('td'):
             if i.text == book_day:
                 i.click()
+                break
         # 选择可预约时间段
         time_list = driver.find_element_by_xpath('//*[@id="sportItemForm"]/div/div[12]/div[1]').text.split()
-        count = -1
+        count = 0
         for i in time_list:
             if book_time in i:
-                count += 1
-                break
-            count += 1
-        if count == 0:
-            count += 1
+                count = time_list.index(i)
         driver.find_element_by_xpath(f'//*[@id="sportItemForm"]/div/div[12]/div[1]/div/div/label[{count}]').click()
         time.sleep(1)
         # 选择最大人数
@@ -171,33 +171,13 @@ def start_booking(statue, book_ground='D3', book_day='20', book_time='09:00-10:0
         print(e)
         driver.refresh()
         return 2
-def alert_pay(statue):
+
+def alert_pay(statue, username, password, login_url):
     driver = webdriver.Chrome()
     if not statue:
         # 如果状态为0，则直接退出
         return
-    driver.get(login_url)
-    driver.find_element_by_id('username').send_keys(username)
-    driver.find_element_by_id('password').send_keys(password)
-    time.sleep(2)
-    driver.find_element_by_css_selector('#casLoginForm > p:nth-child(5) > button').click();time.sleep(2)
-    # 从最近使用中找到体育馆预约按钮
-    driver.find_element_by_xpath('//*[@id="widget-hot-01"]/div[1]/widget-app-item[1]/div/div/div[2]/div[1]').click();time.sleep(2)
-    # 点击进入服务按钮
-    driver.find_element_by_xpath('//*[@id="ampDetailEnter"]').click();time.sleep(2)
-    # 因为浏览器会打开新标签，跳转到预约标签
-    for i in driver.window_handles:
-        driver.switch_to.window(i)
-        if '体育场馆预约' == driver.title:
-            break
-    try:
-        for i in driver.find_elements_by_tag_name('div'):
-            if i.get_attribute('title') == '个人包场预约':
-                i.click()
-                break
-    except:
-        mouse = driver.find_element_by_xpath('/html/body/header/header[1]/div/div/div[4]/div[3]')
-        ActionChains(driver).move_to_element(mouse).perform()
+    login(username, password, login_url)
     # 进入我的预约
     time.sleep(2)
     for i in driver.find_elements_by_tag_name('div'):
@@ -209,16 +189,18 @@ def alert_pay(statue):
         print(f'请快点付款，还剩下{sec}s 时间！', end='\r')
         sec -= 1
         time.sleep(1)
+    driver.quit()
 
 login_url = 'https://authserver.szu.edu.cn/authserver/login?service=http%3a%2f%2fehall.szu.edu.cn%2flogin%3fservice%3dhttp%3a%2f%2fehall.szu.edu.cn%2fnew%2findex.html'
 driver = webdriver.Chrome()
 username = '2070436044' # 设置账号密码
 password = '12180030'
-book_time = '21:00-22:00' # 预约的具体时间，小时
+book_time = '09:00-10:00' # 预约的具体时间，小时
 book_day = '20' # 预约的时间，日
-book_ground = 'D3' # 设置预定的场地，如果没找到，则默认预定出现的第一个
-interval = 1 # 设置每1分钟刷新一次
+book_ground = 'D2' # 设置预定的场地，如果没找到，则默认预定出现的第一个
+interval = 0.5 # 设置每1分钟刷新一次
 login(username, password, login_url=login_url)
+go_book_index() # 去到预定界面
 
 statue = 0 # 状态码如果为1，则说明运行成功，或者预约到了，为0则继续预约
 while True:
@@ -233,4 +215,5 @@ while True:
         if statue != 1:
             continue
         time.sleep(2)
-        alert_pay(statue)
+        alert_pay(statue, username, password, login_url)
+        break
