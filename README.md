@@ -1,17 +1,21 @@
-## Notes文件说明
+# Notes文件说明
 
 - Algorithm文件：文件中主要存放各种算法的笔记
-- Booknotes文件：主要存放各种书籍的读书笔记
 
 - Deep learning文件：主要存放深度学习的笔记
 
-- Linux：主要存放Linux的学习笔记
+- Linux：主要存放Linux 和 shell脚本的学习笔记
 
 - python：主要存放python学习笔记
-- Tmux
+
+- web spyder 网络爬虫相关的教程
+
 - others：主要存放其他类型的笔记，各类文件
 
-## note：
+> 学习的过程无非就是：发现问题-->解决问题-->遇到新问题-->解决问题...这样反复的
+> 过程
+
+# note：
 
 代码思维：https://www.zhihu.com/question/36426051/answer/151964584
 
