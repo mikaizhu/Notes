@@ -513,7 +513,7 @@ sudo rm -rf /usr/local/cuda*
 
 **详细操作**：
 
-1. **安装驱动**
+1. **安装驱动 即driver**
 
 ```
 # 查看系统可以选用的驱动版本
@@ -546,6 +546,8 @@ driver   : nvidia-driver-450-server - distro non-free
 driver   : nvidia-driver-450 - distro non-free
 driver   : xserver-xorg-video-nouveau - distro free builtin
 ```
+
+PS:从第二步之后，建议使用conda安装管理cuda 和 cudann。详细步骤请参考脚本：https://github.com/mikaizhu/Notes/blob/master/Linux%26Shell_script/Shell_script/asr_config.sh
 
 2. **安装cuda**
 
