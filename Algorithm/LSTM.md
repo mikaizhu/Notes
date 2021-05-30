@@ -78,6 +78,8 @@ LSTM的输入是什么输出是什么？
 和rnn一样，将输入变成一个序列而已
 我们需要的只是输出x
 
+- lstm处理灰度图片：假设图片的长度为28\*28,可以将一个图片看成一个长度为28的文本,里面每个单词的向量长度也是28
+
 例子：
 
 ![](https://i2.wp.com/img-blog.csdnimg.cn/20200610114224311.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5Nzc3NTUw,size_16,color_FFFFFF,t_70) 
