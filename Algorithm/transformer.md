@@ -245,6 +245,8 @@ dim维度在变化学习而已.
 
 参考视频：https://www.bilibili.com/video/BV1mk4y1q7eK?p=2
 
+官网代码教程：https://pytorch.org/tutorials/beginner/transformer_tutorial.html
+
 主要讲解的是翻译任务，即将德语翻译成英文.
 
 **最开始的代码如下**：
