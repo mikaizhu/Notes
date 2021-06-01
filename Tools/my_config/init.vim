@@ -1,5 +1,4 @@
 " vim:et:sw=2:ts=2:fdm=marker
-" let g:coc_enabled = 1 如果想使用自动补全，这里修改为0
 " ============================================================================
 " FileName: init.vim
 " ============================================================================
@@ -1079,15 +1078,15 @@ let g:nvimgdb_config = {
 nnoremap tt :NERDTree<CR>
 nnoremap <C-b> <C-w>
 " map fast move key
-map J 5j
-map H 5h
-map K 5k
-map L 5l
+nnoremap J 5j
+nnoremap H 5h
+nnoremap K 5k
+nnoremap L 5l
 " python mode
 let g:pymode_python = 'python3'
 let g:pymode_trim_whitespaces = 1
 let g:pymode_doc = 1
-let g:pymode_doc_bind = 'K'
+let g:pymode_doc_bind = 'D'
 let g:pymode_rope_goto_definition_bind = "<C-]>"
 let g:pymode_lint = 1
 let g:pymode_lint_checkers = ['pyflakes', 'pep8', 'mccabe', 'pylint']
@@ -1107,7 +1106,7 @@ autocmd Filetype markdown inoremap <buffer> ,s ~~~~ <++><Esc>F~hi
 autocmd Filetype markdown inoremap <buffer> ,i ** <++><Esc>F*i
 autocmd Filetype markdown inoremap <buffer> ,d `` <++><Esc>F`i
 autocmd Filetype markdown inoremap <buffer> ,c ```<Enter><++><Enter>```<Enter><Enter><++><Esc>4kA
-autocmd Filetype markdown inoremap <buffer> ,m - [ ] 
+autocmd Filetype markdown inoremap <buffer> ,o - [ ] 
 autocmd Filetype markdown inoremap <buffer> ,p ![](<++>) <++><Esc>F[a
 autocmd Filetype markdown inoremap <buffer> ,a [](<++>) <++><Esc>F[a
 autocmd Filetype markdown inoremap <buffer> ,1 #<Space><Enter><++><Esc>kA
