@@ -8,6 +8,7 @@ from torchvision import datasets, transforms
 
 # 这里使用Fashion minist数据集，使用transformer进行特征提取
 # 使用linear层进行下游任务分类
+# 参考：https://github.com/oliverguhr/transformer-time-series-prediction/blob/master/transformer-multistep.py
 
 class PositionalEncoding(nn.Module):
     def __init__(self, d_model=28, max_len=28):
@@ -25,29 +26,41 @@ class PositionalEncoding(nn.Module):
 
 # 这里feature size必须可以整除以nhead
 class Transformer(nn.Module):
-    def __init__(self, feature_size=28, num_layers=3, nhead=7):
+    def __init__(self, src_len=28, d_model=28, num_layers=3, nhead=7):
         super().__init__()
         self.src_mask = None
-        self.pos_encoder = PositionalEncoding(feature_size).to(device)
+        self.pos_encoder = PositionalEncoding(d_model).to(device)
         self.nhead = nhead
-        self.feature_size = feature_size
-        self.encoder_layer = nn.TransformerEncoderLayer(d_model=feature_size, nhead=self.nhead)
+        self.d_model = d_model
+        self.src_len = src_len
+        self.encoder_layer = nn.TransformerEncoderLayer(d_model=d_model, nhead=self.nhead)
         self.transformer_encoder = nn.TransformerEncoder(self.encoder_layer, num_layers=num_layers)
-        self.decoder = nn.Linear(feature_size**2, 10)
-        self.init_weight()
+        # 这里encoder输出的维度还是[batch size, max_len, embedding dim]
+        # 所以embedding dim维度应该是 max len * embedding dim
+        self.decoder = nn.Linear(self.d_model*self.src_len, 10)
+        self.init_weights()
 
     def forward(self, x):
-        if self.src_mask is None:
-            mask = self._generate_square_subsequent_mask(len(x)).to(device)
-            self.src_mask = mask
+        #if self.src_mask is None:
+        #    mask = self._generate_square_subsequent_mask(len(x)).to(device)
+        #    self.src_mask = mask
+        # 输入x加上位置编码后，得到encoder的输入
         x = self.pos_encoder(x)
-        x = self.transformer_encoder(x, self.src_mask)
-        x = self.decoder(x.permute(1, 0, 2).reshape(-1, self.feature_size**2))
+        # 这里mask不是要免除padding=0后，softmax的影响吗
+        # encoder mask讲解参考下面链接
+        # https://medium.com/data-scientists-playground/transformer-encoder-mask%E7%AF%87-dc2c3abfe2e
+        # 这里不需要为encoder添加mask，首先每个长度都是一样
+        # 什么时候需要？参考：https://github.com/pytorch/tutorials/blob/master/beginner_source/transformer_tutorial.py
+        # 大致意思是说当我们要做seq2seq任务时，encoder只能接受前面位置的mask，要对后面位置的seq进行mask。
+        # 当输入的batch size 长度不一样时候，也需要mask
+        x = self.transformer_encoder(x)#, self.src_mask)
+        x = self.decoder(x.permute(1, 0, 2).reshape(-1, self.d_model**2))
         return x
 
     # 将decoder 的偏置转换成0， 将权重进行标准化
-    def init_weight(self):
+    def init_weights(self):
         self.decoder.bias.data.zero_()
+        self.decoder.weight.data.uniform_(-initrange, initrange)
 
     # 将输入的序列进行mask操作
     def _generate_square_subsequent_mask(self, sz):
