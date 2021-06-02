@@ -4,17 +4,17 @@
 
 参考资料：
 
-- [论文 Attension is all you need](https://arxiv.org/pdf/1706.03762.pdf) 
-- [图解Attension](https://wmathor.com/index.php/archives/1450/) 
-- [Attension 公式讲解](https://wmathor.com/index.php/archives/1432/) 
-- [Reference](https://wmathor.com/index.php/archives/1432/) 
+- [论文 Attension is all you need](https://arxiv.org/pdf/1706.03762.pdf)
+- [图解Attension](https://wmathor.com/index.php/archives/1450/)
+- [Attension 公式讲解](https://wmathor.com/index.php/archives/1432/)
+- [Reference](https://wmathor.com/index.php/archives/1432/)
 
-- [zhihu Reference1](https://zhuanlan.zhihu.com/p/47063917) 
-- [zhihu Reference2](https://zhuanlan.zhihu.com/p/47282410) 
+- [zhihu Reference1](https://zhuanlan.zhihu.com/p/47063917)
+- [zhihu Reference2](https://zhuanlan.zhihu.com/p/47282410)
 
-- [李宏毅attention视频讲解](https://www.youtube.com/watch?v=ugWDIIOHtPA) 
-- [李宏毅self attention 1视频 讲解](https://www.youtube.com/watch?v=hYdO9CscNes&t=2s) 
-- [李宏毅self attention 2视频 讲解](https://www.youtube.com/watch?v=gmsMY5kc-zw) 
+- [李宏毅attention视频讲解](https://www.youtube.com/watch?v=ugWDIIOHtPA)
+- [李宏毅self attention 1视频 讲解](https://www.youtube.com/watch?v=hYdO9CscNes&t=2s)
+- [李宏毅self attention 2视频 讲解](https://www.youtube.com/watch?v=gmsMY5kc-zw)
 
 思路：
 
@@ -44,7 +44,7 @@ decoder可以由不同的形式组成，主要现在有RNN and LSTM
 Q3: 什么是seq2seq
 
 只要满足输入是一个不定长的序列，输出也是一个不定长的序列，即输入输出序列的长度
-是可变的，这种模型的结构就是seq2seq, 
+是可变的，这种模型的结构就是seq2seq,
 
 Q4: seq2seq和encoder-decoder有什么关系
 
@@ -70,14 +70,11 @@ attention就是来解决这个信息丢失的问题
 
 Ａttention 模型的特点是 Eecoder 不再将整个输入序列编码为固定长度的「中间向量 Ｃ」 ，而是编码成一个向量的序列。
 
-![](https://easy-ai.oss-cn-shanghai.aliyuncs.com/2019-10-28-attention.png) 
-
-
+![](https://easy-ai.oss-cn-shanghai.aliyuncs.com/2019-10-28-attention.png)
 
 ## 什么是Attention
 
 参考：https://easyai.tech/ai-definition/attention/
-
 
 # Transformer使用
 
@@ -106,8 +103,21 @@ positional encoding 即位置编码，这样才能让transformer了解位置的�
 
 # 理论知识讲解
 
+关于对transformer的一点理解：transformer总的来说也还是seq2seq模型，里面的结构
+也就是encoder 和decoder。encoder进行特征提取任务(encoder 的输入是[max_len, batch_size, embedding_dim], encoder的输入维度和输出维度一样, 因此可以叠加多个encoder layer)，decoder进行下游任务
+
 
 ## Position encoding
+
+- max_len: 因为每个文本的长度都不一样，所以这里要截取为最大长度，不够长度的补0
+  ，多的要截断
+
+- embedding dim: 每个字可以用一个embedding dim 长度的向量表示，比如‘i’可以用
+  128维度的向量表示，这个向量通常用word embedding表示
+
+> 可以把position encoding的输入看成[max_len, embedding dim], 输入
+> 也就是一句话，position encoding 后， 得到每个字的位置编码[1, embedding dim]，最后输出也是[max_len, embedding dim], 然后将
+> 一句话embedding后的向量与之相加，就得到真正输入到encoder layer的向量。
 
 transformer 中有一个位置编码
 
@@ -211,7 +221,7 @@ layer normalization是对同一个维度，不同batch，进行标准化，假�
 **Encoder 的部分到这里就结束了，回忆下Encoder的输入和输出**
 
 
-![](https://s1.ax1x.com/2020/04/25/JyCLlQ.png#shadow) 
+![](https://s1.ax1x.com/2020/04/25/JyCLlQ.png#shadow)
 
 - 输入batch size, seq len. seq是 字典中的字id，不够长的要补0
 - 经过embedding 得到每个id的向量，变成[batch size, seq len, embed size]
@@ -234,7 +244,7 @@ dim维度在变化学习而已.
 
 结合文章：https://wmathor.com/index.php/archives/1438/
 
-![](https://z3.ax1x.com/2021/04/20/c7wyKU.png#shadow) 
+![](https://z3.ax1x.com/2021/04/20/c7wyKU.png#shadow)
 
 注意 outputs 输入的是ground truth，也就是真实的标签。因为attention可以看到所有
 的字，这不合理，我们是一个个产生的，所以需要mask操作，这里可以看文章，很详细。
@@ -313,10 +323,10 @@ class MyDataSet(Data.Dataset):
     self.enc_inputs = enc_inputs
     self.dec_inputs = dec_inputs
     self.dec_outputs = dec_outputs
-  
+
   def __len__(self):
     return self.enc_inputs.shape[0]
-  
+
   def __getitem__(self, idx):
     return self.enc_inputs[idx], self.dec_inputs[idx], self.dec_outputs[idx]
 
@@ -395,7 +405,7 @@ class Transformer(nn.Module):
         '''
         # tensor to store decoder outputs
         # outputs = torch.zeros(batch_size, tgt_len, tgt_vocab_size).to(self.device)
-        
+
         # enc_outputs: [batch_size, src_len, d_model], enc_self_attns: [n_layers, batch_size, n_heads, src_len, src_len]
         enc_outputs, enc_self_attns = self.encoder(enc_inputs)
         # dec_outpus: [batch_size, tgt_len, d_model], dec_self_attns: [n_layers, batch_size, n_heads, tgt_len, tgt_len], dec_enc_attn: [n_layers, batch_size, tgt_len, src_len]
@@ -413,3 +423,41 @@ optimizer = optim.SGD(model.parameters(), lr=1e-3, momentum=0.99)
 ```
 
 这里的损失函数里面我设置了一个参数 `ignore_index=0`，因为 "pad" 这个单词的索引为 0，这样设置以后，就不会计算 "pad" 的损失（因为本来 "pad" 也没有意义，不需要计算）
+
+## multi head attention
+
+多头注意力机制的attention代码实现:
+
+```
+class MultiHeadAttention(nn.Module):
+    def __init__(self):
+        super(MultiHeadAttention, self).__init__()
+        # 多头注意力机制的实现，就是初始化不同的WQ1，WQ2...
+        # 这里使用的方式就是使用nn.Linear，初始化的权重矩阵就是不同的WQ1，
+        WQ2等
+        self.W_Q = nn.Linear(d_model, d_k * n_heads, bias=False)
+        self.W_K = nn.Linear(d_model, d_k * n_heads, bias=False)
+        self.W_V = nn.Linear(d_model, d_v * n_heads, bias=False)
+        self.fc = nn.Linear(n_heads * d_v, d_model, bias=False)
+    def forward(self, input_Q, input_K, input_V, attn_mask):
+        '''
+        input_Q: [batch_size, len_q, d_model]
+        input_K: [batch_size, len_k, d_model]
+        input_V: [batch_size, len_v(=len_k), d_model]
+        attn_mask: [batch_size, seq_len, seq_len]
+        '''
+        residual, batch_size = input_Q, input_Q.size(0)
+        # (B, S, D) -proj-> (B, S, D_new) -split-> (B, S, H, W) -trans-> (B, H, S, W)
+        Q = self.W_Q(input_Q).view(batch_size, -1, n_heads, d_k).transpose(1,2)  # Q: [batch_size, n_heads, len_q, d_k]
+        K = self.W_K(input_K).view(batch_size, -1, n_heads, d_k).transpose(1,2)  # K: [batch_size, n_heads, len_k, d_k]
+        V = self.W_V(input_V).view(batch_size, -1, n_heads, d_v).transpose(1,2)  # V: [batch_size, n_heads, len_v(=len_k), d_v]
+
+        attn_mask = attn_mask.unsqueeze(1).repeat(1, n_heads, 1, 1) # attn_mask : [batch_size, n_heads, seq_len, seq_len]
+
+        # context: [batch_size, n_heads, len_q, d_v], attn: [batch_size, n_heads, len_q, len_k]
+        context, attn = ScaledDotProductAttention()(Q, K, V, attn_mask)
+        context = context.transpose(1, 2).reshape(batch_size, -1, n_heads * d_v) # context: [batch_size, len_q, n_heads * d_v]
+        output = self.fc(context) # [batch_size, len_q, d_model]
+        return nn.LayerNorm(d_model).cuda()(output + residual), attn
+```
+
