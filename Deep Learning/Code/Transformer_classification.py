@@ -29,7 +29,7 @@ class Transformer(nn.Module):
     def __init__(self, src_len=28, d_model=28, num_layers=3, nhead=7):
         super().__init__()
         self.src_mask = None
-        self.pos_encoder = PositionalEncoding(d_model).to(device)
+        self.pos_encoder = PositionalEncoding(d_model=d_model, max_len=src_len).to(device)
         self.nhead = nhead
         self.d_model = d_model
         self.src_len = src_len
@@ -59,6 +59,7 @@ class Transformer(nn.Module):
 
     # 将decoder 的偏置转换成0， 将权重进行标准化
     def init_weights(self):
+        initrange=0.1
         self.decoder.bias.data.zero_()
         self.decoder.weight.data.uniform_(-initrange, initrange)
 
@@ -78,7 +79,13 @@ train_loader = torch.utils.data.DataLoader(train_set, batch_size = 64, shuffle =
 test_loader = torch.utils.data.DataLoader(test_set, batch_size = 64, shuffle = True)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model = Transformer().to(device)
+
+# seq_len 相当于 max len， 即每句话切分的最大长度
+sequence_length = 28
+# input_size 相当于embedding dim
+input_size = 28
+
+model = Transformer(d_model=input_size, src_len=sequence_length).to(device)
 
 batch_size = 100
 num_epochs = 80
@@ -94,10 +101,6 @@ scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=1, gamma=gamma) # 学
 # Train the model
 total_step = len(train_loader)
 train_acc, test_acc = [], []
-# seq_len 相当于 max len， 即每句话切分的最大长度
-sequence_length = 28
-# input_size 相当于embedding dim
-input_size = 28
 
 train_best = None
 best_loss = 1000
@@ -108,6 +111,7 @@ for epoch in range(num_epochs):
     for i, (images, labels) in enumerate(tqdm(train_loader)):
         # reshape的维度变成了(batch size, 28, 28)
         images = images.reshape(-1, sequence_length, input_size)
+        # 注意模型的输入, 这里要交换维度，变成[max_len, batch size, d_model]
         images = images.permute(1, 0, 2).to(device)
         labels = labels.to(device)
 
