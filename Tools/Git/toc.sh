@@ -30,5 +30,5 @@ do
     echo "current directory does not exit this file" && exit 1
   fi
   # 引用 gh-md-to 文件，生成目录
-  source ./${md_toc_path} --insert ${file}
+  source ${md_toc_path} --insert ${file}
 done
