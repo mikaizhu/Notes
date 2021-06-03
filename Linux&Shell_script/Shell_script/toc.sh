@@ -9,6 +9,7 @@ md_toc_path=/Users/mikizhu/Desktop/Notes/Tools/Git/gh-md-toc
 #)
 
 # if you have more files , please split with space
+# -n 参数让光标不会换行显示
 echo -n "please input files: "
 read files
 # while read files;
