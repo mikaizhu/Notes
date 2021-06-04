@@ -11,6 +11,10 @@ spawn ssh -L 8877:localhost:8888 ${user}@${ip}
 # 获取匹配信息，匹配成功则执行 expect 后面的程序动作。
 expect "*password"
 # 命令接收一个字符串参数，并将该参数发送到进程。
+# 这里有个知识点是字符串拼接, 直接使用引号即可将两个字符串拼接
 send "${password}\n"
 # expect 执行结束，退出。
-expect eof
+# expect eof
+#interact的作用是，登录完远程机器后，不要退出来，一直保持登录状态，如果不加这句，登录完后马上会退出。
+# 参考：https://github.com/aminglinux/shell/blob/master/expect.txt
+interact
