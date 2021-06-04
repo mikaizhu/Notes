@@ -35,13 +35,13 @@ def read_data(DATA_PATH, n=12):
             features.extend([data[i*n:(i+1)*n, :].flatten() for i in range(length)]) # 抽取信号
             labels.extend([label]*length)
     return np.asarray(features), np.asarray(labels)
-   
+
 def get_stft(data, nfft=108, x=108, y=108, windows=20, oneside=True, overlap=8, dtype='complex64'):
     fs = 122.68e6
     result = np.zeros((data.shape[0], x, y), dtype=dtype)
     for idx, i in enumerate(tqdm(data)):
         f, t, zxx = signal.stft(
-        i, 
+        i,
         fs=fs,
         nfft=nfft,
         window=signal.get_window('hann', windows),
@@ -50,7 +50,7 @@ def get_stft(data, nfft=108, x=108, y=108, windows=20, oneside=True, overlap=8, 
         return_onesided=oneside) # 设置双边谱
         result[idx, :] = zxx[:, 1:].astype(dtype)
     return result
-    
+
 def get_image(stft, dtype='float32'):
     real = np.zeros_like(stft, dtype=dtype)
     imag = np.zeros_like(stft, dtype=dtype)
@@ -70,11 +70,11 @@ model = resnet.resnet50()
 # 这里改成自适应，因为主要是Maxpooling层减小图片尺寸，只要改成自适应就好了
 for name, layer in model.named_modules():
     if isinstance(layer, nn.MaxPool2d):
-        model.maxpool = nn.AdaptiveAvgPool2d((7, 7))    
+        model.maxpool = nn.AdaptiveAvgPool2d((7, 7))
 
 for name, layer in model.named_modules():
     if isinstance(layer, nn.MaxPool2d):
-        print(layer) 
+        print(layer)
 
 n_class = 10
 numFit = model.fc.in_features
@@ -93,15 +93,15 @@ class MyDataset(Dataset):
     def __init__(self, file_list, label_list):
         self.file_list = file_list
         self.label_list = label_list
-        
+
     def __len__(self):
         self.filelength = len(self.file_list)
         return self.filelength
-    
+
     def __getitem__(self, idx):
         img = torch.tensor(self.file_list[idx])
         label = self.label_list[idx]
-        
+
         return img, label
 
 image_labels = torch.tensor(labels)
@@ -115,9 +115,10 @@ step_size=5
 
 train_data = MyDataset(x_train, y_train)
 test_data = MyDataset(x_test, y_test)
-
-train_loader = torch.utils.data.DataLoader(train_data, batch_size=batch_size, shuffle=True)
-test_loader = torch.utils.data.DataLoader(test_data, batch_size=batch_size, shuffle=True)
+# 如果不设置drop last = True 那么 会显示下面错误，原因是因为用了batch normalization ，如果数据只剩下最后几个，就会报错
+# ValueError: Expected more than 1 value per channel when training, got input size torch.Size([1,512,1,1])
+train_loader = torch.utils.data.DataLoader(train_data, batch_size=batch_size, shuffle=True, dorp_last=True)
+test_loader = torch.utils.data.DataLoader(test_data, batch_size=batch_size, shuffle=True, dorp_last=True)
 
 device_count = torch.cuda.device_count()
 USE_CUDA = torch.cuda.is_available()
@@ -143,36 +144,36 @@ for epoch in range(epochs):
         data = data.cuda()
         label = label.cuda()
         output = model(data)
-    
+
         loss = criterion(output, label)
-        
+
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-        
+
         acc = (output.argmax(dim=1) == label).float().mean()
         epoch_accuracy += acc / len(train_loader)
         epoch_loss += loss / len(train_loader)
-        
+
         data.cpu()
         label.cpu()
-        
+
     with torch.no_grad():
         epoch_test_accuracy = 0
         epoch_test_loss = 0
         for data, label in tqdm(test_loader):
             data = data.cuda()
             label = label.cuda()
-            
+
             test_output = model(data)
             test_loss = criterion(test_output, label)
-            
+
             acc = (test_output.argmax(dim=1) == label).float().mean()
             epoch_test_accuracy += acc / len(test_loader)
             epoch_test_loss += test_loss / len(test_loader)
             data.cpu()
             label.cpu()
-    scheduler.step()        
+    scheduler.step()
     print(f'EPOCH:{epoch:2}, train loss:{epoch_loss:.4f}, train acc:{epoch_accuracy:.4f}')
     print(f'test loss:{epoch_test_loss:.4f}, test acc:{epoch_test_accuracy:.4f}')
 
