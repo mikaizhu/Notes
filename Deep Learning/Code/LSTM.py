@@ -5,7 +5,10 @@ from tqdm import tqdm
 import torch.optim as optim
 from torchvision import datasets, transforms
 
-
+# 使用lstm对图片数据进行分类的思路：
+# 假设图片的维度为28*28
+# lstm 的输入为一个一句话，[seq_len, batch_size, embedding_dim]
+# 这里把每张图片看成一句话，这句话的最大长度为28，即这句话有28个字，然后每个字的表示维度为28
 # 对图片数据进行转换，因为Fashion minist是灰度图，所以使用下面的normalization方式
 transform = transforms.Compose([
 transforms.ToTensor(), transforms.Normalize([0.5], [0.5])])

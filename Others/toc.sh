@@ -12,6 +12,12 @@ md_toc_path=/Users/mikizhu/Desktop/Notes/Tools/Git/gh-md-toc
 # -n 参数让光标不会换行显示
 echo -n "please input files: "
 read files
+
+# 如果输入的是回车键，那么直接默认使用read me文件
+if [ $files=='\n' ]; then
+  files=README.md
+fi
+
 # while read files;
 for file in ${files}
 do 
@@ -22,6 +28,7 @@ do
     if [ $? -ne 0 ]; then
       #gsed -ei "1 i ${add_content}" ${file}
       # 使用sed 命令插入这两个
+      # 因为mac系统没有sed命令，所以只能使用gsed
       gsed -i "1 i <!--ts-->" ${file}
       gsed -i "2 i <!--te-->" ${file}
     fi
