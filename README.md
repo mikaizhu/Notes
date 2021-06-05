@@ -11,16 +11,21 @@
 - [Algorithm文件](./Algorithm): 文件中主要存放各种算法的笔记
 
 - [Deep learning文件](./Deep_learning): 主要存放深度学习的笔记
-  - [deep learing code](./Deep_learning/Code) 
+  - [deep learning code](./Deep_learning/code) 
+  - [deep learning doc](./Deep_learning/doc) 
 
 - [Linux & Shell script](./Linux&Shell_script): 主要存放Linux 和 shell脚本的学习笔记
   - [shell script](./Linux&Shell_script/shell_script) 
   - [linux doc](./Linux&Shell_script/linux_doc) 
 
 - [Python Learning](./Python_learning): 主要存放python学习笔记
+  - [python doc](./Python_learning/doc) 
+  - [python lib](./Python_learning/Pandas&Sklearn&Matplotlib)
+  - [python tools](./Python_learning/tools) 
 
 - [Web spyder](./Web_spyder): 网络爬虫相关的教程
-  - [syder exercise](./Web_spyder/spyder_exercise) 
+  - [spyder exercise](./Web_spyder/spyder_exercise) 
+  - [spyder doc](./Web_spyder/spyder_doc) 
 
 - [Others](./Others): 主要存放其他类型的笔记，和课程作业
   - [cv group work](./Others/cv_groupwork) 
