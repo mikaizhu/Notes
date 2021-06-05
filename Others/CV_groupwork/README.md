@@ -9,7 +9,18 @@
 - Resnet
 - Transformer
 
+## 文件说明
+
+[fashion.ipynb](./fashion.ipynb): 四种算法实现的代码细节
+
 ## PPT内容设置
+
+1. dnn为什么可以对图像进行分类？
+2. dnn的原理是什么？
+3. cnn的图像分类原理?
+4. resnet模型简单介绍?
+5. 为什么transformer可以对图像进行分类？
+6. transformer的原理是什么？
 
 TODO:
 
