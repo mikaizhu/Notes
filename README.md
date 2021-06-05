@@ -8,17 +8,28 @@
 <!--te-->
 # Notes文件说明
 
-- Algorithm文件：文件中主要存放各种算法的笔记
+- [Algorithm文件](./Algorithm): 文件中主要存放各种算法的笔记
 
-- Deep learning文件：主要存放深度学习的笔记
+- [Deep learning文件](./Deep Learning): 主要存放深度学习的笔记
+  - [deep learing code](./Deep Learning/Code) 
 
-- Linux：主要存放Linux 和 shell脚本的学习笔记
+- [Linux & Shell script](./Linux&Shell_script): 主要存放Linux 和 shell脚本的学习笔记
+  - [shell script](./Linux&Shell_script/Shell_script) 
 
-- python：主要存放python学习笔记
+- [Python Learning](./Python Learning): 主要存放python学习笔记
 
-- web spyder 网络爬虫相关的教程
+- [Web spyder](./Web Spyder): 网络爬虫相关的教程
+  - [syder exercise](./Web Spyder/spyder_exercise) 
 
-- others：主要存放其他类型的笔记，各类文件
+- [Others](./Others): 主要存放其他类型的笔记，和课程作业
+  - [cv group work](./Others/cv_groupwork) 
+  - [machine grop work](./Others/machine_learning_work)
+  - [gjbc grop work](./Others/gjbc) 
+
+- [Tools](./Tools): 主要介绍一些常用的工具使用，如gitdeng
+  - [Git](./Tools/Git) 
+  - [Vim](./Tools/Vim) 
+  - [my_config](./Tools/my_config) 
 
 > 学习的过程无非就是：发现问题-->解决问题-->遇到新问题-->解决问题...这样反复的
 > 过程
