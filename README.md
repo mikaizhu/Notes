@@ -14,7 +14,8 @@
   - [deep learing code](./Deep_learning/Code) 
 
 - [Linux & Shell script](./Linux&Shell_script): 主要存放Linux 和 shell脚本的学习笔记
-  - [shell script](./Linux&Shell_script/Shell_script) 
+  - [shell script](./Linux&Shell_script/shell_script) 
+  - [linux doc](./Linux&Shell_script/linux_doc) 
 
 - [Python Learning](./Python_learning): 主要存放python学习笔记
 
@@ -26,7 +27,7 @@
   - [machine grop work](./Others/machine_learning_work)
   - [gjbc grop work](./Others/gjbc) 
 
-- [Tools](./Tools): 主要介绍一些常用的工具使用，如gitdeng
+- [Tools](./Tools): 主要介绍一些常用的工具使用，如git等
   - [Git](./Tools/Git) 
   - [Vim](./Tools/Vim) 
   - [my_config](./Tools/my_config) 
