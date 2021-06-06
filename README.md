@@ -1,9 +1,9 @@
 <!--ts-->
 * [Notes文件说明](#notes文件说明)
-* [Note：](#note)
+* [Note](#note)
 * [TODO](#todo)
 
-<!-- Added by: mikizhu, at: 2021年 6月 3日 星期四 18时31分15秒 CST -->
+<!-- Added by: mikizhu, at: 2021年 6月 6日 星期日 17时22分33秒 CST -->
 
 <!--te-->
 
