@@ -6,6 +6,7 @@
 <!-- Added by: mikizhu, at: 2021年 6月 3日 星期四 18时31分15秒 CST -->
 
 <!--te-->
+
 # Notes文件说明
 
 - [Algorithm文件](./Algorithm): 文件中主要存放各种算法的笔记
@@ -35,12 +36,15 @@
 - [Tools](./Tools): 主要介绍一些常用的工具使用，如git等
   - [Git](./Tools/Git) 
   - [Vim](./Tools/Vim) 
-  - [my_config](./Tools/my_config) 
+  - [Markdown](./Tools/Markdown) 
+  - [Tmux](./Tools/Tmux) 
+  - [My_config](./Tools/My_config) 
+  - [Ubuntu tools](./Tools/Ubuntu_tools) 
 
 > 学习的过程无非就是：发现问题-->解决问题-->遇到新问题-->解决问题...这样反复的
 > 过程
 
-# Note：
+# Note
 
 代码思维：https://www.zhihu.com/question/36426051/answer/151964584
 
