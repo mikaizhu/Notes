@@ -40,4 +40,13 @@ git config --global http.postBuffer 524288000
 
 [return top](#readme) 
 
+# git 将文件修改为小写字母
+
+```
+# 使用管道命令查看
+git ls-files | gerp ABC
+
+# 使用git mv对文件名进行修改
+git mv ABC temp && git mv temp abc
+```
 
