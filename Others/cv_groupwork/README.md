@@ -41,9 +41,12 @@
 3. cnn的图像分类原理? cnn是怎么抽取图像特征的？
 
 > - cnn的一大优势就是可以大大减小参数量
->
->
 
+> 参考文章：
+> 1. https://www.cnblogs.com/charlotte77/p/7759802.html
+> 2. https://www.cnblogs.com/charlotte77/p/7783261.html
+>
+>
 4. resnet模型简单介绍?
 
 > 这里要先从简单的cnn进行介绍：参考:https://easyai.tech/ai-definition/cnn/

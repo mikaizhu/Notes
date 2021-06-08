@@ -9,6 +9,9 @@ from torch.utils.data import TensorDataset, DataLoader, Dataset
 import torch.nn.functional as F
 import random
 
+# 说明：这个代码有两个细节
+# 1. 时间序列输入到神经网络中的时候一定要归一化
+# 2. 输入到神经网络前，一定要batch norm
 # 固定随机数种子，确保实验的可重复性
 def set_seed(seed=42):
     random.seed(seed)
@@ -23,10 +26,11 @@ def get_fft_and_scaler(data, start=5192, end=8192):
     data = np.fft.fft(data)
     data = np.abs(data)
     data = data/np.expand_dims(data.max(axis=1), axis=1)
+    return data[:, start:end]
 
 # 搭建DNN模型
 class DNN(nn.Module):
-    def __init__(self):
+    def __init__(self, n_class=10):
         super().__init__()
         self.dnn = nn.Sequential(
             nn.BatchNorm1d(500),
@@ -38,7 +42,7 @@ class DNN(nn.Module):
             nn.BatchNorm1d(256),
             nn.ReLU(),
             nn.Dropout(p=0.2),
-            nn.Linear(256, 10),
+            nn.Linear(256, n_class),
         )
 
     def forward(self, x):
@@ -78,12 +82,13 @@ val_tensor = TensorDataset(val_tensor, y_val_tensor)
 train_loader = DataLoader(train_tensor, shuffle=True, batch_size=batch_size, drop_last=True)
 val_loader = DataLoader(val_tensor, shuffle=False, batch_size=batch_size)
 
+n_class = 10
 lr = 0.001
 gamma = 0.9
 step_size = 1
 epochs = 80
 device = torch.device('cuda:0' if torch.cuda.is_available else 'cpu')
-model = DNN().to(device)
+model = DNN(n_class=10).to(device)
 optimizer = optim.Adam(model.parameters(), lr=lr)
 criterion = nn.CrossEntropyLoss()
 scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=step_size, gamma=gamma)
