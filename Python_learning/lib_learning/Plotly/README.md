@@ -7,7 +7,7 @@ Plotly是一个python画图模块，可以优美画图
 # 画图
 
 ```
-import plotly.offline as py                    #保存图表，相当于plotly.plotly as py，同时增加了离线功能
+import plotly.offline as of                    #保存图表，相当于plotly.plotly as py，同时增加了离线功能
 py.init_notebook_mode(connected=True)          #离线绘图时，需要额外进行初始化
 import plotly.graph_objs as go                 #创建各类图表
 import plotly.figure_factory as ff             #创建table
