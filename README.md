@@ -22,6 +22,9 @@
 - [Python Learning](./Python_learning): 主要存放python学习笔记
   - [python doc](./Python_learning/doc) 
   - [python lib](./Python_learning/Pandas&Sklearn&Matplotlib)
+    - [Matplotlib](./Python_learning/lib_learning/Matplotlib) 
+    - [Plotly](./Python_learning/lib_learning/Plotly) 
+    - [Sklearn](./Python_learning/lib_learning/Sklearn) 
   - [python tools](./Python_learning/tools) 
 
 - [Web spyder](./Web_spyder): 网络爬虫相关的教程
