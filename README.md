@@ -25,6 +25,7 @@
     - [Matplotlib](./Python_learning/lib_learning/Matplotlib) 
     - [Plotly](./Python_learning/lib_learning/Plotly) 
     - [Sklearn](./Python_learning/lib_learning/Sklearn) 
+    - [Pandas](./Python_learning/lib_learning/Pandas) 
   - [python tools](./Python_learning/tools) 
 
 - [Web spyder](./Web_spyder): 网络爬虫相关的教程
