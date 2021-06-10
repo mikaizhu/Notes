@@ -524,7 +524,7 @@ sudo rm -rf /usr/local/cuda*
 安装流程：
 
 1. 先安装驱动，即drivers，安装好后就能使用Nvidia-smi命令
-2. 然后安装cuda
+2. 然后安装cuda, 即cuda toolkit
 3. 安装对应版本的pytorch
 4. 选择性安装cudann，这个可以对训练进行加速
 
@@ -567,6 +567,8 @@ driver   : xserver-xorg-video-nouveau - distro free builtin
 ```
 
 PS:从第二步之后，建议使用conda安装管理cuda 和 cudann。详细步骤请参考脚本：https://github.com/mikaizhu/Notes/blob/master/Linux%26Shell_script/Shell_script/asr_config.sh
+
+不建议使用下面方式安装>>>
 
 2. **安装cuda**
 
