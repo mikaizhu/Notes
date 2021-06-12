@@ -18,6 +18,8 @@ args = parser.parse_args() # 解析参数
 print(args.x, args.y) # 调用参数
 ```
 
+设置type为字符串
+
 **然后在命令行输入：**
 
 ```
@@ -94,6 +96,8 @@ test2.py: error: unrecognized arguments: -y 4 -x 3
 ```
 
 **我们来看看这个效果怎么样， 这样表达效果确实很明显，自己也看得懂：**
+
+**注意一定要加--**
 
 ```
 import argparse
