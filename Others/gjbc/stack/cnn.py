@@ -8,6 +8,12 @@ import torch.nn.functional as F
 import random
 from imblearn.over_sampling import SMOTE
 import argparse
+import logging
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(format='%(asctime)s - %(levelname)s - %(name)s -   %(message)s',
+        datefmt='%m/%d/%Y %H:%M:%S',
+        level=logging.INFO)
 
 parser = argparse.ArgumentParser() # 首先实例化
 parser.add_argument('--train_path', type=str)
@@ -82,7 +88,7 @@ class SampleCNN(nn.Module):
         return F.softmax(x, dim=1)
 
 # 读取数据
-print('Stage1: load data')
+logger.info('Stage1: load data')
 train = np.load(args.train_path)
 val = np.load(args.val_path)
 train_label = np.load(args.train_label_path)
@@ -91,14 +97,14 @@ test = np.load(args.test_path)
 test_label = np.load(args.test_label_path)
 
 # 样本均衡
-print('Stage2: data over sampling')
+logger.info('Stage2: data over sampling')
 smote = SMOTE(random_state=42, n_jobs=-1)
 x_train, y_train = smote.fit_resample(train, train_label)
 
-print(x_train.shape, y_train.shape)
+logger.info(x_train.shape, y_train.shape)
 
 # 注意这里要对x_train, 数据处理，做fft和切片
-print('Stage3: data fft slice and scaler')
+logger.info('Stage3: data fft slice and scaler')
 test_sp = get_fft_and_scaler(test, start=args.sp_start, end=args.sp_end)
 train_sp = get_fft_and_scaler(x_train, start=args.sp_start, end=args.sp_end)
 val_sp = get_fft_and_scaler(val, start=args.sp_start, end=args.sp_end)
@@ -147,7 +153,7 @@ def train(train_loader, model, optimizer, criterion, labels):
         feature.cpu()
         label.cpu()
 
-    print(
+    logger.info(
         f'Training loss: {train_loss/len(train_loader):.4f}',
         f'Training  acc: {train_total_acc/len(labels):.4f}',
          )
@@ -168,7 +174,7 @@ def predict(val_loader, model, criterion, labels):
         feature.cpu()
         label.cpu()
 
-    print(
+    logger.info(
         f'Val loss: {val_loss/len(val_loader):.4f}',
         f'Val  acc:{val_total_acc/len(labels):.4f}'
     )
@@ -177,9 +183,9 @@ def predict(val_loader, model, criterion, labels):
 train_best = float('inf')
 best_model = None
 
-print('Stage4: model training')
+logger.info('Stage4: model training')
 for epoch in range(epochs):
-    print('='*20 + f' Epoch: {epoch} '+ '='*20)
+    logger.info('='*20 + f' Epoch: {epoch} '+ '='*20)
     train(train_loader, model, optimizer, criterion=criterion, labels=y_train)
     loss = predict(val_loader, model, criterion=criterion, labels=val_label)
     if loss <= train_best:
@@ -187,18 +193,18 @@ for epoch in range(epochs):
         best_model = model
 
 # 保存最佳模型
-print('Stage5: model save')
+logger.info('Stage5: model save')
 torch.save(best_model.state_dict(), './cnn_best_model.point')
 torch.save(model.state_dict(), './cnn_model.point')
 
-print('Stage6: model eval')
+logger.info('Stage6: model eval')
 model.eval()
 best_model.eval()
 ans = best_model(torch.FloatTensor(test_sp).to(device)).argmax(dim=1).detach().cpu().numpy()
 score = (ans == test_label).sum()/len(test_label)
-print(f'best model score: {score}')
+logger.info(f'best model score: {score}')
 
 ans = model(torch.FloatTensor(test_sp).to(device)).argmax(dim=1).detach().cpu().numpy()
 score = (ans == test_label).sum()/len(test_label)
 
-print(f'model score: {score}')
+logger.info(f'model score: {score}')

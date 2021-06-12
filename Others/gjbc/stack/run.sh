@@ -12,7 +12,8 @@ python3 dnn.py \
   --lr 0.0001 \
   --batch_size 128 \
   --sp_start 6892\
-  --sp_end 7192 &
+  --sp_end 7192 \ 
+  2>&1 | tee log_dnn.log &
 pid1=$!
 
 echo runing cnn.py...
@@ -27,7 +28,8 @@ python3 cnn.py \
   --lr 0.0001 \
   --batch_size 128 \
   --sp_start 6892 \
-  --sp_end 7192 &
+  --sp_end 7192 \
+  2>&1 | tee log_cnn.log &
 pid2=$!
 
 wait $pid1 && wait $pid2

@@ -7,6 +7,13 @@ import numpy as np
 import pandas as pd
 from torch.utils.data import TensorDataset, DataLoader, Dataset
 import argparse
+import logging
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(format='%(asctime)s - %(levelname)s - %(name)s -   %(message)s',
+        datefmt='%m/%d/%Y %H:%M:%S',
+        level=logging.INFO)
+
 
 parser = argparse.ArgumentParser() # 首先实例化
 parser.add_argument('--test_path', type=str)
@@ -92,30 +99,30 @@ def get_fft_and_scaler(data, start=5192, end=8192):
     data = data/np.expand_dims(data.max(axis=1), axis=1)
     return data[:,start:end]
 
-print('Stage1: load data')
+logger.info('Stage1: load data')
 test = np.load(args.test_path)
 test_label = np.load(args.test_label_path)
 
-print('Stage2: data fft sp scaler')
+logger.info('Stage2: data fft sp scaler')
 test_sp = get_fft_and_scaler(test, start=args.sp_start, end=sp_end)
 
-print('Stage3: model stack')
+logger.info('Stage3: model stack')
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model1 = DNN().to(device)
 model2 = SampleCNN().to(device)
 model1.load_state_dict(torch.load('dnn_best_model.point'))
 model2.load_state_dict(torch.load('cnn_best_model.point'))
 
-print('Stage4: model score')
+logger.info('Stage4: model score')
 model1.eval()
 model2.eval()
 preds1 = model1(torch.FloatTensor(test_sp).to(device))
 preds2 = model2(torch.FloatTensor(test_sp).to(device))
-print(preds1.shape, preds2.shape)
+logger.info(preds1.shape, preds2.shape)
 ans = (preds1 * 0.6 + preds2 * 0.4).argmax(dim=1).detach().cpu().numpy()
 
 score = (ans == test_label).sum()/len(test_label)
-print(f'model stack score: {score}')
+logger.info(f'model stack score: {score}')
 
-print('Stage5: make submmit')
+logger.info('Stage5: make submmit')
 pd.DataFrame({'Id':range(len(ans)), 'Category':ans}).to_csv('stack_solution.csv', index=False)
