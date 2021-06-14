@@ -7,7 +7,7 @@
 
 1. fft，取模，切片，单模dnn 57
 2. 样本均衡 + soft voting 60.3
---3. 样本均衡 + boosting + stacking 63.4--
+~~3. 样本均衡 + boosting + stacking 63.4~~
 3. boosting 文件中的version2 可以达到62.2准确率
 
 TODO:
