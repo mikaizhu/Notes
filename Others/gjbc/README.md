@@ -1,8 +1,14 @@
 上分主要思路说明：
 
+使用的stacking和boosting的思想, boosting代码有待改进
+- version1代码出现了标签泄漏，按道理是不能使用val的标签的，即使是stacking也不行
+- version2代码也出现错误，每利用到boosting，即dnn总是在学习正确的标签
+- version3 解决了上面两个错误，但是准确率有待提高
+
 1. fft，取模，切片，单模dnn 57
 2. 样本均衡 + soft voting 60.3
-3. 样本均衡 + boosting + stacking 63.4
+--3. 样本均衡 + boosting + stacking 63.4--
+3. boosting 文件中的version2 可以达到62.2准确率
 
 TODO:
 
