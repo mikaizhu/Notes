@@ -1,3 +1,9 @@
+上分主要思路说明：
+
+1. fft，取模，切片，单模dnn 57
+2. 样本均衡 + soft voting 60.3
+3. 样本均衡 + boosting + stacking 63.4
+
 TODO:
 
 - [x] 接下来尝试多次投票机制

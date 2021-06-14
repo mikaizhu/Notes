@@ -2,16 +2,28 @@
 
 ## 相关资料查询
 
-1. https://www.kaggle.com/roshansharma/mall-customers-clustering-analysis
+- [x] https://www.kaggle.com/roshansharma/mall-customers-clustering-analysis
 
-2. https://www.kaggle.com/vjchoudhary7/kmeans-clustering-in-customer-segmentation
+- [ ] https://www.kaggle.com/randylaosat/simple-exploratory-data-analysis-passnyc#The-Problem
 
-3. https://www.kaggle.com/xvivancos/tutorial-clustering-wines-with-k-means
+心跳分类数据, 可视化和模型：
 
-4. https://www.kaggle.com/vbmokin/titanic-top-3-cluster-analysis
+- [ ] https://www.kaggle.com/mysarahmadbhat/chances-of-attack
+- [ ] https://www.kaggle.com/namanmanchanda/heart-attack-eda-prediction-90-accuracy
 
-5. https://www.kaggle.com/tmtdmr/clustering-methods-on-stars-dataset
+商务数据分析：
 
-6. https://www.kaggle.com/kashnitsky/topic-7-unsupervised-learning-pca-and-clustering
+- [ ] 
+- [ ] 
 
+#2. https://www.kaggle.com/vjchoudhary7/kmeans-clustering-in-customer-segmentation
+#
+#3. https://www.kaggle.com/xvivancos/tutorial-clustering-wines-with-k-means
+#
+#4. https://www.kaggle.com/vbmokin/titanic-top-3-cluster-analysis
+#
+#5. https://www.kaggle.com/tmtdmr/clustering-methods-on-stars-dataset
+#
+#6. https://www.kaggle.com/kashnitsky/topic-7-unsupervised-learning-pca-and-clustering
+#
 

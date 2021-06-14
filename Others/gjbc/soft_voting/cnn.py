@@ -133,7 +133,7 @@ optimizer = optim.Adam(model.parameters(), lr=lr)
 criterion = nn.CrossEntropyLoss()
 scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=step_size, gamma=gamma)
 
-def train(train_loader, model, optimizer, criterion, labels):
+def model_train(train_loader, model, optimizer, criterion, labels):
     model.train()
     train_total_acc = 0
     train_loss = 0
@@ -186,7 +186,7 @@ best_model = None
 logger.info('Stage4: model training')
 for epoch in range(epochs):
     logger.info('='*20 + f' Epoch: {epoch} '+ '='*20)
-    train(train_loader, model, optimizer, criterion=criterion, labels=y_train)
+    model_train(train_loader, model, optimizer, criterion=criterion, labels=y_train)
     loss = predict(val_loader, model, criterion=criterion, labels=val_label)
     if loss <= train_best:
         train_best = loss
