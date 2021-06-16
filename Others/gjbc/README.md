@@ -15,7 +15,17 @@
 
 ~~3. 样本均衡 + boosting + stacking 63.4~~
 
-3. boosting 文件中的version2 可以达到62.2准确率
+3. boosting 文件中的version2 可以达到62.2准确率, 这个思路相当于snapshot
+
+新思路：利用余弦相似度进行匹配，思路流程如下：
+- 先有监督训练模型
+- 构建一个类别字典，字典存储每个类别的向量
+- 利用模型，提取测试集每个样本的特征向量
+- 输入向量，与所有向量进行余弦相似度匹配，完成分类。
+
+参考：
+- pytorch 中计算余弦相似度的方法：https://blog.csdn.net/tszupup/article/details/100711874
+- pytorch 中提取中间层的方法：https://discuss.pytorch.org/t/how-can-l-load-my-best-model-as-a-feature-extractor-evaluator/17254/16
 
 TODO:
 
