@@ -60,6 +60,13 @@ TODO:
 
 测试结果：相比于单模分数还降低了2个百分点.
 
+# 将时间序列转换成图片
+
+博客讲解：https://blog.csdn.net/weixin_39679367/article/details/86416439
+
+模块使用：
+- https://github.com/johannfaouzi/pyts
+- 这个模块中集成了很多时间序列分类的算法
 
 # 数据增强 and 网络调节
 
@@ -70,3 +77,4 @@ TODO:
 - [Top 1](https://github.com/miziha-zp/xw2020-top1) 
 - [Top 2](https://github.com/China-ChallengeHub/Cellphone-Behavior) 
 - [Top 14](https://github.com/MichaelYin1994/kesci-mobile-behavior) 
+- [深度学习在时间序列上应用的论文总结](https://zhuanlan.zhihu.com/p/83130649) 
