@@ -8,13 +8,15 @@
 
 心跳分类数据, 可视化和模型：
 
-- [ ] https://www.kaggle.com/mysarahmadbhat/chances-of-attack
-- [ ] https://www.kaggle.com/namanmanchanda/heart-attack-eda-prediction-90-accuracy
+- [x] https://www.kaggle.com/mysarahmadbhat/chances-of-attack
+- [x] https://www.kaggle.com/namanmanchanda/heart-attack-eda-prediction-90-accuracy
 
-商务数据分析：
+学生课堂表示数据集
 
-- [ ] 
-- [ ] 
+- [ ] https://www.kaggle.com/spscientist/student-performance-in-exams
+- [ ] https://www.kaggle.com/jeongbinpark/eda-and-predict-student-s-score
+- [ ] https://www.kaggle.com/amulyamanne/eda-on-students-performance-in-exams
+- [ ] https://www.kaggle.com/mrigendraagrawal/how-to-score-more-on-tests
 
 ```
 #

@@ -78,3 +78,8 @@ TODO:
 - [Top 2](https://github.com/China-ChallengeHub/Cellphone-Behavior) 
 - [Top 14](https://github.com/MichaelYin1994/kesci-mobile-behavior) 
 - [深度学习在时间序列上应用的论文总结](https://zhuanlan.zhihu.com/p/83130649) 
+
+# 思考
+
+- [ ] 因为只使用了片段6892-7192其他片段并没有利用，查看其他片段的区分度
+- [ ] 如果使用标准化，不用最大最小值归一化效果会怎么样？
