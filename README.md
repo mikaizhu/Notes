@@ -3,7 +3,7 @@
 * [Note](#note)
 * [TODO](#todo)
 
-<!-- Added by: mikizhu, at: 2021年 6月 6日 星期日 17时22分33秒 CST -->
+<!-- Added by: zwl, at: 2021年 6月22日 星期二 20时47分53秒 CST -->
 
 <!--te-->
 
@@ -14,6 +14,8 @@
 - [Deep learning文件](./Deep_learning): 主要存放深度学习的笔记
   - [deep learning code](./Deep_learning/code) 
   - [deep learning doc](./Deep_learning/doc) 
+    - [pytorch](./Deep_learning/doc/pytorch)
+    - [tensorflow](./Deep_learning/doc/tensorflow) 
 
 - [Linux & Shell script](./Linux&Shell_script): 主要存放Linux 和 shell脚本的学习笔记
   - [shell script](./Linux&Shell_script/shell_script) 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # please add gh-md-toc file path
 #md_toc_path=./gh-md-toc
-md_toc_path=/Users/mikizhu/Desktop/Notes/Tools/Git/gh-md-toc
+md_toc_path=/Users/zwl/Desktop/Notes/Tools/Git/gh-md-toc
 #add_content=$(cat <<END
 #<!--ts-->
 #<!--te-->
