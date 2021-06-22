@@ -8,9 +8,8 @@
       * [下载oh my zsh](#下载oh-my-zsh)
       * [zsh配置](#zsh配置-1)
       * [zsh 颜色配置](#zsh-颜色配置)
-      * [neovim 下载](#neovim-下载)
    * [浏览器配置](#浏览器配置)
-   * [vim 配置](#vim-配置)
+   * [vim 安装与配置](#vim-安装与配置)
 * [大量工具](#大量工具)
    * [配置shell](#配置shell)
    * [bashmarks](#bashmarks)
@@ -21,7 +20,7 @@
       * [vim-like](#vim-like)
    * [mac 好用的软件](#mac-好用的软件)
 
-<!-- Added by: mikizhu, at: 2021年 6月22日 星期二 13时42分09秒 CST -->
+<!-- Added by: zwl, at: 2021年 6月22日 星期二 16时23分05秒 CST -->
 
 <!--te-->
 # Mac配置
@@ -114,20 +113,19 @@ sudo chown -R $(whoami) $(brew --prefix)/*
 >4. 打开iterms的偏好设置，找到profiles，点击colors，选择主题即可
 >
 
-### neovim 下载
-
-```
-brew install neovim
-```
-neovim 配置:
-
 
 
 ## 浏览器配置
 
 这里登录账号同步即可
 
-## vim 配置
+## vim 安装与配置
+
+nvim 安装
+
+```
+brew install neovim
+```
 
 创建一个文件
 
@@ -154,6 +152,12 @@ cd ~/Desktop
 alias vi=/usr/local/bin/nvim
 alias vim=/usr/local/bin/nvim
 ```
+
+neovim 配置:
+
+1. [使用nvim配置文件, 将配置文件复制到~/.config目录下](./My_config/nvim) 
+2. [在~/.config目录下配置.zshenv文件](./My_config/.zshenv) 
+
 
 # 大量工具
 
