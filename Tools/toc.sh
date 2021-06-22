@@ -38,4 +38,7 @@ do
   fi
   # 引用 gh-md-to 文件，生成目录
   source ${md_toc_path} --insert ${file}
+  # 因为会生成一些备份文件，这里不需要直接rm
+  ls ${file}.* | while read line; do rm $line; done
 done
+

@@ -173,5 +173,3 @@ let g:pymode_options_max_line_length = 120
 
 使用参考：https://sspai.com/post/60305
 插件官网：https://github.com/iamcco/markdown-preview.nvim
-
-

@@ -1,4 +1,161 @@
-## 大量工具
+<!--ts-->
+* [Mac配置](#mac配置)
+   * [科学上网](#科学上网)
+   * [brew配置](#brew配置)
+   * [基础键盘设置](#基础键盘设置)
+   * [文件同步](#文件同步)
+   * [zsh配置](#zsh配置)
+      * [下载oh my zsh](#下载oh-my-zsh)
+      * [zsh配置](#zsh配置-1)
+      * [zsh 颜色配置](#zsh-颜色配置)
+      * [neovim 下载](#neovim-下载)
+   * [浏览器配置](#浏览器配置)
+   * [vim 配置](#vim-配置)
+* [大量工具](#大量工具)
+   * [配置shell](#配置shell)
+   * [bashmarks](#bashmarks)
+   * [tmux](#tmux)
+   * [gogh](#gogh)
+   * [surfingkeys](#surfingkeys)
+   * [ohmyzsh](#ohmyzsh)
+      * [vim-like](#vim-like)
+   * [mac 好用的软件](#mac-好用的软件)
+
+<!-- Added by: mikizhu, at: 2021年 6月22日 星期二 13时42分09秒 CST -->
+
+<!--te-->
+# Mac配置
+
+## 科学上网
+
+这里科学上网有很多种，选择以下几种方式：
+
+1. 百度搜索 slower ，网站：https://china.zjnyd.top/
+
+2. 谷歌搜索 exflux , 网站：https://xroute.pro/auth/login
+
+上网工具：
+
+- https://github.com/yichengchen/clashX/releases
+
+## brew配置
+
+这里文件比较大，容易失败，可以多尝试几次
+
+```
+/bin/zsh -c "$(curl -fsSL https://gitee.com/cunkai/HomebrewCN/raw/master/Homebrew.sh)"
+```
+
+如果brew出现权限问题，使用下面命令：
+
+```
+sudo chown -R $(whoami) $(brew --prefix)/*
+```
+
+
+配置完可能需要30分钟
+
+## 基础键盘设置
+
+主要说下三指头拖拽：https://support.apple.com/zh-cn/HT204609
+
+## 文件同步
+
+- 打开系统偏好设置
+- 登录icloud
+- 点击文稿
+- 勾选需要同步的文件，等待一段时间
+
+## zsh配置
+
+### 下载oh my zsh
+
+> 输入命令
+>
+> `wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh`
+>
+> `bash ./install.sh`
+
+### zsh配置
+
+>1. zsh vim 配置
+>
+>官网: https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/vi-mode 
+>将下面代码复制到~/.zshrc文件中
+>```
+>plugins=(git autojump vi-mode)
+>source $ZSH/oh-my-zsh.sh
+>
+>bindkey -v
+>```
+>2. zsh autojump 配置
+>
+>auto jump 官网：https://github.com/wting/autojump
+>
+>```
+>brew install autojump
+>```
+>如果提示报错，不能使用j命令，则将下面代码输入到.zshrc文件中：
+>```
+>[[ -s `brew --prefix`/etc/autojump.sh ]] && . `brew --prefix`/etc/autojump.sh
+>```
+
+### zsh 颜色配置
+
+>1. 先科学上网，然后复制终端上网命令
+>2. 输入下面命令：
+>
+>```
+>bash -c "$(curl -sLo- https://git.io/vQgMr)"
+>```
+>
+>3. 选择主题:183 sweet-eliverlara
+>
+>4. 打开iterms的偏好设置，找到profiles，点击colors，选择主题即可
+>
+
+### neovim 下载
+
+```
+brew install neovim
+```
+neovim 配置:
+
+
+
+## 浏览器配置
+
+这里登录账号同步即可
+
+## vim 配置
+
+创建一个文件
+
+```
+mkdir ~/.config/
+cp -r nvim/ ~/.config
+```
+
+然后打开nvim，输入`:PlugInstall`即可
+
+然后将vim映射到vi
+
+```
+vi ~/.zshenv
+```
+
+在文件中输入下面这些内容
+
+```
+#!/bin/bash
+
+source ~/.bash_profile
+cd ~/Desktop
+alias vi=/usr/local/bin/nvim
+alias vim=/usr/local/bin/nvim
+```
+
+# 大量工具
 
 参考：
 

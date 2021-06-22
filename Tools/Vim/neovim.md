@@ -17,4 +17,3 @@ mkdir ~/.config/nvim/
 # init vim 文件相当于.vimrc文件
 nvim ~/.config/nvim/init.vim
 ```
-
