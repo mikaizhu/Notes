@@ -14,7 +14,7 @@ echo -n "please input files: "
 read files
 
 # 如果输入的是回车键，那么直接默认使用read me文件
-if [ $files=='\n' ]; then
+if [ -z $files ]; then
   files=README.md
 fi
 
