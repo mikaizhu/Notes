@@ -2,8 +2,11 @@
 * [思路说明](#思路说明)
    * [stacking boosting and snapshot](#stacking-boosting-and-snapshot)
 * [余弦相似度分析](#余弦相似度分析)
+* [将时间序列转换成图片](#将时间序列转换成图片)
+* [数据增强 and 网络调节](#数据增强-and-网络调节)
+* [思考](#思考)
 
-<!-- Added by: mikizhu, at: 2021年 6月16日 星期三 19时30分27秒 CST -->
+<!-- Added by: zwl, at: 2021年 6月23日 星期三 22时00分34秒 CST -->
 
 <!--te-->
 # 思路说明
